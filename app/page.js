@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import BrandHeader from '../components/BrandHeader';
 import BottomNav from '../components/BottomNav';
-import LegalFooter from '../components/LegalFooter';
 import HomeIcon from '../components/HomeIcon';
 
 const cards = [
@@ -36,30 +35,26 @@ export default function Home() {
 
   return (
     <main className="app-shell premium-app-shell">
-      <div className="premium-sky" aria-hidden="true" />
       <section className="screen-frame home-screen premium-home">
-        <div className="gum-leaf gum-leaf-left" aria-hidden="true">✦</div>
-        <div className="gum-leaf gum-leaf-right" aria-hidden="true">✦</div>
-
+        <div className="australia-hero" aria-hidden="true"><span className="hero-leaves">❧</span><span className="hero-sunset" /></div>
         <BrandHeader />
 
         <section className="premium-journey-card" aria-label="Journey summary">
-          <div className="journey-medallion" aria-hidden="true"><span>☀</span><strong>AU</strong></div>
+          <div className="journey-medallion" aria-hidden="true"><span className="kangaroo-mark">♘</span><span className="sun-mark">●</span></div>
           <div className="premium-journey-copy">
-            <p className="eyebrow">Welcome</p>
             <h2>G’day, Traveller</h2>
             <div className="premium-facts">
-              <p><span aria-hidden="true">◆</span><strong>Next stop:</strong> {destination}</p>
-              <p><span aria-hidden="true">◌</span><strong>Journey:</strong> {distance}</p>
-              <p><span aria-hidden="true">☀</span><strong>Weather:</strong> <Link href="/around">Check verified conditions</Link></p>
-              <p><span aria-hidden="true">$</span><strong>Budget status:</strong> <em className={`status ${summary?.result?.status || ''}`}>{status}</em></p>
+              <p><span>●</span><strong>Next stop:</strong> {destination}</p>
+              <p><span>☀</span><strong>Weather:</strong> <Link href="/around">Check verified conditions</Link></p>
+              <p><span>◆</span><strong>Journey:</strong> {distance}</p>
+              <p><span>$</span><strong>Budget status:</strong> <em className={`status ${summary?.result?.status || ''}`}>{status}</em></p>
             </div>
           </div>
         </section>
 
         <Link href="/safety" className="emergency-bar premium-emergency" aria-label="Open guarded emergency and safety controls">
           <span className="emergency-icon" aria-hidden="true">✚</span>
-          <span><strong>Emergency / Safety</strong><small>Open guarded emergency controls and safety tools</small></span>
+          <span><strong>Emergency / Safety</strong><small>Tap for immediate assistance</small></span>
           <span className="emergency-chevron" aria-hidden="true">›</span>
         </Link>
 
@@ -74,13 +69,13 @@ export default function Home() {
         </section>
 
         <section className="budget-strip premium-budget-strip" aria-label="Budget snapshot">
+          <div className="budget-emblem" aria-hidden="true">$</div>
           <div><small>Trip budget</small><strong>{money(summary?.result?.totalBudget)}</strong></div>
-          <div><small>Planned spend</small><strong>{money(summary?.result?.spendBeforeReserve)}</strong></div>
+          <div><small>Spent</small><strong>{money(summary?.result?.spendBeforeReserve)}</strong></div>
           <div><small>Available</small><strong className="available-value">{money(summary?.result?.available)}</strong></div>
-          <div><small>Emergency reserve</small><strong className="reserve-value">{money(summary?.result?.emergencyReserve)}</strong></div>
+          <div><small>Emergency<br/>reserve</small><strong className="reserve-value">{money(summary?.result?.emergencyReserve)}</strong></div>
         </section>
 
-        <LegalFooter />
         <BottomNav current="Home" />
       </section>
     </main>
