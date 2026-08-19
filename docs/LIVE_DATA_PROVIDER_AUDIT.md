@@ -12,6 +12,7 @@ A provider may be shown as live only after: official source/terms verified; comm
 - Adapter added at `lib/providers/fuelwatchWa.js`.
 - Adapter requires a town/suburb query and fails closed when no result is returned.
 - User-facing automatic switch remains off until the app has a reliable locality resolver or a simple locality input.
+- Repository CI passed on the provider-adapter branch before merge; provider-specific Vercel response verification remains the final gate.
 
 ### NSW + Tasmania — FuelCheck v2
 - Official API.NSW Fuel API.
