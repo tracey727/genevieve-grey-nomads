@@ -16,8 +16,30 @@ export default function PlanTripPage() {
   const [form, setForm] = useState(initial);
   const result = useMemo(() => calculateTripBudget(form), [form]);
   const [saved, setSaved] = useState('');
+  const [routeStatus, setRouteStatus] = useState('Planning estimate shown.');
   const update = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
-  const estimateDistance = () => { const estimate = estimateBetweenPlaces(form.origin, form.destination); if (estimate) update('routeDistanceKm', estimate); };
+  const estimateDistance = async () => {
+    const fallback = estimateBetweenPlaces(form.origin, form.destination);
+    setRouteStatus('Checking the road route…');
+    try {
+      const response = await fetch('/api/route-distance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ origin: form.origin, destination: form.destination })
+      });
+      const payload = await response.json().catch(() => null);
+      if (response.ok && payload?.ok && Number.isFinite(Number(payload.roadDistanceKm))) {
+        update('routeDistanceKm', Number(payload.roadDistanceKm));
+        setRouteStatus(`Road distance checked: ${Number(payload.roadDistanceKm).toLocaleString('en-AU')} km. ${payload.attribution || ''}`.trim());
+        return;
+      }
+      if (fallback) update('routeDistanceKm', fallback);
+      setRouteStatus('Live road distance is unavailable, so GENEVIEVE kept the conservative planning estimate. Confirm the route in Maps before departure.');
+    } catch {
+      if (fallback) update('routeDistanceKm', fallback);
+      setRouteStatus('Live road distance is unavailable, so GENEVIEVE kept the conservative planning estimate. Confirm the route in Maps before departure.');
+    }
+  };
   const saveLocal = () => {
     try { localStorage.setItem('genevieve:last-plan', JSON.stringify({ ...form, result })); setSaved('Saved on this device. Open My Trip to save it to your private trip store.'); }
     catch { setSaved('This browser could not save locally. Your calculation is still visible on this screen.'); }
@@ -32,8 +54,9 @@ export default function PlanTripPage() {
           <h3>1. Journey</h3>
           <label>Start<select value={form.origin} onChange={(e) => update('origin', e.target.value)}>{cityNames.map((c) => <option key={c}>{c}</option>)}</select></label>
           <label>Destination<select value={form.destination} onChange={(e) => update('destination', e.target.value)}>{cityNames.map((c) => <option key={c}>{c}</option>)}</select></label>
-          <div className="inline-actions"><button type="button" className="secondary-button" onClick={estimateDistance}>Estimate planning distance</button><a className="text-link" href={mapsHref} target="_blank" rel="noreferrer">Confirm route in Maps ↗</a></div>
-          <label>Route distance (km)<input inputMode="decimal" type="number" min="0" value={form.routeDistanceKm} onChange={(e) => update('routeDistanceKm', e.target.value)} /><small>Planning estimate only. Confirm the actual road route before departure.</small></label>
+          <div className="inline-actions"><button type="button" className="secondary-button" onClick={estimateDistance}>Check road distance</button><a className="text-link" href={mapsHref} target="_blank" rel="noreferrer">Confirm route in Maps ↗</a></div>
+          <p className="form-message" role="status">{routeStatus}</p>
+          <label>Route distance (km)<input inputMode="decimal" type="number" min="0" value={form.routeDistanceKm} onChange={(e) => update('routeDistanceKm', e.target.value)} /><small>Planning value. GENEVIEVE uses a verified road calculation when available and keeps the existing estimate if the provider cannot be reached.</small></label>
           <label className="check-row"><input type="checkbox" checked={form.returnTrip} onChange={(e) => update('returnTrip', e.target.checked)} /> Return trip</label>
           <label>Travel days<input type="number" min="1" value={form.days} onChange={(e) => update('days', e.target.value)} /></label>
           <label>Maximum driving per day (km)<input type="number" min="1" value={form.maxDailyKm} onChange={(e) => update('maxDailyKm', e.target.value)} /></label>
