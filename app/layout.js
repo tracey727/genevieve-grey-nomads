@@ -1,5 +1,5 @@
 import './globals.css';
-import './visibility.css';
+import './premium.css';
 
 export const metadata = {
   title: 'GENEVIEVE Grey Nomads',
@@ -17,7 +17,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#153f61'
+  themeColor: '#061d34'
 };
 
 export default function RootLayout({ children }) {
