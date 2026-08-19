@@ -56,6 +56,20 @@ export async function GET(request) {
     }, { status: result.configured ? 200 : 503 });
   }
 
+  if (provider === 'nt' || provider === 'northern-territory' || provider === 'myfuel-nt') {
+    return Response.json({
+      ok: false,
+      configured: false,
+      live: false,
+      provider: 'MyFuel NT',
+      coverage: 'Northern Territory',
+      locationStored: false,
+      scrapingUsed: false,
+      message: 'MyFuel NT publishes real-time consumer prices, but GENEVIEVE has not verified an approved third-party real-time API contract. No website scraping or historical dataset is presented as live.',
+      fallback: 'Use the official MyFuel NT service or search nearby fuel stations in Maps and confirm the pump price.'
+    }, { status: 200 });
+  }
+
   const result = await fetchConfiguredProvider({
     url: process.env.FUEL_PRICE_API_URL,
     apiKey: process.env.FUEL_PRICE_API_KEY,
@@ -73,7 +87,7 @@ export async function GET(request) {
         nswTas: process.env.NSW_FUELCHECK_CLIENT_ID && process.env.NSW_FUELCHECK_CLIENT_SECRET && process.env.NSW_FUELCHECK_TOKEN_URL && process.env.NSW_FUELCHECK_NEARBY_URL ? 'credentials-and-endpoints-present' : 'official-account-or-endpoints-required',
         qld: process.env.QLD_FUEL_API_URL && process.env.QLD_FUEL_API_KEY ? 'credentials-and-endpoint-present' : 'developer-signup-required',
         sa: process.env.SA_FUEL_API_URL && process.env.SA_FUEL_API_KEY ? 'publisher-access-present' : 'data-publisher-registration-required',
-        nt: 'approved-third-party-api-not-yet-verified',
+        nt: 'consumer-live-service-verified-third-party-api-not-verified',
         vic: process.env.VIC_SERVO_SAVER_API_URL && process.env.VIC_SERVO_SAVER_API_KEY ? 'credentials-present' : 'authorised-api-access-required'
       },
       fallback: 'Search nearby fuel stations in Maps and confirm the displayed pump price before relying on it.'
