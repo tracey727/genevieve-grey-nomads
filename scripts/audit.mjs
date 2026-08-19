@@ -9,7 +9,8 @@ const required = [
   'app/api/health/route.js','app/api/trips/route.js','app/api/billing/config/route.js',
   'app/api/billing/status/route.js','app/api/billing/checkout/route.js','app/api/billing/portal/route.js',
   'app/api/stripe/webhook/route.js','lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js',
-  'components/BrandHeader.js','components/LegalFooter.js','migrations/V001_init.sql','migrations/V002_billing.sql',
+  'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js',
+  'components/EmergencyCallControl.module.css','migrations/V001_init.sql','migrations/V002_billing.sql',
   'docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
 ];
 
@@ -34,6 +35,7 @@ const terms = read('app/terms/page.js');
 const subscriptions = read('app/subscriptions/page.js');
 const privacy = read('app/privacy/page.js');
 const safety = read('app/safety/page.js');
+const emergency = read('components/EmergencyCallControl.js');
 const releaseGate = read('docs/LEGAL_RELEASE_GATE.md');
 
 if (!envExample.includes('DATABASE_URL=')) fail('DATABASE_URL example missing');
@@ -63,7 +65,13 @@ for (const source of [terms, subscriptions]) {
 if (!subscriptions.includes('no refunds') && !subscriptions.includes('no blanket')) fail('refund policy must reject blanket no-refund wording');
 if (!privacy.includes('Stripe') || !privacy.includes('Vercel') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
 if (!privacy.includes('Access and correction') || !privacy.includes('Privacy complaints')) fail('Privacy access/correction/complaint process missing');
-if (!safety.includes('tel:000')) fail('Emergency 000 entry point missing');
+
+if (!safety.includes('EmergencyCallControl')) fail('Safety must render guarded emergency control');
+if (safety.includes('href="tel:000"')) fail('Safety must not contain an unguarded direct 000 call link');
+if (!emergency.includes('const HOLD_MS = 3000')) fail('Emergency hold must be exactly three seconds');
+if (!emergency.includes("window.location.href = 'tel:000'")) fail('Guarded emergency control must be the only 000 call trigger');
+if (!emergency.includes('type="range"') || !emergency.includes('max="100"') || !emergency.includes('value >= 98')) fail('Emergency call must require a deliberate full slide after hold');
+if (!emergency.includes('onPointerCancel={resetHold}') || !emergency.includes('onPointerLeave={resetHold}')) fail('Releasing/cancelling hold must reset before unlock');
 if (safety.includes('/billing')) fail('Safety must not depend on billing navigation');
 if (!releaseGate.includes('account recovery') || !releaseGate.includes('Live charging is not approved')) fail('paid-launch account recovery/release blocker missing');
 
