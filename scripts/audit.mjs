@@ -4,14 +4,15 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const required = [
-  'app/page.js','app/plan/page.js','app/around/page.js','app/safety/page.js','app/trip/page.js',
+  'app/page.js','app/plan/page.js','app/around/page.js','app/safety/page.js','app/trip/page.js','app/layout.js',
   'app/billing/page.js','app/legal/page.js','app/terms/page.js','app/subscriptions/page.js','app/privacy/page.js',
   'app/api/health/route.js','app/api/trips/route.js','app/api/billing/config/route.js',
   'app/api/billing/status/route.js','app/api/billing/checkout/route.js','app/api/billing/portal/route.js',
-  'app/api/stripe/webhook/route.js','lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js',
+  'app/api/stripe/webhook/route.js','app/api/app-icon/route.js',
+  'lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js',
   'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js',
   'components/EmergencyCallControl.module.css','migrations/V001_init.sql','migrations/V002_billing.sql',
-  'docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
+  'public/manifest.webmanifest','docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
 ];
 
 let failed = false;
@@ -36,6 +37,9 @@ const subscriptions = read('app/subscriptions/page.js');
 const privacy = read('app/privacy/page.js');
 const safety = read('app/safety/page.js');
 const emergency = read('components/EmergencyCallControl.js');
+const iconRoute = read('app/api/app-icon/route.js');
+const manifest = read('public/manifest.webmanifest');
+const layout = read('app/layout.js');
 const releaseGate = read('docs/LEGAL_RELEASE_GATE.md');
 
 if (!envExample.includes('DATABASE_URL=')) fail('DATABASE_URL example missing');
@@ -73,6 +77,12 @@ if (!emergency.includes("window.location.href = 'tel:000'")) fail('Guarded emerg
 if (!emergency.includes('type="range"') || !emergency.includes('max="100"') || !emergency.includes('value >= 98')) fail('Emergency call must require a deliberate full slide after hold');
 if (!emergency.includes('onPointerCancel={resetHold}') || !emergency.includes('onPointerLeave={resetHold}')) fail('Releasing/cancelling hold must reset before unlock');
 if (safety.includes('/billing')) fail('Safety must not depend on billing navigation');
+
+if (!iconRoute.includes("'content-type': 'image/png'")) fail('phone icon endpoint must return PNG');
+if (!iconRoute.includes("Buffer.from(ICON_BASE64, 'base64')")) fail('phone icon asset is missing');
+if (!manifest.includes('"src": "/api/app-icon"') || !manifest.includes('"display": "standalone"')) fail('PWA manifest must use branded home-screen icon and standalone mode');
+if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Grey Nomads'")) fail('iPhone install metadata missing branded icon/title');
+
 if (!releaseGate.includes('account recovery') || !releaseGate.includes('Live charging is not approved')) fail('paid-launch account recovery/release blocker missing');
 
 const combined = required.filter((r) => r.endsWith('.js') || r.endsWith('.mjs')).map(read).join('\n');
