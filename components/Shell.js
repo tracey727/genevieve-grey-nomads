@@ -1,5 +1,6 @@
 import BrandHeader from './BrandHeader';
 import BottomNav from './BottomNav';
+import LegalFooter from './LegalFooter';
 
 export default function Shell({ children, current = 'Home', compactHeader = true }) {
   return (
@@ -8,6 +9,7 @@ export default function Shell({ children, current = 'Home', compactHeader = true
       <section className="screen-frame">
         <BrandHeader compact={compactHeader} />
         {children}
+        <LegalFooter />
         <BottomNav current={current} />
       </section>
     </main>
