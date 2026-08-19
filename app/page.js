@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import BrandHeader from '../components/BrandHeader';
 import BottomNav from '../components/BottomNav';
+import LegalFooter from '../components/LegalFooter';
 
 const cards = [
   ['Continue Journey', '/trip', 'A calm summary of the journey you have saved.', '➜'],
@@ -45,6 +46,7 @@ export default function Home() {
           <div><small>Available</small><strong>{summary?.result?.available != null ? `$${summary.result.available.toLocaleString('en-AU')}` : '—'}</strong></div>
           <div><small>Emergency reserve</small><strong>{summary?.result?.emergencyReserve != null ? `$${summary.result.emergencyReserve.toLocaleString('en-AU')}` : '—'}</strong></div>
         </section>
+        <LegalFooter />
         <BottomNav current="Home" />
       </section>
     </main>

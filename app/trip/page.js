@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Shell from '../../components/Shell';
 
@@ -43,6 +44,7 @@ export default function TripPage() {
     <Shell current="My Trip">
       <section className="page-heading"><p className="eyebrow">My trip</p><h2>Your journeys</h2><p>Local planning stays usable if the database is temporarily unavailable.</p></section>
       <section className="panel current-trip"><h3>Current device plan</h3>{localPlan ? <><strong>{localPlan.origin} → {localPlan.destination}</strong><p>{localPlan.result?.totalDistanceKm?.toLocaleString('en-AU')} km · ${localPlan.result?.totalBudget?.toLocaleString('en-AU')} budget · ${localPlan.result?.available?.toLocaleString('en-AU')} available</p><button className="primary-button" onClick={save}>Save to my trip store</button></> : <p>No journey planned yet.</p>}{status && <p role="status" className="form-message">{status}</p>}</section>
+      <section className="panel current-trip"><h3>Membership</h3><p>Subscriptions and payment management live in one place, separate from your journey and safety controls.</p><Link className="secondary-button" href="/billing">Open Membership</Link></section>
       <section className="trip-list">{trips.map((trip) => <article className="panel trip-card" key={trip.public_id}><strong>{trip.name}</strong><small>{new Date(trip.updated_at).toLocaleString('en-AU')}</small><span>{trip.route_distance_km ? `${Number(trip.route_distance_km).toLocaleString('en-AU')} km` : ''}</span></article>)}</section>
     </Shell>
   );
