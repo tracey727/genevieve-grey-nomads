@@ -54,7 +54,7 @@ export default function Home() {
 
         <Link href="/safety" className="emergency-bar premium-emergency" aria-label="Open guarded emergency and safety controls">
           <span className="emergency-icon" aria-hidden="true">✚</span>
-          <span><strong>Emergency / Safety</strong><small>Tap for immediate assistance</small></span>
+          <span><strong>Emergency / Safety</strong><small>Tap to open guarded emergency controls</small></span>
           <span className="emergency-chevron" aria-hidden="true">›</span>
         </Link>
 
