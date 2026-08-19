@@ -9,6 +9,13 @@ Do not enable paid Checkout until every required item below is complete and evid
 - [x] Support email: tracey@genevieveapp.com.au
 - [ ] Confirm whether the business is GST-registered at launch and ensure the displayed consumer price includes all mandatory taxes/charges.
 
+## Account and entitlement integrity
+- [x] Billing APIs validate unguessable UUID-style device identifiers.
+- [x] Stripe identifiers and billing email are not returned through the public billing-status API.
+- [x] Emergency and core Safety access are independent of entitlement state.
+- [ ] Add a user authentication/account recovery path before broad public paid launch so a subscriber can securely recover membership after a lost, replaced or reset device.
+- [ ] Test entitlement recovery on a second/new device before enabling broad public charging.
+
 ## Subscription disclosure
 - [ ] Choose the actual recurring price.
 - [ ] Choose the billing period (for example monthly or annual).
@@ -34,6 +41,7 @@ Do not enable paid Checkout until every required item below is complete and evid
 ## Consumer law
 - [x] Terms preserve non-excludable Australian Consumer Law rights.
 - [x] Subscription policy does not use a blanket “no refunds” term.
+- [x] Subscription renewal and cancellation wording is designed to be visible before purchase.
 - [x] Price-change wording is prospective, with notice and an opportunity to cancel.
 - [x] Payment failure cannot block Emergency or core Safety access.
 - [ ] Obtain Australian legal review before public paid launch, especially if plans, trials, promotions or minimum terms change.
@@ -47,5 +55,14 @@ Do not enable paid Checkout until every required item below is complete and evid
 - [ ] If marketing email/SMS is introduced, implement consent, sender identification and functional unsubscribe handling before sending campaigns.
 - [ ] Re-audit overseas data processing and provider list whenever Stripe, Vercel, Neon, mapping or analytics providers change.
 
+## Operational release test
+- [ ] Production build/CI passes after billing code is merged.
+- [ ] V002 billing migration is tested on a Neon temporary branch and then separately approved for production.
+- [ ] Production legal pages return 200 and are linked from every main screen.
+- [ ] Checkout refuses to activate when release configuration is incomplete.
+- [ ] Invalid Stripe webhook signatures return 400.
+- [ ] Replayed Stripe event IDs do not duplicate entitlement processing.
+- [ ] Cancellation and failed-payment scenarios do not block `/safety` or `tel:000`.
+
 ## Launch status
-Billing code may be deployed while disabled. **Live charging is not approved until all unchecked items that apply to launch are completed.**
+Billing code may be deployed while disabled. **Live charging is not approved** until all unchecked items that apply to launch are completed.
