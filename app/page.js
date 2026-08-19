@@ -21,11 +21,18 @@ function money(value) {
 
 export default function Home() {
   const [summary, setSummary] = useState(null);
+  const [travellerName, setTravellerName] = useState('Traveller');
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem('genevieve:last-plan');
       if (raw) setSummary(JSON.parse(raw));
+      const profileRaw = localStorage.getItem('genevieve:traveller-profile');
+      if (profileRaw) {
+        const profile = JSON.parse(profileRaw);
+        const firstName = String(profile?.firstName || '').trim().slice(0, 40);
+        if (firstName) setTravellerName(firstName);
+      }
     } catch {}
   }, []);
 
@@ -42,7 +49,7 @@ export default function Home() {
         <section className="premium-journey-card" aria-label="Journey summary">
           <div className="journey-medallion" aria-hidden="true"><span className="kangaroo-mark">♘</span><span className="sun-mark">●</span></div>
           <div className="premium-journey-copy">
-            <h2>G’day, Traveller</h2>
+            <h2>G’day, {travellerName}</h2>
             <div className="premium-facts">
               <p><span>●</span><strong>Next stop:</strong> {destination}</p>
               <p><span>☀</span><strong>Weather:</strong> <Link href="/around">Check verified conditions</Link></p>
