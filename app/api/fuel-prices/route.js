@@ -3,6 +3,7 @@ import { getWaFuelWatchPrices } from '../../../lib/providers/fuelwatchWa';
 import { getNswTasFuelCheckPrices } from '../../../lib/providers/fuelcheckNswTas';
 import { getQueenslandFuelPrices } from '../../../lib/providers/fuelPricesQld';
 import { getSouthAustraliaFuelPrices } from '../../../lib/providers/fuelPricesSa';
+import { getVictoriaServoSaverPrices } from '../../../lib/providers/servoSaverVic';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -70,6 +71,17 @@ export async function GET(request) {
     }, { status: 200 });
   }
 
+  if (provider === 'vic' || provider === 'victoria' || provider === 'melbourne' || provider === 'servo-saver') {
+    const result = await getVictoriaServoSaverPrices({ lat, lon, fuelType });
+    return Response.json({
+      ...result,
+      locationStored: false,
+      coverage: 'Victoria including Melbourne',
+      freshnessLabel: '24-hour delayed government open-data feed',
+      fallback: result.available ? undefined : 'Use Service Victoria Servo Saver for current prices or confirm the pump price before relying on it.'
+    }, { status: result.configured ? 200 : 503 });
+  }
+
   const result = await fetchConfiguredProvider({
     url: process.env.FUEL_PRICE_API_URL,
     apiKey: process.env.FUEL_PRICE_API_KEY,
@@ -88,7 +100,7 @@ export async function GET(request) {
         qld: process.env.QLD_FUEL_API_URL && process.env.QLD_FUEL_API_KEY ? 'credentials-and-endpoint-present' : 'developer-signup-required',
         sa: process.env.SA_FUEL_API_URL && process.env.SA_FUEL_API_KEY ? 'publisher-access-present' : 'data-publisher-registration-required',
         nt: 'consumer-live-service-verified-third-party-api-not-verified',
-        vic: process.env.VIC_SERVO_SAVER_API_URL && process.env.VIC_SERVO_SAVER_API_KEY ? 'credentials-present' : 'authorised-api-access-required'
+        vic: process.env.VIC_SERVO_SAVER_API_URL && process.env.VIC_SERVO_SAVER_API_KEY ? 'authorised-delayed-data-access-present' : 'authorised-api-access-required'
       },
       fallback: 'Search nearby fuel stations in Maps and confirm the displayed pump price before relying on it.'
     }, { status: result.configured ? 503 : 200 });
