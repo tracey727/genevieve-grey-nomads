@@ -13,12 +13,14 @@
 - Indexed bounded newest-trip query tested during the audit dataset.
 - 100,000 budget calculations completed without an exception in the engine stress test.
 - Deterministic budget-engine tests and source audit included in GitHub CI.
+- Vercel project created: `genevieve-grey-nomads`.
+- `DATABASE_URL` configured in Vercel as a sensitive environment variable for the new Grey Nomads project.
+- Production redeploy triggered after the Neon environment update.
 
-## Next deployment gate
-- Confirm GitHub CI passes on the full staged build.
-- Create/import a new Vercel project from this repository only.
-- Add `DATABASE_URL` to the new Vercel project as a server-only environment variable; the real credential is deliberately excluded from source.
-- Verify `/api/health`, Home, Plan, Around Me, Safety and My Trip on the deployed URL before calling it live.
+## Current deployment gate
+- Wait for the fresh Vercel deployment created from this commit to reach Ready.
+- Verify `/api/health` returns database `connected`.
+- Verify Home, Plan, Around Me, Safety and My Trip on the deployed URL.
 
 ## Not claimed live
 BOM/weather, road closures, tides/coastal data, live fuel prices, campground availability, council rules and route-provider data are not labelled live until verified provider integrations and freshness/failure audits are added.
