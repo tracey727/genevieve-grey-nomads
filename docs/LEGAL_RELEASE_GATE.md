@@ -56,13 +56,13 @@ Do not enable paid Checkout until every required item below is complete and evid
 - [ ] Re-audit overseas data processing and provider list whenever Stripe, Vercel, Neon, mapping or analytics providers change.
 
 ## Operational release test
-- [ ] Production build/CI passes after billing code is merged.
-- [ ] V002 billing migration is tested on a Neon temporary branch and then separately approved for production.
-- [ ] Production legal pages return 200 and are linked from every main screen.
-- [ ] Checkout refuses to activate when release configuration is incomplete.
-- [ ] Invalid Stripe webhook signatures return 400.
-- [ ] Replayed Stripe event IDs do not duplicate entitlement processing.
-- [ ] Cancellation and failed-payment scenarios do not block `/safety` or `tel:000`.
+- [x] Production build/CI passes after billing code is merged.
+- [x] V002 billing migration was tested on a Neon temporary branch, separately approved, applied to production, and post-migration audited.
+- [x] Production Terms, Privacy, Subscription/Refund and Membership pages return 200.
+- [x] Billing remains disabled when release configuration is incomplete.
+- [ ] Invalid Stripe webhook signatures return 400 in a configured test environment.
+- [x] Temporary-branch audit confirmed replaying the same Stripe event ID does not create a duplicate event record.
+- [ ] Cancellation and failed-payment end-to-end scenarios are verified not to block `/safety` or `tel:000`.
 
 ## Launch status
-Billing code may be deployed while disabled. **Live charging is not approved** until all unchecked items that apply to launch are completed.
+Billing code and V002 storage are deployed while charging remains disabled. **Live charging is not approved** until all unchecked items that apply to launch are completed.

@@ -10,10 +10,9 @@
 - 5,000-row database scale audit completed and cleaned up.
 - 100,000 budget calculations completed without an exception in the engine stress audit.
 - Vercel project `genevieve-grey-nomads` connected to Neon and live health endpoint verified.
-- Real traveller-side journey save to My Trip confirmed.
+- Real traveller-side journey save to My Trip previously confirmed during V1 verification.
 
-## Subscription/legal candidate — NOT production charging yet
-Branch: `agent/stripe-legal-subscriptions`
+## Subscription/legal foundation — deployed, charging still disabled
 
 ### Stage 7 — Stripe foundation
 - Stripe-hosted subscription Checkout architecture.
@@ -35,12 +34,22 @@ Branch: `agent/stripe-legal-subscriptions`
 ### Stage 9 — Audit gate
 - CI source audit expanded to require Stripe signature verification, server-only price control, legal pages, ACL preservation, privacy disclosures, secret scanning and Safety independence.
 - Paid-launch gate explicitly requires account authentication/recovery before broad public paid launch.
+- GitHub install, tests, source/legal audit and Next.js production build all passed before merge.
+
+### Stage 10 — Neon V002 production migration
+- V002 billing migration was first applied and verified on temporary Neon branch `br-curly-resonance-aud2v2w5`.
+- Migration approval was obtained before applying to the live parent branch `br-flat-mouse-auo0cs78`.
+- V002 was applied successfully to production and the temporary branch was deleted by Neon.
+- Production verification confirmed existing `trips` and `budget_entries` tables remain present.
+- Production verification confirmed `billing_accounts` and `stripe_webhook_events` are present with their required release indexes.
+- Post-migration audit found no test billing accounts or webhook events left in production.
+- Live `/api/health` returned database `connected` after migration.
+- Live `/api/billing/config` remains `enabled: false`, so the database migration did not activate charging.
 
 ## Still required before live charging
 - Select actual recurring price and billing cadence.
 - Confirm GST registration/tax display requirements.
 - Add account authentication/recovery for paid membership portability.
-- Test and approve Neon V002 billing migration.
 - Configure Stripe Product/Price, Customer Portal, public Terms/Privacy URLs and production webhook.
 - Configure Stripe/Vercel production secrets.
 - Complete test-mode subscription, cancellation, failed-payment and webhook replay tests.
