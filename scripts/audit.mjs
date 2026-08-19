@@ -8,8 +8,10 @@ const required = [
   'app/billing/page.js','app/legal/page.js','app/terms/page.js','app/subscriptions/page.js','app/privacy/page.js',
   'app/api/health/route.js','app/api/trips/route.js','app/api/billing/config/route.js',
   'app/api/billing/status/route.js','app/api/billing/checkout/route.js','app/api/billing/portal/route.js',
-  'app/api/stripe/webhook/route.js','app/api/app-icon/route.js',
-  'lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js',
+  'app/api/stripe/webhook/route.js','app/api/app-icon/route.js','app/api/fuel-prices/route.js','app/api/weather/route.js',
+  'lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js','lib/liveProvider.js',
+  'lib/providers/fuelwatchWa.js','lib/providers/fuelcheckNswTas.js','lib/providers/fuelPricesQld.js',
+  'lib/providers/fuelPricesSa.js','lib/providers/servoSaverVic.js',
   'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js',
   'components/EmergencyCallControl.module.css','migrations/V001_init.sql','migrations/V002_billing.sql',
   'public/manifest.webmanifest','docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
@@ -41,6 +43,13 @@ const iconRoute = read('app/api/app-icon/route.js');
 const manifest = read('public/manifest.webmanifest');
 const layout = read('app/layout.js');
 const releaseGate = read('docs/LEGAL_RELEASE_GATE.md');
+const around = read('app/around/page.js');
+const fuelPrices = read('app/api/fuel-prices/route.js');
+const weather = read('app/api/weather/route.js');
+const providerSources = [
+  'lib/providers/fuelwatchWa.js','lib/providers/fuelcheckNswTas.js','lib/providers/fuelPricesQld.js',
+  'lib/providers/fuelPricesSa.js','lib/providers/servoSaverVic.js'
+].map(read);
 
 if (!envExample.includes('DATABASE_URL=')) fail('DATABASE_URL example missing');
 for (const name of ['STRIPE_SECRET_KEY','STRIPE_PRICE_ID','STRIPE_WEBHOOK_SECRET','SUBSCRIPTION_DISPLAY_PRICE','SUBSCRIPTION_BILLING_PERIOD','APP_BASE_URL']) {
@@ -77,6 +86,18 @@ if (!emergency.includes("window.location.href = 'tel:000'")) fail('Guarded emerg
 if (!emergency.includes('type="range"') || !emergency.includes('max="100"') || !emergency.includes('value >= 98')) fail('Emergency call must require a deliberate full slide after hold');
 if (!emergency.includes('onPointerCancel={resetHold}') || !emergency.includes('onPointerLeave={resetHold}')) fail('Releasing/cancelling hold must reset before unlock');
 if (safety.includes('/billing')) fail('Safety must not depend on billing navigation');
+
+if (!around.includes("if (!payload.live)")) fail('Around Me must reject provider data unless live is explicit');
+if (!around.includes('No unverified price or weather value has been shown')) fail('Around Me fail-closed message missing');
+if (!fuelPrices.includes("provider === 'act'") || !fuelPrices.includes('developer documentation only documents NSW and Tasmania support')) fail('ACT FuelCheck developer-access safety gate missing');
+if (!fuelPrices.includes("provider === 'nt'") || !fuelPrices.includes('No website scraping or historical dataset is presented as live')) fail('Northern Territory no-scrape safety gate missing');
+if (!fuelPrices.includes('24-hour delayed government open-data feed')) fail('Victoria delayed-data freshness label missing');
+if (!weather.includes("BOM_DATA_SERVICE_MODE === 'registered-commercial'") || !weather.includes("BOM_COMMERCIAL_LICENCE_CONFIRMED === 'true'")) fail('BOM commercial licence gate missing');
+if (!weather.includes('blocked-anonymous-non-commercial-endpoint')) fail('BOM anonymous-feed block missing');
+for (const source of providerSources) {
+  if (/NEXT_PUBLIC_/.test(source)) fail('provider credential must remain server-side');
+}
+if (/live:\s*true/.test(providerSources[4])) fail('Victoria delayed provider must never return live:true');
 
 if (!iconRoute.includes("'content-type': 'image/png'")) fail('phone icon endpoint must return PNG');
 if (!iconRoute.includes("Buffer.from(ICON_BASE64, 'base64')")) fail('phone icon asset is missing');
