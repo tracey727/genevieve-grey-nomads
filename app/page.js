@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import BrandHeader from '../components/BrandHeader';
 import BottomNav from '../components/BottomNav';
 import HomeIcon from '../components/HomeIcon';
+import { HeroArt, JourneyMedallionArt } from '../components/AustralianaArt';
 
 const cards = [
   ['1. Continue Journey', '/trip', 'journey'],
@@ -43,11 +44,11 @@ export default function Home() {
   return (
     <main className="app-shell premium-app-shell">
       <section className="screen-frame home-screen premium-home">
-        <div className="australia-hero" aria-hidden="true"><span className="hero-leaves">❧</span><span className="hero-sunset" /></div>
+        <div className="australia-hero" aria-hidden="true"><HeroArt /></div>
         <BrandHeader />
 
         <section className="premium-journey-card" aria-label="Journey summary">
-          <div className="journey-medallion" aria-hidden="true"><span className="kangaroo-mark">♘</span><span className="sun-mark">●</span></div>
+          <div className="journey-medallion" aria-hidden="true"><JourneyMedallionArt /></div>
           <div className="premium-journey-copy">
             <h2>G’day, {travellerName}</h2>
             <div className="premium-facts">
