@@ -63,6 +63,15 @@ export default function BillingPage() {
         <p className="eyebrow">Membership</p><h2>Simple, transparent subscription</h2>
         <p>Payment is handled on Stripe’s secure hosted checkout. Emergency and Safety access are never blocked because a payment fails.</p>
       </section>
+
+      <section className="panel">
+        <p className="eyebrow">Agreed access model</p>
+        <h3>Safety stays free</h3>
+        <p><strong>Free — $0:</strong> guarded 000 emergency control, essential safety guidance, basic Around Me, one current trip/basic trip overview, basic profile/settings and the installable PWA experience. No ads.</p>
+        <p><strong>GENEVIEVE Plus:</strong> agreed launch pricing is A$9.99/month or A$99/year. Plus is planned for enhanced trip and budget planning, multiple saved trips, enhanced Around Me and verified live travel data where an approved provider is connected.</p>
+        <p className={styles.notice}>GENEVIEVE safety is never paywalled. Plus checkout remains disabled until the complete launch, legal, provider and payment audits pass.</p>
+      </section>
+
       <section className={`panel ${styles.card}`}>
         <div>
           <p className="eyebrow">GENEVIEVE Grey Nomads</p>
