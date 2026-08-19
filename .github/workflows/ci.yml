@@ -1,7 +1,9 @@
 name: CI
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'audit/**'
   pull_request:
 jobs:
   verify:
