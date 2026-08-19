@@ -12,9 +12,11 @@ const required = [
   'lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js','lib/liveProvider.js',
   'lib/providers/fuelwatchWa.js','lib/providers/fuelcheckNswTas.js','lib/providers/fuelPricesQld.js',
   'lib/providers/fuelPricesSa.js','lib/providers/servoSaverVic.js',
-  'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js',
+  'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js','components/AustralianaArt.js',
   'components/EmergencyCallControl.module.css','migrations/V001_init.sql','migrations/V002_billing.sql',
-  'public/manifest.webmanifest','docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
+  'public/manifest.webmanifest','docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md',
+  'docs/COMPLETE_APP_AUDIT_2026-08-19.md','docs/DEPLOYMENT_POLICY_24H.md','tests/completeness.test.mjs',
+  'wrangler.jsonc','open-next.config.ts','.env.example','.gitignore'
 ];
 
 let failed = false;
@@ -31,9 +33,12 @@ const envExample = read('.env.example');
 const gitignore = read('.gitignore');
 const tripApi = read('app/api/trips/route.js');
 const brand = read('components/BrandHeader.js');
+const home = read('app/page.js');
+const trip = read('app/trip/page.js');
 const checkout = read('app/api/billing/checkout/route.js');
 const webhook = read('app/api/stripe/webhook/route.js');
 const billing = read('lib/billing.mjs');
+const billingPage = read('app/billing/page.js');
 const terms = read('app/terms/page.js');
 const subscriptions = read('app/subscriptions/page.js');
 const privacy = read('app/privacy/page.js');
@@ -55,16 +60,24 @@ if (!envExample.includes('DATABASE_URL=')) fail('DATABASE_URL example missing');
 for (const name of ['STRIPE_SECRET_KEY','STRIPE_PRICE_ID','STRIPE_WEBHOOK_SECRET','SUBSCRIPTION_DISPLAY_PRICE','SUBSCRIPTION_BILLING_PERIOD','APP_BASE_URL']) {
   if (!envExample.includes(`${name}=`)) fail(`${name} example missing`);
 }
+if (!envExample.includes('positivity864.workers.dev')) fail('Cloudflare production APP_BASE_URL example missing');
 if (!gitignore.includes('.env.local')) fail('.env.local not ignored');
 if (!tripApi.includes('LIMIT 30')) fail('trip query must be bounded');
 if (!tripApi.includes('100_000')) fail('trip request size guard missing');
 if (!brand.includes('data:image/webp;base64,') || !brand.includes('Safety from roots to every journey.')) fail('official brand asset/tagline not embedded');
+
+if (!home.includes('1. Continue Journey') || !home.includes('6. My Trip')) fail('chronological Home action chain incomplete');
+if (!home.includes('Tap to open guarded emergency controls')) fail('Home emergency wording must describe guarded controls');
+if (!home.includes('AustralianaArt') || !home.includes('premium-home')) fail('premium Home presentation layer missing');
+if (!home.includes('genevieve:traveller-profile') || !trip.includes('genevieve:traveller-profile')) fail('local traveller settings are not linked between My Trip and Home');
 
 if (!checkout.includes("price: process.env.STRIPE_PRICE_ID")) fail('Checkout price must be server-controlled');
 if (!checkout.includes("mode: 'subscription'")) fail('Checkout must use subscription mode');
 if (!checkout.includes("terms_of_service: 'required'")) fail('Checkout must require terms acceptance');
 if (!checkout.includes('client_reference_id: deviceId')) fail('Checkout must correlate to a validated device ID');
 if (!billing.includes('STRIPE_WEBHOOK_SECRET') || !billing.includes('SUBSCRIPTION_DISPLAY_PRICE')) fail('billing release gate configuration is incomplete');
+if (!billingPage.includes('GENEVIEVE safety is never paywalled')) fail('free safety boundary missing from Membership');
+if (!billingPage.includes('A$9.99/month or A$99/year')) fail('agreed Plus launch pricing missing from Membership');
 
 if (!webhook.includes('request.text()')) fail('Stripe webhook must use raw request body');
 if (!webhook.includes('constructEvent')) fail('Stripe webhook signature verification missing');
@@ -76,7 +89,7 @@ for (const source of [terms, subscriptions]) {
   if (!source.includes('Australian Consumer Law')) fail('Australian Consumer Law preservation wording missing');
 }
 if (!subscriptions.includes('no refunds') && !subscriptions.includes('no blanket')) fail('refund policy must reject blanket no-refund wording');
-if (!privacy.includes('Stripe') || !privacy.includes('Vercel') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
+if (!privacy.includes('Stripe') || !privacy.includes('Cloudflare') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
 if (!privacy.includes('Access and correction') || !privacy.includes('Privacy complaints')) fail('Privacy access/correction/complaint process missing');
 
 if (!safety.includes('EmergencyCallControl')) fail('Safety must render guarded emergency control');
@@ -89,6 +102,10 @@ if (safety.includes('/billing')) fail('Safety must not depend on billing navigat
 
 if (!around.includes("if (!payload.live)")) fail('Around Me must reject provider data unless live is explicit');
 if (!around.includes('No unverified price or weather value has been shown')) fail('Around Me fail-closed message missing');
+for (const item of ['Road closures','Tides','Campground availability','Council rules']) {
+  if (!around.includes(item)) fail(`${item} agreed travel check missing`);
+}
+if (!around.includes('only label them live after a verified provider integration is approved')) fail('manual travel checks must not be represented as live');
 if (!fuelPrices.includes("provider === 'act'") || !fuelPrices.includes('developer documentation only documents NSW and Tasmania support')) fail('ACT FuelCheck developer-access safety gate missing');
 if (!fuelPrices.includes("provider === 'nt'") || !fuelPrices.includes('No website scraping or historical dataset is presented as live')) fail('Northern Territory no-scrape safety gate missing');
 if (!fuelPrices.includes('24-hour delayed government open-data feed')) fail('Victoria delayed-data freshness label missing');
