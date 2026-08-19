@@ -46,8 +46,29 @@
 - Live `/api/health` returned database `connected` after migration.
 - Live `/api/billing/config` remains `enabled: false`, so the database migration did not activate charging.
 
+### Stage 11 — Guarded emergency calling
+- Direct one-tap `000` calling was removed from the Safety screen.
+- Calling 000 now requires a continuous 3-second hold followed by a deliberate full slide.
+- Releasing, cancelling or leaving the hold control before 3 seconds resets it.
+- Safety remains available without subscription or billing state.
+- CI now fails if an unguarded direct 000 link is reintroduced, if the hold period changes, or if the full-slide gate is removed.
+
+### Stage 12 — Grey Nomads phone home-screen identity
+- A dedicated GENEVIEVE Grey Nomads home-screen icon was created from the supplied tree/infinity/roots brand artwork without redrawing the mark.
+- The icon uses the app's deep navy and restrained gold-trimmed visual system.
+- The PWA manifest now includes the Grey Nomads app identity and standalone launch mode.
+- Apple web-app metadata points to the same branded icon and labels the installed app `Grey Nomads`.
+- CI requires the icon endpoint, manifest wiring and Apple install metadata to remain present.
+- GitHub install, tests, source audit and full production build passed before merge.
+
+## Pricing recommendation — not activated
+- Keep Emergency/core Safety free for everyone.
+- Recommended concession/pensioner launch price: $3.99 AUD per month or $39.99 AUD per year.
+- Recommended standard launch price: $6.99 AUD per month or $59.99 AUD per year.
+- Pricing is a recommendation only; Stripe remains disabled until the owner approves final price/cadence and the remaining paid-launch gates are complete.
+
 ## Still required before live charging
-- Select actual recurring price and billing cadence.
+- Owner approval of actual recurring price and billing cadence.
 - Confirm GST registration/tax display requirements.
 - Add account authentication/recovery for paid membership portability.
 - Configure Stripe Product/Price, Customer Portal, public Terms/Privacy URLs and production webhook.
