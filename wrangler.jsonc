@@ -1,4 +1,5 @@
 {
+  // Harmless redeploy trigger after Cloudflare production branch was switched.
   "$schema": "./node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "genevieve-grey-nomads",
