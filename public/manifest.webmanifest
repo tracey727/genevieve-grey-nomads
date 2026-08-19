@@ -1,0 +1,9 @@
+{
+  "name": "GENEVIEVE Grey Nomads",
+  "short_name": "GENEVIEVE",
+  "description": "Australian journey, budget and safety planning for travellers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#041425",
+  "theme_color": "#061d34"
+}
