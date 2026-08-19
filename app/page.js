@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import BrandHeader from '../components/BrandHeader';
 import BottomNav from '../components/BottomNav';
 import HomeIcon from '../components/HomeIcon';
-import { HeroArt, JourneyMedallionArt } from '../components/AustralianaArt';
 
 const cards = [
   ['1. Continue Journey', '/trip', 'journey'],
@@ -22,18 +21,11 @@ function money(value) {
 
 export default function Home() {
   const [summary, setSummary] = useState(null);
-  const [travellerName, setTravellerName] = useState('Traveller');
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem('genevieve:last-plan');
       if (raw) setSummary(JSON.parse(raw));
-      const profileRaw = localStorage.getItem('genevieve:traveller-profile');
-      if (profileRaw) {
-        const profile = JSON.parse(profileRaw);
-        const firstName = String(profile?.firstName || '').trim().slice(0, 40);
-        if (firstName) setTravellerName(firstName);
-      }
     } catch {}
   }, []);
 
@@ -44,13 +36,13 @@ export default function Home() {
   return (
     <main className="app-shell premium-app-shell">
       <section className="screen-frame home-screen premium-home">
-        <div className="australia-hero" aria-hidden="true"><HeroArt /></div>
+        <div className="australia-hero" aria-hidden="true"><span className="hero-leaves">❧</span><span className="hero-sunset" /></div>
         <BrandHeader />
 
         <section className="premium-journey-card" aria-label="Journey summary">
-          <div className="journey-medallion" aria-hidden="true"><JourneyMedallionArt /></div>
+          <div className="journey-medallion" aria-hidden="true"><span className="kangaroo-mark">♘</span><span className="sun-mark">●</span></div>
           <div className="premium-journey-copy">
-            <h2>G’day, {travellerName}</h2>
+            <h2>G’day, Traveller</h2>
             <div className="premium-facts">
               <p><span>●</span><strong>Next stop:</strong> {destination}</p>
               <p><span>☀</span><strong>Weather:</strong> <Link href="/around">Check verified conditions</Link></p>
@@ -62,7 +54,7 @@ export default function Home() {
 
         <Link href="/safety" className="emergency-bar premium-emergency" aria-label="Open guarded emergency and safety controls">
           <span className="emergency-icon" aria-hidden="true">✚</span>
-          <span><strong>Emergency / Safety</strong><small>Tap to open guarded emergency controls</small></span>
+          <span><strong>Emergency / Safety</strong><small>Tap for immediate assistance</small></span>
           <span className="emergency-chevron" aria-hidden="true">›</span>
         </Link>
 
