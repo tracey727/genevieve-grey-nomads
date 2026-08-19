@@ -19,6 +19,10 @@ function money(value) {
   return value != null && Number.isFinite(Number(value)) ? `$${Number(value).toLocaleString('en-AU')}` : '—';
 }
 
+function km(value, fallback) {
+  return value != null && Number.isFinite(Number(value)) ? `${Number(value).toLocaleString('en-AU')} km` : fallback;
+}
+
 export default function Home() {
   const [summary, setSummary] = useState(null);
 
@@ -30,7 +34,8 @@ export default function Home() {
   }, []);
 
   const destination = summary?.destination || 'Plan your next stop';
-  const distance = summary?.result?.totalDistanceKm ? `${summary.result.totalDistanceKm.toLocaleString('en-AU')} km planned` : 'Distance not planned yet';
+  const distance = km(summary?.result?.totalDistanceKm, 'Distance not planned yet');
+  const fuelRange = km(summary?.result?.refuelByKm, 'Add tank details');
   const status = summary?.result?.status ? summary.result.status.replace('-', ' ') : 'Ready to plan';
 
   return (
@@ -44,9 +49,9 @@ export default function Home() {
           <div className="premium-journey-copy">
             <h2>G’day, Traveller</h2>
             <div className="premium-facts">
-              <p><span>●</span><strong>Next stop:</strong> {destination}</p>
+              <p><span>●</span><strong>Next stop:</strong> {destination} <small className="fact-note">· {distance}</small></p>
               <p><span>☀</span><strong>Weather:</strong> <Link href="/around">Check verified conditions</Link></p>
-              <p><span>◆</span><strong>Journey:</strong> {distance}</p>
+              <p><span>◆</span><strong>Fuel range:</strong> {fuelRange}</p>
               <p><span>$</span><strong>Budget status:</strong> <em className={`status ${summary?.result?.status || ''}`}>{status}</em></p>
             </div>
           </div>
