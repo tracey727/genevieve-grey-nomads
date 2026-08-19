@@ -1,5 +1,6 @@
 import { fetchConfiguredProvider, readCoordinate } from '../../../lib/liveProvider';
 import { getWaFuelWatchPrices } from '../../../lib/providers/fuelwatchWa';
+import { getNswTasFuelCheckPrices } from '../../../lib/providers/fuelcheckNswTas';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -23,6 +24,16 @@ export async function GET(request) {
     return Response.json({ ok: false, message: 'A valid Australian location is required.' }, { status: 400 });
   }
 
+  if (provider === 'nsw' || provider === 'tas' || provider === 'fuelcheck') {
+    const result = await getNswTasFuelCheckPrices({ lat, lon, fuelType });
+    return Response.json({
+      ...result,
+      locationStored: false,
+      coverage: 'New South Wales and Tasmania',
+      fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.'
+    }, { status: result.configured ? 200 : 503 });
+  }
+
   const result = await fetchConfiguredProvider({
     url: process.env.FUEL_PRICE_API_URL,
     apiKey: process.env.FUEL_PRICE_API_KEY,
@@ -37,7 +48,7 @@ export async function GET(request) {
       coverage: 'Provider-dependent',
       providerStatus: {
         wa: 'official-adapter-ready',
-        nswTas: process.env.NSW_FUELCHECK_CLIENT_ID && process.env.NSW_FUELCHECK_CLIENT_SECRET ? 'credentials-present' : 'official-account-required',
+        nswTas: process.env.NSW_FUELCHECK_CLIENT_ID && process.env.NSW_FUELCHECK_CLIENT_SECRET && process.env.NSW_FUELCHECK_TOKEN_URL && process.env.NSW_FUELCHECK_NEARBY_URL ? 'credentials-and-endpoints-present' : 'official-account-or-endpoints-required',
         qld: process.env.QLD_FUEL_API_URL && process.env.QLD_FUEL_API_KEY ? 'credentials-present' : 'developer-signup-required',
         vic: process.env.VIC_SERVO_SAVER_API_URL && process.env.VIC_SERVO_SAVER_API_KEY ? 'credentials-present' : 'authorised-api-access-required'
       },
