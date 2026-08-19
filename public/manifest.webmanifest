@@ -2,6 +2,7 @@
   "id": "/",
   "name": "GENEVIEVE Grey Nomads",
   "short_name": "Grey Nomads",
+  "lang": "en-AU",
   "description": "Australian journey, budget and safety planning for travellers.",
   "start_url": "/",
   "scope": "/",
