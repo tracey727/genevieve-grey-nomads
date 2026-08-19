@@ -1,6 +1,6 @@
 export function HeroArt() {
   return (
-    <svg className="australiana-vector" viewBox="0 0 760 300" role="presentation" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+    <svg className="australiana-vector" width="100%" height="100%" viewBox="0 0 760 300" role="presentation" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id="heroSky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#0b3557"/><stop offset="0.62" stopColor="#071f36"/><stop offset="1" stopColor="#061727"/></linearGradient>
         <radialGradient id="heroSun"><stop offset="0" stopColor="#ffd98a"/><stop offset="0.48" stopColor="#f09a45"/><stop offset="1" stopColor="#8e351c" stopOpacity="0"/></radialGradient>
@@ -26,7 +26,7 @@ export function HeroArt() {
 
 export function JourneyMedallionArt() {
   return (
-    <svg className="journey-medallion-svg" viewBox="0 0 120 140" role="presentation" aria-hidden="true">
+    <svg className="journey-medallion-svg" width="100%" height="100%" viewBox="0 0 120 140" role="presentation" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="medalSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#214e6b"/><stop offset="0.6" stopColor="#0d304d"/><stop offset="1" stopColor="#081d2f"/></linearGradient>
         <radialGradient id="medalSun"><stop offset="0" stopColor="#ffe09a"/><stop offset="1" stopColor="#e89943"/></radialGradient>
