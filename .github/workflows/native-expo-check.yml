@@ -3,6 +3,7 @@ name: Native Expo Check
 on:
   push:
     branches:
+      - main
       - native/expo-grey-nomads
     paths:
       - 'native/**'
@@ -23,8 +24,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.19.4'
-          cache: npm
-          cache-dependency-path: native/package-lock.json
 
       - name: Install dependencies
         run: npm install
