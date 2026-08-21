@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "GENEVIEVE Grey Nomads",
+    "slug": "genevieve-grey-nomads-native",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "scheme": "genevievegreynomads",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.genevieve.greynomads"
+    },
+    "android": {
+      "package": "com.genevieve.greynomads",
+      "adaptiveIcon": {
+        "backgroundColor": "#061d34"
+      }
+    },
+    "splash": {
+      "backgroundColor": "#061d34",
+      "resizeMode": "contain"
+    },
+    "extra": {
+      "webCompanionUrl": "https://genevieve-grey-nomads.vercel.app"
+    }
+  }
+}
