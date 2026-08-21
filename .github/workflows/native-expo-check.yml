@@ -1,0 +1,39 @@
+name: Native Expo Check
+
+on:
+  push:
+    branches:
+      - native/expo-grey-nomads
+    paths:
+      - 'native/**'
+      - '.github/workflows/native-expo-check.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-native:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.4'
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Align Expo dependencies
+        run: npx expo install --fix
+
+      - name: Expo doctor
+        run: npx expo-doctor
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
