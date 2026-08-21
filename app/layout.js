@@ -1,5 +1,6 @@
 import './globals.css';
 import './premium.css';
+import './delete-controls.css';
 
 export const metadata = {
   title: 'GENEVIEVE Grey Nomads',
