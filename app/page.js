@@ -43,18 +43,32 @@ export default function Home() {
 
   return (
     <main className="app-shell premium-app-shell">
-      <section className="screen-frame premium-home premium-home-v2">
+      <section className="screen-frame premium-home premium-home-v3">
         <section className="home-hero" aria-label="GENEVIEVE Grey Nomads">
           <div className="hero-kicker">Grey Nomads · Australian touring</div>
+          <div className="hero-constellation" aria-hidden="true">
+            <span className="star hero-star-one" />
+            <span className="star hero-star-two" />
+            <span className="star hero-star-three" />
+            <span className="star hero-star-four" />
+            <span className="star hero-star-five" />
+          </div>
           <BrandHeader />
           <div className="hero-copy">
             <p>Thoughtful planning for long roads, quiet stops and the freedom to travel well.</p>
+            <div className="hero-trust-row" aria-label="Planning priorities">
+              <span>Roads</span><i />
+              <span>Budget</span><i />
+              <span>Safety</span>
+            </div>
           </div>
+          <div className="hero-country-note">Made for the road ahead</div>
           <div className="australian-horizon" aria-hidden="true">
             <span className="horizon-sun" />
             <span className="horizon-range horizon-range-one" />
             <span className="horizon-range horizon-range-two" />
             <span className="horizon-road" />
+            <span className="horizon-road-centre" />
           </div>
         </section>
 
