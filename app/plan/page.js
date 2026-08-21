@@ -44,6 +44,14 @@ export default function PlanTripPage() {
     try { localStorage.setItem('genevieve:last-plan', JSON.stringify({ ...form, result })); setSaved('Saved on this device. Open My Trip to save it to your private trip store.'); }
     catch { setSaved('This browser could not save locally. Your calculation is still visible on this screen.'); }
   };
+  const clearPlan = () => {
+    if (!window.confirm('Clear this journey and start again? Any device-saved copy of this plan will be removed.')) return;
+    try { localStorage.removeItem('genevieve:last-plan'); } catch {}
+    setForm(initial);
+    setRouteStatus('Journey cleared. Start again by changing the trip details above.');
+    setSaved('This device plan has been cleared. Saved journeys in My Trip can be deleted there.');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const mapsHref = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(form.origin)}&destination=${encodeURIComponent(form.destination)}`;
 
   return (
@@ -87,7 +95,7 @@ export default function PlanTripPage() {
           <div><small>Total distance</small><strong>{result.totalDistanceKm.toLocaleString('en-AU')} km</strong></div><div><small>Fuel estimate</small><strong>${result.fuelCost.toLocaleString('en-AU')}</strong></div><div><small>Food</small><strong>${result.foodCost.toLocaleString('en-AU')}</strong></div><div><small>Camping</small><strong>${result.accommodationCost.toLocaleString('en-AU')}</strong></div><div><small>Other expenses</small><strong>${result.otherCost.toLocaleString('en-AU')}</strong></div><div><small>Protected reserve</small><strong>${result.emergencyReserve.toLocaleString('en-AU')}</strong></div><div><small>Driving days needed</small><strong>{result.drivingDays || '—'}</strong></div><div><small>Refuel by</small><strong>{result.refuelByKm ? `${result.refuelByKm} km` : 'Add tank details'}</strong></div><div><small>Minimum fuel stops</small><strong>{result.minimumFuelStops}</strong></div>
         </div>
         {result.savings.length > 0 && <div className="saving-box"><strong>Options</strong>{result.savings.map((s) => <p key={s.label}>{s.safety ? 'Safety: ' : s.potential ? `Potential $${s.potential}: ` : ''}{s.label}</p>)}</div>}
-        <button type="button" className="primary-button" onClick={saveLocal}>Keep this journey</button>{saved && <p className="form-message" role="status">{saved}</p>}
+        <div className="inline-actions"><button type="button" className="primary-button" onClick={saveLocal}>Keep this journey</button><button type="button" className="danger-button" onClick={clearPlan}>Clear this plan</button></div>{saved && <p className="form-message" role="status">{saved}</p>}
       </section>
     </Shell>
   );
