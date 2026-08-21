@@ -1,12 +1,12 @@
 function IconBase({ children }) {
   return (
     <svg
-      width="96"
-      height="96"
-      viewBox="0 0 96 96"
+      width="56"
+      height="56"
+      viewBox="0 0 64 64"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.8"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -16,110 +16,26 @@ function IconBase({ children }) {
   );
 }
 
-function Pine({ x, y, scale = 1 }) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`} opacity="0.72">
-      <path d="M0 15V2" />
-      <path d="M0 3l-5 6h10L0 3Z" />
-      <path d="M0 7l-7 7h14L0 7Z" />
-    </g>
-  );
-}
-
 export function JourneyGoldIcon() {
-  return (
-    <IconBase>
-      <g opacity="0.64">
-        <Pine x="18" y="23" scale="0.82" />
-        <Pine x="29" y="20" scale="1" />
-        <Pine x="72" y="21" scale="0.88" />
-        <Pine x="80" y="27" scale="0.68" />
-      </g>
-      <path d="M10 44c10-7 19-12 28-12 9 0 15 4 23 4 8 0 15-4 25-11" opacity="0.5" />
-      <path d="M13 77c17-6 30-12 37-20 8-9 7-16 17-24" strokeWidth="4.8" opacity="0.34" />
-      <path d="M14 78c17-7 30-13 37-21 8-9 7-16 18-24" strokeWidth="2.1" />
-      <path d="M41 74c6-4 12-8 16-13M54 54c4-5 5-9 8-14" strokeWidth="1.2" opacity="0.7" />
-      <path d="M8 82h80" opacity="0.18" />
-    </IconBase>
-  );
+  return <IconBase><path d="M11 50c8-18 15-29 24-36"/><path d="M29 15l7-2-2 7"/><path d="M17 50c8-7 15-10 23-10 6 0 10 2 14 6"/><path d="M16 39c7-2 12-6 16-12"/></IconBase>;
 }
 
 export function PlanGoldIcon() {
-  return (
-    <IconBase>
-      <path d="M10 25l23-8 29 9 24-9v54l-24 8-29-9-23 8V25Z" strokeWidth="2.2" />
-      <path d="M33 17v53M62 26v53" opacity="0.78" />
-      <path d="M17 59c9-12 18-10 27-18 8-7 13-5 23 2 7 5 11 4 18 0" strokeDasharray="4 5" opacity="0.66" />
-      <path d="M59 16c0-8 6-14 14-14s14 6 14 14c0 12-14 25-14 25S59 28 59 16Z" fill="currentColor" strokeWidth="0" />
-      <circle cx="73" cy="16" r="4.2" fill="#08243a" stroke="none" />
-      <circle cx="73" cy="16" r="2.2" opacity="0.35" />
-    </IconBase>
-  );
+  return <IconBase><path d="M9 14l15-5 16 5 15-5v42l-15 5-16-5-15 5z"/><path d="M24 9v42M40 14v42"/><path d="M29 31c0-7 10-7 10 0 0 6-5 11-5 11s-5-5-5-11z"/><circle cx="34" cy="31" r="1.6"/></IconBase>;
 }
 
 export function AroundGoldIcon() {
-  return (
-    <IconBase>
-      <g opacity="0.58">
-        <Pine x="18" y="28" scale="0.84" />
-        <Pine x="28" y="23" scale="0.64" />
-        <Pine x="70" y="31" scale="0.76" />
-        <Pine x="80" y="26" scale="0.58" />
-      </g>
-      <path d="M8 45c13-7 24-9 35-4 10 5 17 5 27 1 7-3 13-4 18-3" opacity="0.42" />
-      <path d="M13 80c12-3 24-7 33-14 10-7 14-16 23-22" strokeWidth="5" opacity="0.26" />
-      <path d="M13 80c12-3 24-7 33-14 10-7 14-16 23-22" strokeWidth="1.9" />
-      <path d="M55 68c4-4 7-8 10-13" opacity="0.68" />
-      <path d="M45 18c0-8 6-14 14-14s14 6 14 14c0 12-14 25-14 25S45 30 45 18Z" fill="currentColor" strokeWidth="0" />
-      <circle cx="59" cy="18" r="4.1" fill="#08243a" stroke="none" />
-    </IconBase>
-  );
+  return <IconBase><path d="M32 7c-9 0-16 7-16 16 0 12 16 30 16 30s16-18 16-30C48 14 41 7 32 7z"/><circle cx="32" cy="23" r="5"/><path d="M10 51c8-5 14-6 21-4M37 48c7-4 13-3 17 1"/></IconBase>;
 }
 
 export function SafetyGoldIcon() {
-  return (
-    <IconBase>
-      <path d="M48 7 78 18v23c0 21-12 37-30 47C30 78 18 62 18 41V18L48 7Z" strokeWidth="3" />
-      <path d="M48 14 70 22v18c0 16-8 29-22 38-14-9-22-22-22-38V22l22-8Z" opacity="0.34" />
-      <path d="M34 46l9 9 19-21" strokeWidth="2.6" />
-      <path d="M22 20 48 10l26 10" opacity="0.3" />
-    </IconBase>
-  );
+  return <IconBase><path d="M32 7l19 7v14c0 13-8 23-19 29C21 51 13 41 13 28V14z"/><path d="M24 32l5 5 11-12"/></IconBase>;
 }
 
 export function BudgetGoldIcon() {
-  return (
-    <IconBase>
-      <rect x="24" y="8" width="48" height="80" rx="7" strokeWidth="2.8" />
-      <rect x="31" y="17" width="34" height="16" rx="3" strokeWidth="2" />
-      <path d="M34 24h28" opacity="0.34" />
-      <g strokeWidth="2.1">
-        <rect x="31" y="42" width="8" height="8" rx="1.5" />
-        <rect x="44" y="42" width="8" height="8" rx="1.5" />
-        <rect x="57" y="42" width="8" height="8" rx="1.5" />
-        <rect x="31" y="56" width="8" height="8" rx="1.5" />
-        <rect x="44" y="56" width="8" height="8" rx="1.5" />
-        <rect x="57" y="56" width="8" height="22" rx="1.5" />
-        <rect x="31" y="70" width="8" height="8" rx="1.5" />
-        <rect x="44" y="70" width="8" height="8" rx="1.5" />
-      </g>
-    </IconBase>
-  );
+  return <IconBase><rect x="15" y="8" width="34" height="48" rx="4"/><rect x="21" y="14" width="22" height="10" rx="2"/><path d="M22 32h3M31 32h3M40 32h3M22 40h3M31 40h3M40 40h3M22 48h3M31 48h3M40 48h3"/></IconBase>;
 }
 
 export function TripGoldIcon() {
-  return (
-    <IconBase>
-      <path d="M12 58h62c6 0 10 4 10 10v4H12V58Z" strokeWidth="2.4" />
-      <path d="M21 58V33c0-7 5-12 12-12h27c7 0 13 4 16 10l8 17v10" strokeWidth="2.5" />
-      <rect x="30" y="29" width="22" height="17" rx="3" />
-      <rect x="59" y="29" width="12" height="14" rx="3" />
-      <path d="M18 58h-8M84 58h6M16 65H8" opacity="0.72" />
-      <circle cx="32" cy="72" r="8" fill="#08243a" strokeWidth="2.4" />
-      <circle cx="68" cy="72" r="8" fill="#08243a" strokeWidth="2.4" />
-      <circle cx="32" cy="72" r="2.5" fill="currentColor" stroke="none" />
-      <circle cx="68" cy="72" r="2.5" fill="currentColor" stroke="none" />
-      <path d="M10 72h10M80 72h8" opacity="0.35" />
-    </IconBase>
-  );
+  return <IconBase><path d="M10 39h44v12H10z"/><path d="M16 39V25h29l7 14"/><path d="M23 25v14M38 25v14"/><circle cx="20" cy="52" r="4"/><circle cx="46" cy="52" r="4"/><path d="M8 44H4M60 44h-4"/></IconBase>;
 }
