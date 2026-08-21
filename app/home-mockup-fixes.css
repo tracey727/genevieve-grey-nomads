@@ -11,30 +11,30 @@
   box-shadow: none;
 }
 
-/* Tracey's supplied Tree / Infinity / Roots artwork. Keep the source artwork intact
-   and present it as a refined ivory medallion over the Australian hero image. */
+/* Tracey's supplied Tree / Infinity / Roots artwork. The asset itself is transparent,
+   so it sits directly into the hero instead of appearing inside a white image box. */
 .gg-brand-artwork.gg-brand-artwork-user {
-  width: min(33vw, 138px);
-  height: clamp(150px, 28vw, 190px);
-  padding: 4px;
-  overflow: hidden;
-  border: 1px solid rgba(242, 195, 104, .95);
-  border-radius: 24px;
-  background: linear-gradient(145deg, #fffefb, #f4efe5);
-  box-shadow:
-    0 14px 34px rgba(0, 0, 0, .46),
-    0 0 0 1px rgba(255, 229, 171, .16),
-    0 0 24px rgba(226, 171, 76, .14);
+  width: min(38vw, 158px);
+  height: clamp(164px, 31vw, 204px);
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(ellipse at 50% 47%, rgba(255, 246, 226, .34) 0%, rgba(255, 239, 205, .13) 42%, rgba(255, 233, 190, 0) 73%);
+  box-shadow: none;
 }
 
 .gg-brand-user-logo {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 19px;
   object-fit: contain;
   object-position: center;
-  background: #fffefb;
+  background: transparent;
+  filter:
+    drop-shadow(0 8px 13px rgba(0, 0, 0, .58))
+    drop-shadow(0 0 7px rgba(245, 198, 112, .22));
 }
 
 .gg-brand-emblem {
@@ -202,6 +202,11 @@
     height: clamp(118px, 31vw, 154px);
   }
 
+  .gg-brand-artwork.gg-brand-artwork-user {
+    width: min(42vw, 150px);
+    height: clamp(158px, 43vw, 194px);
+  }
+
   .gg-journey-card {
     padding: 14px 12px;
   }
@@ -230,7 +235,7 @@
 }
 
 @media (max-width: 370px) {
-  .gg-brand-artwork { height: 110px; }
+  .gg-brand-artwork.gg-brand-artwork-user { height: 156px; }
   .gg-summary-row strong { font-size: .6rem; }
   .gg-budget-strip-four small { font-size: .41rem; }
   .gg-budget-strip-four strong { font-size: .64rem; }
