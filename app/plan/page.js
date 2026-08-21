@@ -9,7 +9,7 @@ const initial = {
   origin: 'Gold Coast, QLD', destination: 'Perth, WA', totalBudget: 2000, days: 10,
   routeDistanceKm: estimateBetweenPlaces('Gold Coast, QLD', 'Perth, WA'), fuelConsumptionL100: 12,
   fuelPricePerL: 2.0, tankLitres: 80, fuelReserveLitres: 15, maxDailyKm: 450, dailyFood: 25,
-  paidNights: 0, avgPaidNight: 45, petBudget: 50, feesBudget: 50, emergencyReserve: 250, returnTrip: false
+  paidNights: 0, avgPaidNight: 45, petBudget: 50, feesBudget: 50, otherBudget: 0, emergencyReserve: 250, returnTrip: false
 };
 
 export default function PlanTripPage() {
@@ -70,6 +70,7 @@ export default function PlanTripPage() {
           <label>Average paid night ($)<input type="number" min="0" value={form.avgPaidNight} onChange={(e) => update('avgPaidNight', e.target.value)} /></label>
           <label>Pet allowance ($)<input type="number" min="0" value={form.petBudget} onChange={(e) => update('petBudget', e.target.value)} /></label>
           <label>Tolls / fees allowance ($)<input type="number" min="0" value={form.feesBudget} onChange={(e) => update('feesBudget', e.target.value)} /></label>
+          <label>Other planned expenses ($)<input type="number" min="0" value={form.otherBudget} onChange={(e) => update('otherBudget', e.target.value)} /></label>
         </section>
         <section className="panel form-panel">
           <h3>3. Fuel safety</h3>
@@ -83,7 +84,7 @@ export default function PlanTripPage() {
       <section className={`panel result-panel ${result.status}`}>
         <div className="result-title"><div><p className="eyebrow">Plan result</p><h3>{result.status.replace('-', ' ')}</h3></div><strong className="result-balance">${result.available.toLocaleString('en-AU')}</strong></div>
         <div className="metric-grid">
-          <div><small>Total distance</small><strong>{result.totalDistanceKm.toLocaleString('en-AU')} km</strong></div><div><small>Fuel estimate</small><strong>${result.fuelCost.toLocaleString('en-AU')}</strong></div><div><small>Food</small><strong>${result.foodCost.toLocaleString('en-AU')}</strong></div><div><small>Camping</small><strong>${result.accommodationCost.toLocaleString('en-AU')}</strong></div><div><small>Protected reserve</small><strong>${result.emergencyReserve.toLocaleString('en-AU')}</strong></div><div><small>Driving days needed</small><strong>{result.drivingDays || '—'}</strong></div><div><small>Refuel by</small><strong>{result.refuelByKm ? `${result.refuelByKm} km` : 'Add tank details'}</strong></div><div><small>Minimum fuel stops</small><strong>{result.minimumFuelStops}</strong></div>
+          <div><small>Total distance</small><strong>{result.totalDistanceKm.toLocaleString('en-AU')} km</strong></div><div><small>Fuel estimate</small><strong>${result.fuelCost.toLocaleString('en-AU')}</strong></div><div><small>Food</small><strong>${result.foodCost.toLocaleString('en-AU')}</strong></div><div><small>Camping</small><strong>${result.accommodationCost.toLocaleString('en-AU')}</strong></div><div><small>Other expenses</small><strong>${result.otherCost.toLocaleString('en-AU')}</strong></div><div><small>Protected reserve</small><strong>${result.emergencyReserve.toLocaleString('en-AU')}</strong></div><div><small>Driving days needed</small><strong>{result.drivingDays || '—'}</strong></div><div><small>Refuel by</small><strong>{result.refuelByKm ? `${result.refuelByKm} km` : 'Add tank details'}</strong></div><div><small>Minimum fuel stops</small><strong>{result.minimumFuelStops}</strong></div>
         </div>
         {result.savings.length > 0 && <div className="saving-box"><strong>Options</strong>{result.savings.map((s) => <p key={s.label}>{s.safety ? 'Safety: ' : s.potential ? `Potential $${s.potential}: ` : ''}{s.label}</p>)}</div>}
         <button type="button" className="primary-button" onClick={saveLocal}>Keep this journey</button>{saved && <p className="form-message" role="status">{saved}</p>}
