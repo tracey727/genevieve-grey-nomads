@@ -40,7 +40,7 @@ export default function GreyNomadsHomeScreen({ actions, routes, content }) {
               <div className="gg-brand-artwork gg-brand-artwork-user">
                 <img
                   className="gg-brand-user-logo"
-                  src="/genevieve-tree-logo.webp"
+                  src="/genevieve-tree-logo.png"
                   alt="GENEVIEVE tree, infinity and roots logo"
                 />
               </div>
