@@ -1,62 +1,104 @@
 /*
- * Premium photographic refinement for the Grey Nomads Home Screen.
- * Style-only overrides: existing navigation, safety, trip and budget logic stay untouched.
- * Hero photograph: Western Australia outback road, Unsplash / Kat Wallace.
- * Journey photograph: Bourke, Australia caravan, Unsplash / Ashleigh Joy Photography.
+ * Home-screen implementation based on the supplied premium navy/gold reference.
+ * This file is intentionally presentation-only. Trip state, APIs, safety logic and
+ * route destinations remain in their existing logic/navigation layers.
  */
 
 .gg-home-shell {
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   background:
     radial-gradient(circle at 50% -8%, rgba(47, 91, 122, .28), transparent 33%),
     linear-gradient(180deg, #01070c 0%, #020b13 48%, #010509 100%);
 }
 
 .gg-home-screen.screen-frame {
+  --home-gutter: clamp(9px, 2.35vw, 18px);
+  position: relative;
+  width: min(100%, 760px);
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-left: 1px solid rgba(217, 173, 98, .4);
+  border-right: 1px solid rgba(217, 173, 98, .4);
+  border-radius: 0;
+  outline: 0;
   background:
-    radial-gradient(ellipse at 12% 24%, rgba(50, 91, 116, .12), transparent 25%),
-    radial-gradient(ellipse at 88% 46%, rgba(152, 102, 58, .07), transparent 23%),
-    linear-gradient(180deg, #061b2c 0%, #031421 44%, #020d17 100%);
-  box-shadow:
-    0 0 95px rgba(0, 0, 0, .62),
-    inset 0 0 90px rgba(27, 77, 108, .055);
+    radial-gradient(ellipse at 11% 24%, rgba(42, 91, 118, .14), transparent 24%),
+    radial-gradient(ellipse at 88% 52%, rgba(146, 91, 48, .08), transparent 22%),
+    linear-gradient(180deg, #051a2b 0%, #031321 48%, #020d17 100%);
+  box-shadow: 0 0 90px rgba(0, 0, 0, .58), inset 0 0 80px rgba(22, 70, 105, .07);
 }
 
 .gg-home-screen.screen-frame:before {
-  border-color: rgba(225, 182, 104, .38);
-  box-shadow:
-    inset 0 0 0 3px rgba(201, 151, 66, .025),
-    0 0 28px rgba(0, 0, 0, .08);
+  content: "";
+  position: absolute;
+  inset: max(7px, env(safe-area-inset-top)) 7px max(7px, env(safe-area-inset-bottom));
+  z-index: 20;
+  pointer-events: none;
+  border: 1px solid rgba(222, 176, 93, .46);
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 3px rgba(201, 151, 66, .03);
 }
 
-/* Cinematic Australian touring hero — photographic, not illustrative. */
+.gg-home-screen.screen-frame:after { display: none; }
+
+/* Web equivalent of ScrollView + SafeAreaView. */
+.gg-home-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  padding:
+    max(0px, env(safe-area-inset-top))
+    var(--home-gutter)
+    calc(8px + env(safe-area-inset-bottom));
+}
+
+.gg-home-scroll::-webkit-scrollbar { display: none; }
+
+/* HERO / BRAND */
 .gg-brand-hero {
-  min-height: clamp(328px, 52vw, 410px);
-  border-bottom: 0;
-  background: #071927;
-  box-shadow:
-    inset 0 -38px 48px rgba(2, 13, 23, .64),
-    0 18px 42px rgba(0, 0, 0, .18);
+  position: relative;
+  z-index: 1;
+  min-height: clamp(286px, 50vw, 374px);
+  margin: 0 calc(var(--home-gutter) * -1);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(226, 177, 87, .54);
+  background: #071c2d;
+  isolation: isolate;
+  box-shadow: inset 0 -30px 42px rgba(2, 13, 23, .4);
 }
 
 .gg-landscape {
-  inset: -2px;
-  background-image:
-    url('https://images.unsplash.com/photo-1737621806371-80fe6fab29e2?auto=format&fit=crop&fm=webp&w=1800&q=88');
-  background-size: cover;
-  background-position: center 53%;
-  filter: saturate(.86) contrast(1.08) brightness(.70);
-  transform: scale(1.012);
-}
-
-.gg-brand-hero:before {
-  content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
-  pointer-events: none;
+  z-index: -3;
+  background-image: url('/approved-home-hero.webp');
+  background-size: cover;
+  background-position: center 45%;
+  filter: saturate(.94) contrast(1.07) brightness(.69);
+  transform: scale(1.018);
+}
+
+.gg-hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
   background:
-    radial-gradient(ellipse at 50% 18%, rgba(234, 190, 112, .08), transparent 34%),
-    linear-gradient(90deg, rgba(2, 15, 28, .52) 0%, rgba(2, 15, 28, .08) 28%, rgba(2, 15, 28, .04) 70%, rgba(2, 15, 28, .44) 100%);
+    radial-gradient(ellipse at 72% 68%, rgba(213, 128, 49, .23), transparent 29%),
+    linear-gradient(180deg, rgba(1, 14, 27, .08) 0%, rgba(2, 19, 34, .18) 46%, rgba(2, 18, 32, .76) 100%),
+    linear-gradient(90deg, rgba(1, 14, 26, .52), transparent 31%, transparent 72%, rgba(1, 13, 25, .4));
 }
 
 .gg-brand-hero:after {
@@ -65,203 +107,296 @@
   left: 0;
   right: 0;
   bottom: -1px;
-  height: 122px;
+  height: 72px;
   z-index: 1;
   pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(3, 19, 33, 0) 0%, rgba(3, 19, 33, .42) 42%, #051a2b 100%);
-}
-
-.gg-hero-shade {
-  z-index: -1;
-  background:
-    radial-gradient(ellipse at 56% 57%, rgba(206, 139, 67, .11), transparent 31%),
-    linear-gradient(180deg, rgba(1, 12, 22, .06) 0%, rgba(2, 16, 29, .16) 43%, rgba(2, 17, 30, .63) 78%, rgba(3, 20, 34, .88) 100%),
-    linear-gradient(90deg, rgba(1, 13, 24, .34), transparent 32%, transparent 68%, rgba(1, 13, 24, .31));
-}
-
-/* Remove drawn botanical/kangaroo flourishes; the real landscape now carries the Australian identity. */
-.gg-eucalyptus,
-.gg-kangaroo {
-  display: none !important;
+  background: linear-gradient(180deg, rgba(5, 26, 43, 0), rgba(5, 26, 43, .36) 46%, #051a2b 100%);
 }
 
 .gg-brand-lockup {
-  inset: 18px 34px 24px;
+  position: absolute;
+  inset: 10px 34px 15px;
   z-index: 3;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, .78);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
 }
 
-.gg-brand-mark {
-  width: clamp(116px, 25vw, 168px);
-  margin-bottom: -3px;
+.gg-brand-logo-image {
+  display: block;
+  width: auto;
+  height: clamp(108px, 20vw, 132px);
+  margin: auto auto 1px;
+  object-fit: contain;
   filter:
-    drop-shadow(0 5px 13px rgba(0, 0, 0, .56))
-    drop-shadow(0 0 16px rgba(221, 171, 88, .08));
+    brightness(1.24)
+    contrast(1.05)
+    drop-shadow(0 5px 12px rgba(0, 0, 0, .5))
+    drop-shadow(0 0 8px rgba(229, 184, 102, .12));
 }
+
+.gg-brand-mark { display: none !important; }
 
 .gg-brand-name {
-  color: #e9c078;
+  margin-top: 0;
+  color: #e8bb70;
+  font: 500 clamp(2rem, 6.5vw, 3.45rem) / .98 Georgia, 'Times New Roman', serif;
   letter-spacing: .145em;
-  text-shadow:
-    0 3px 12px rgba(0, 0, 0, .84),
-    0 0 22px rgba(204, 146, 64, .13);
+  text-indent: .145em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .78), 0 0 20px rgba(224, 164, 69, .12);
+  white-space: nowrap;
 }
 
 .gg-brand-tagline {
-  color: #e9c681;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, .82);
+  margin-top: 5px;
+  color: #e7bd77;
+  font: italic 600 clamp(.82rem, 2.5vw, 1.12rem) / 1.15 Georgia, 'Times New Roman', serif;
+  letter-spacing: .01em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .78);
 }
 
-/* Current-journey panel now uses genuine Australian caravan photography. */
+/* Decorative eucalyptus from the original reference, kept subtle. */
+.gg-eucalyptus { opacity: .42; }
+.gg-eucalyptus-left { left: 5px; top: 36px; }
+.gg-eucalyptus-right { right: -22px; bottom: -42px; }
+
+/* CURRENT JOURNEY */
 .gg-journey-card {
-  margin-top: -2px;
-  border-color: rgba(218, 166, 83, .74);
+  position: relative;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: clamp(92px, 18vw, 138px) minmax(0, 1fr);
+  gap: clamp(10px, 2.2vw, 18px);
+  align-items: center;
+  margin: -1px 12px 10px;
+  padding: clamp(12px, 2.3vw, 17px) clamp(12px, 2.6vw, 20px);
+  border: 1px solid rgba(222, 161, 65, .9);
+  border-radius: 22px;
   background:
-    radial-gradient(circle at 12% 19%, rgba(58, 109, 137, .19), transparent 32%),
-    linear-gradient(145deg, rgba(8, 42, 66, .985), rgba(2, 22, 37, .995));
-  box-shadow:
-    0 15px 34px rgba(0, 0, 0, .31),
-    inset 0 1px 0 rgba(255, 255, 255, .035),
-    inset 0 0 34px rgba(31, 84, 113, .08);
+    radial-gradient(circle at 9% 22%, rgba(42, 100, 133, .22), transparent 31%),
+    linear-gradient(145deg, rgba(7, 42, 68, .99), rgba(2, 23, 39, .995));
+  box-shadow: 0 13px 30px rgba(0, 0, 0, .31), inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
 .gg-journey-picture {
-  width: 128px;
-  aspect-ratio: .86;
-  border-radius: 22px;
-  border-color: rgba(221, 176, 94, .84);
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 128px;
+  aspect-ratio: .82;
+  overflow: hidden;
+  border: 1px solid #d7a65a;
+  border-radius: 48% 48% 42% 42%;
   background:
-    linear-gradient(180deg, rgba(2, 15, 27, .02), rgba(2, 15, 27, .24)),
-    url('https://images.unsplash.com/photo-1500902613769-d7187c4d501a?auto=format&fit=crop&fm=webp&w=900&q=88') center 52% / cover no-repeat;
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, .34),
-    inset 0 0 0 1px rgba(250, 218, 151, .06);
+    linear-gradient(180deg, rgba(3, 16, 28, .04), rgba(1, 11, 20, .22)),
+    url('/approved-home-hero.webp') center 63% / cover no-repeat;
+  box-shadow: 0 8px 21px rgba(0, 0, 0, .32), inset 0 0 0 3px rgba(4, 24, 39, .52);
 }
 
 .gg-journey-picture:before {
-  inset: 0;
-  width: auto;
-  height: auto;
-  left: 0;
-  bottom: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(180deg, rgba(5, 18, 29, 0) 45%, rgba(4, 18, 30, .28) 100%);
-  opacity: 1;
+  content: "";
+  position: absolute;
+  width: 42%;
+  aspect-ratio: 1;
+  left: 16%;
+  bottom: 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f4d48f 0 24%, rgba(242, 192, 95, .88) 25% 48%, rgba(242, 192, 95, 0) 70%);
+  opacity: .68;
 }
 
-/* Slightly calmer typography and larger supporting text for mature travellers. */
+.gg-kangaroo {
+  display: block !important;
+  right: 23%;
+  bottom: 24%;
+  transform: rotate(-9deg) scale(.88);
+}
+
 .gg-journey-copy h1 {
   color: #fbf5ec;
+  font-size: clamp(1.25rem, 3.6vw, 1.9rem);
   letter-spacing: -.01em;
 }
 
 .gg-summary-row {
-  min-height: 42px;
-  border-top-color: rgba(218, 170, 87, .14);
+  min-height: clamp(35px, 5.8vw, 42px);
+  border-top-color: rgba(218, 170, 87, .15);
 }
 
 .gg-summary-row strong {
   color: #ece9e3;
-  font-size: .83rem;
+  font-size: clamp(.67rem, 1.8vw, .82rem);
   font-weight: 590;
 }
 
 .gg-summary-row small {
   color: #a6b2ba;
-  font-size: .66rem;
+  font-size: clamp(.54rem, 1.45vw, .66rem);
 }
 
-/* Premium depth without adding visual clutter. */
-.gg-action-card {
-  border-color: rgba(216, 160, 73, .72);
-  background:
-    radial-gradient(ellipse at 50% 5%, rgba(72, 119, 146, .17), transparent 38%),
-    linear-gradient(160deg, #082b46 0%, #041c2f 45%, #031522 100%);
-  box-shadow:
-    0 12px 26px rgba(0, 0, 0, .25),
-    inset 0 1px 0 rgba(255, 255, 255, .025),
-    inset 0 -18px 30px rgba(0, 0, 0, .08);
-}
-
-.gg-action-card:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, .018), transparent 38%, rgba(212, 158, 76, .025));
-}
-
+/* EMERGENCY */
 .gg-emergency {
-  border-color: rgba(219, 151, 65, .84);
+  min-height: clamp(68px, 10vw, 77px);
+  margin: 0 12px 10px;
+  border-color: rgba(219, 151, 65, .88);
+  border-radius: 17px;
   background:
-    radial-gradient(circle at 15% 48%, rgba(255, 196, 91, .12), transparent 25%),
-    linear-gradient(100deg, #7f1f10 0%, #64180d 48%, #3e1008 100%);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, .28),
-    inset 0 1px 0 rgba(255, 224, 160, .07);
+    radial-gradient(circle at 15% 48%, rgba(255, 196, 91, .14), transparent 25%),
+    linear-gradient(100deg, #861f0d 0%, #68170b 48%, #421006 100%);
+  box-shadow: 0 11px 26px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 223, 155, .08);
 }
 
-.gg-budget-strip {
-  border-color: rgba(218, 161, 76, .64);
+.gg-emergency-copy strong { font-size: clamp(.7rem, 2vw, .9rem); }
+.gg-emergency-copy small { font-size: clamp(.6rem, 1.55vw, .72rem); }
+
+/* 3 columns x 2 rows. Flexible dimensions prevent clipping on narrow phones. */
+.gg-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(6px, 1.6vw, 10px);
+  margin: 0 12px 10px;
+}
+
+.gg-action-card {
+  min-width: 0;
+  min-height: clamp(116px, 22vw, 143px);
+  padding: clamp(10px, 2vw, 16px) clamp(5px, 1.2vw, 8px) clamp(11px, 1.8vw, 15px);
+  border-color: rgba(218, 156, 61, .86);
+  border-radius: 16px;
   background:
-    radial-gradient(ellipse at 18% 10%, rgba(53, 103, 134, .14), transparent 32%),
-    linear-gradient(145deg, rgba(6, 39, 63, .96), rgba(2, 20, 34, .98));
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, .24),
-    inset 0 1px 0 rgba(255, 255, 255, .025);
+    radial-gradient(circle at 50% 15%, rgba(33, 88, 122, .22), transparent 42%),
+    linear-gradient(155deg, #082b47, #031826 72%);
+  box-shadow: 0 10px 23px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .025);
+}
+
+.gg-action-icon {
+  width: clamp(47px, 10vw, 66px);
+  height: clamp(47px, 10vw, 65px);
+}
+
+.gg-action-icon svg {
+  width: clamp(39px, 8.5vw, 52px);
+  height: clamp(39px, 8.5vw, 52px);
+}
+
+.gg-action-card strong {
+  max-width: 108px;
+  color: #f2ede5;
+  font-size: clamp(.54rem, 1.55vw, .7rem);
+  line-height: 1.24;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+/* BUDGET SNAPSHOT */
+.gg-budget-strip {
+  grid-template-columns: clamp(44px, 9vw, 62px) repeat(4, minmax(0, 1fr));
+  margin: 0 12px 10px;
+  border-color: rgba(218, 157, 64, .84);
+  border-radius: 17px;
+  background: linear-gradient(150deg, rgba(8, 38, 62, .99), rgba(2, 20, 34, .995));
+  box-shadow: 0 10px 23px rgba(0, 0, 0, .23), inset 0 1px 0 rgba(255, 255, 255, .02);
+}
+
+.gg-budget-strip > a { padding: clamp(8px, 1.5vw, 11px) 3px; }
+.gg-budget-strip small { min-height: 26px; font-size: clamp(.46rem, 1.25vw, .59rem); }
+.gg-budget-strip strong { font-size: clamp(.69rem, 1.8vw, .94rem); }
+.gg-budget-icon span { width: clamp(34px, 6.8vw, 43px); height: clamp(34px, 6.8vw, 43px); }
+
+/* Sticky bottom navigation keeps all existing route destinations intact. */
+.gg-home-screen .bottom-nav {
+  position: sticky;
+  left: auto;
+  right: auto;
+  bottom: 0;
+  z-index: 12;
+  min-height: 70px;
+  margin: 0 12px 0;
+  padding: 8px 4px calc(7px + env(safe-area-inset-bottom));
+  border: 1px solid rgba(220, 163, 70, .82);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(5, 29, 47, .96), rgba(1, 13, 23, .985));
+  box-shadow: 0 15px 34px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .025);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.gg-home-screen .bottom-nav a {
+  min-width: 0;
+  min-height: 52px;
+  justify-content: center;
+  gap: 4px;
+}
+
+.gg-home-screen .bottom-nav small {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: clamp(.47rem, 1.2vw, .55rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 560px) {
-  .gg-brand-hero {
-    min-height: 338px;
-  }
+  .gg-home-screen.screen-frame { --home-gutter: 9px; }
 
-  .gg-landscape {
-    background-position: 52% 50%;
-  }
-
-  .gg-brand-lockup {
-    inset: 18px 24px 22px;
-  }
+  .gg-brand-hero { min-height: clamp(270px, 76vw, 330px); }
+  .gg-brand-lockup { inset: 8px 22px 12px; }
+  .gg-brand-logo-image { height: clamp(102px, 31vw, 122px); }
+  .gg-brand-name { font-size: clamp(1.78rem, 8.3vw, 2.6rem); letter-spacing: .115em; text-indent: .115em; }
+  .gg-brand-tagline { font-size: clamp(.76rem, 3.55vw, .98rem); }
 
   .gg-journey-card {
-    grid-template-columns: 116px minmax(0, 1fr);
-    gap: 14px;
-    padding-left: 14px;
-    padding-right: 15px;
+    grid-template-columns: clamp(82px, 25vw, 104px) minmax(0, 1fr);
+    gap: 10px;
+    margin-inline: 5px;
+    padding: 12px 10px;
+    border-radius: 19px;
   }
 
-  .gg-journey-picture {
-    width: 112px;
-  }
+  .gg-journey-copy h1 { margin-bottom: 4px; }
+  .gg-summary-row { grid-template-columns: 20px minmax(0, 1fr); gap: 6px; }
+  .gg-summary-row svg { width: 17px; height: 17px; }
 
-  .gg-summary-row strong {
-    font-size: .8rem;
+  .gg-emergency {
+    grid-template-columns: 50px minmax(0, 1fr) 18px;
+    gap: 9px;
+    margin-inline: 5px;
+    padding: 7px 11px;
   }
+  .gg-emergency-shield { width: 44px; height: 48px; }
 
-  .gg-summary-row small {
-    font-size: .64rem;
-  }
+  .gg-action-grid { margin-inline: 5px; }
+  .gg-budget-strip { margin-inline: 5px; }
+  .gg-home-screen .bottom-nav { margin-inline: 5px; }
 }
 
-@media (max-width: 400px) {
-  .gg-brand-hero {
-    min-height: 326px;
-  }
+@media (max-width: 370px) {
+  .gg-brand-hero { min-height: 258px; }
+  .gg-brand-logo-image { height: 94px; }
+  .gg-brand-name { font-size: 1.62rem; }
+  .gg-brand-tagline { font-size: .71rem; }
 
-  .gg-landscape {
-    background-position: 50% 50%;
-  }
+  .gg-journey-card { grid-template-columns: 82px minmax(0, 1fr); gap: 8px; padding: 10px 8px; }
+  .gg-journey-copy h1 { font-size: 1.14rem; }
+  .gg-summary-row strong { font-size: .61rem; }
+  .gg-summary-row small { font-size: .49rem; }
 
-  .gg-journey-card {
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: 12px;
-  }
+  .gg-emergency-copy strong { letter-spacing: .1em; }
+  .gg-action-card { min-height: 112px; }
+  .gg-action-card strong { font-size: .51rem; }
+  .gg-budget-strip strong { font-size: .64rem; }
+  .gg-budget-strip small { font-size: .43rem; }
+}
 
-  .gg-journey-picture {
-    width: 94px;
-    border-radius: 18px;
-  }
+@media (min-width: 700px) {
+  .gg-home-screen.screen-frame { --home-gutter: 18px; }
+  .gg-brand-hero { min-height: 390px; }
+  .gg-journey-card, .gg-emergency, .gg-action-grid, .gg-budget-strip, .gg-home-screen .bottom-nav { margin-left: 15px; margin-right: 15px; }
+  .gg-action-card { min-height: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gg-action-card { transition: none; }
 }
