@@ -1,0 +1,211 @@
+/* Exact mockup correction layer. Loaded after home-realistic.css. */
+
+.gg-brand-artwork {
+  display: grid;
+  place-items: center;
+  width: min(46vw, 202px);
+  height: clamp(126px, 24vw, 176px);
+  margin: auto auto 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gg-brand-emblem {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.gg-brand-logo-image { display: none !important; }
+
+.gg-brand-name {
+  color: #f0c36f;
+  text-shadow:
+    0 2px 10px rgba(0,0,0,.84),
+    0 0 20px rgba(226,171,76,.16);
+}
+
+.gg-brand-tagline {
+  color: #f0c87c;
+  text-shadow: 0 2px 8px rgba(0,0,0,.86);
+}
+
+/* Remove generated/cartoon-like adornments from the photographic journey image. */
+.gg-journey-picture:before,
+.gg-journey-picture:after,
+.gg-kangaroo {
+  display: none !important;
+  content: none !important;
+}
+
+.gg-journey-picture {
+  border: 1px solid #edb95a;
+  background:
+    linear-gradient(180deg, rgba(3,16,28,.04), rgba(1,11,20,.12)),
+    url('/approved-home-hero.webp') center 60% / cover no-repeat;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.34),
+    0 0 0 1px rgba(255,213,127,.09) inset;
+}
+
+.gg-journey-card,
+.gg-emergency,
+.gg-action-card,
+.gg-budget-strip,
+.gg-home-screen .bottom-nav {
+  border-width: 1px;
+  border-color: #e7ac4f;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.28),
+    inset 0 0 0 1px rgba(255,219,145,.055),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.gg-journey-card {
+  padding: clamp(15px, 2.6vw, 20px) clamp(14px, 2.8vw, 22px);
+}
+
+.gg-summary-row {
+  min-height: 39px;
+  border-top: 1px solid rgba(222,171,79,.18);
+}
+
+.gg-summary-row:first-of-type { border-top: 0; }
+
+.gg-summary-row strong {
+  color: #f5f1e9;
+  font-size: clamp(.7rem, 1.85vw, .84rem);
+  line-height: 1.22;
+  white-space: normal;
+}
+
+.gg-summary-row strong b {
+  color: #efbd63;
+  font-weight: 700;
+}
+
+.gg-summary-row .gg-status.on-budget {
+  color: #a9d54d;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.gg-summary-row small { display: none; }
+
+.gg-action-icon {
+  color: #efb858;
+  filter:
+    drop-shadow(0 5px 9px rgba(0,0,0,.34))
+    drop-shadow(0 0 5px rgba(238,181,84,.12));
+}
+
+.gg-action-icon svg { stroke-width: 1.8; }
+
+.gg-action-card strong {
+  color: #fff8eb;
+  letter-spacing: .035em;
+}
+
+/* Required four-column summary bar. */
+.gg-budget-strip.gg-budget-strip-four {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 15% 5%, rgba(52,101,132,.13), transparent 34%),
+    linear-gradient(150deg, rgba(8,38,62,.995), rgba(2,20,34,.998));
+}
+
+.gg-budget-strip-four > a {
+  display: flex;
+  min-width: 0;
+  min-height: 72px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 5px;
+  border-right: 1px solid rgba(230,177,84,.27);
+  text-align: center;
+}
+
+.gg-budget-strip-four > a:last-child { border-right: 0; }
+
+.gg-budget-strip-four small {
+  display: flex;
+  min-height: 28px;
+  align-items: flex-end;
+  justify-content: center;
+  color: #dcb66f;
+  font-size: clamp(.49rem, 1.25vw, .6rem);
+  line-height: 1.08;
+}
+
+.gg-budget-strip-four strong {
+  display: block;
+  margin-top: 4px;
+  color: #f7f0e5;
+  font: 600 clamp(.78rem, 2.1vw, 1rem)/1.05 Georgia, 'Times New Roman', serif;
+  white-space: nowrap;
+}
+
+.gg-budget-strip-four .gg-available {
+  color: #b8df4c;
+  text-shadow: 0 0 8px rgba(184,223,76,.14);
+}
+
+.gg-budget-strip-four .gg-reserve {
+  color: #efb858;
+}
+
+.gg-home-screen .bottom-nav small {
+  color: inherit;
+  font-size: clamp(.44rem, 1.12vw, .54rem);
+  font-weight: 620;
+  letter-spacing: .055em;
+}
+
+.gg-home-screen .bottom-nav a.active {
+  color: #f2c36c;
+}
+
+@media (max-width: 560px) {
+  .gg-brand-artwork {
+    width: min(49vw, 176px);
+    height: clamp(118px, 31vw, 154px);
+  }
+
+  .gg-journey-card {
+    padding: 14px 12px;
+  }
+
+  .gg-summary-row {
+    min-height: 38px;
+  }
+
+  .gg-summary-row strong {
+    font-size: clamp(.63rem, 2.75vw, .76rem);
+  }
+
+  .gg-budget-strip-four > a {
+    min-height: 68px;
+    padding: 9px 2px;
+  }
+
+  .gg-budget-strip-four small {
+    min-height: 25px;
+    font-size: clamp(.43rem, 2vw, .52rem);
+  }
+
+  .gg-budget-strip-four strong {
+    font-size: clamp(.66rem, 3.05vw, .84rem);
+  }
+}
+
+@media (max-width: 370px) {
+  .gg-brand-artwork { height: 110px; }
+  .gg-summary-row strong { font-size: .6rem; }
+  .gg-budget-strip-four small { font-size: .41rem; }
+  .gg-budget-strip-four strong { font-size: .64rem; }
+}
