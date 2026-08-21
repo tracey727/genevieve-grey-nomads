@@ -1,0 +1,267 @@
+/*
+ * Premium photographic refinement for the Grey Nomads Home Screen.
+ * Style-only overrides: existing navigation, safety, trip and budget logic stay untouched.
+ * Hero photograph: Western Australia outback road, Unsplash / Kat Wallace.
+ * Journey photograph: Bourke, Australia caravan, Unsplash / Ashleigh Joy Photography.
+ */
+
+.gg-home-shell {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(47, 91, 122, .28), transparent 33%),
+    linear-gradient(180deg, #01070c 0%, #020b13 48%, #010509 100%);
+}
+
+.gg-home-screen.screen-frame {
+  background:
+    radial-gradient(ellipse at 12% 24%, rgba(50, 91, 116, .12), transparent 25%),
+    radial-gradient(ellipse at 88% 46%, rgba(152, 102, 58, .07), transparent 23%),
+    linear-gradient(180deg, #061b2c 0%, #031421 44%, #020d17 100%);
+  box-shadow:
+    0 0 95px rgba(0, 0, 0, .62),
+    inset 0 0 90px rgba(27, 77, 108, .055);
+}
+
+.gg-home-screen.screen-frame:before {
+  border-color: rgba(225, 182, 104, .38);
+  box-shadow:
+    inset 0 0 0 3px rgba(201, 151, 66, .025),
+    0 0 28px rgba(0, 0, 0, .08);
+}
+
+/* Cinematic Australian touring hero — photographic, not illustrative. */
+.gg-brand-hero {
+  min-height: clamp(328px, 52vw, 410px);
+  border-bottom: 0;
+  background: #071927;
+  box-shadow:
+    inset 0 -38px 48px rgba(2, 13, 23, .64),
+    0 18px 42px rgba(0, 0, 0, .18);
+}
+
+.gg-landscape {
+  inset: -2px;
+  background-image:
+    url('https://images.unsplash.com/photo-1737621806371-80fe6fab29e2?auto=format&fit=crop&fm=webp&w=1800&q=88');
+  background-size: cover;
+  background-position: center 53%;
+  filter: saturate(.86) contrast(1.08) brightness(.70);
+  transform: scale(1.012);
+}
+
+.gg-brand-hero:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(234, 190, 112, .08), transparent 34%),
+    linear-gradient(90deg, rgba(2, 15, 28, .52) 0%, rgba(2, 15, 28, .08) 28%, rgba(2, 15, 28, .04) 70%, rgba(2, 15, 28, .44) 100%);
+}
+
+.gg-brand-hero:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 122px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(3, 19, 33, 0) 0%, rgba(3, 19, 33, .42) 42%, #051a2b 100%);
+}
+
+.gg-hero-shade {
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 56% 57%, rgba(206, 139, 67, .11), transparent 31%),
+    linear-gradient(180deg, rgba(1, 12, 22, .06) 0%, rgba(2, 16, 29, .16) 43%, rgba(2, 17, 30, .63) 78%, rgba(3, 20, 34, .88) 100%),
+    linear-gradient(90deg, rgba(1, 13, 24, .34), transparent 32%, transparent 68%, rgba(1, 13, 24, .31));
+}
+
+/* Remove drawn botanical/kangaroo flourishes; the real landscape now carries the Australian identity. */
+.gg-eucalyptus,
+.gg-kangaroo {
+  display: none !important;
+}
+
+.gg-brand-lockup {
+  inset: 18px 34px 24px;
+  z-index: 3;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, .78);
+}
+
+.gg-brand-mark {
+  width: clamp(116px, 25vw, 168px);
+  margin-bottom: -3px;
+  filter:
+    drop-shadow(0 5px 13px rgba(0, 0, 0, .56))
+    drop-shadow(0 0 16px rgba(221, 171, 88, .08));
+}
+
+.gg-brand-name {
+  color: #e9c078;
+  letter-spacing: .145em;
+  text-shadow:
+    0 3px 12px rgba(0, 0, 0, .84),
+    0 0 22px rgba(204, 146, 64, .13);
+}
+
+.gg-brand-tagline {
+  color: #e9c681;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, .82);
+}
+
+/* Current-journey panel now uses genuine Australian caravan photography. */
+.gg-journey-card {
+  margin-top: -2px;
+  border-color: rgba(218, 166, 83, .74);
+  background:
+    radial-gradient(circle at 12% 19%, rgba(58, 109, 137, .19), transparent 32%),
+    linear-gradient(145deg, rgba(8, 42, 66, .985), rgba(2, 22, 37, .995));
+  box-shadow:
+    0 15px 34px rgba(0, 0, 0, .31),
+    inset 0 1px 0 rgba(255, 255, 255, .035),
+    inset 0 0 34px rgba(31, 84, 113, .08);
+}
+
+.gg-journey-picture {
+  width: 128px;
+  aspect-ratio: .86;
+  border-radius: 22px;
+  border-color: rgba(221, 176, 94, .84);
+  background:
+    linear-gradient(180deg, rgba(2, 15, 27, .02), rgba(2, 15, 27, .24)),
+    url('https://images.unsplash.com/photo-1500902613769-d7187c4d501a?auto=format&fit=crop&fm=webp&w=900&q=88') center 52% / cover no-repeat;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, .34),
+    inset 0 0 0 1px rgba(250, 218, 151, .06);
+}
+
+.gg-journey-picture:before {
+  inset: 0;
+  width: auto;
+  height: auto;
+  left: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(5, 18, 29, 0) 45%, rgba(4, 18, 30, .28) 100%);
+  opacity: 1;
+}
+
+/* Slightly calmer typography and larger supporting text for mature travellers. */
+.gg-journey-copy h1 {
+  color: #fbf5ec;
+  letter-spacing: -.01em;
+}
+
+.gg-summary-row {
+  min-height: 42px;
+  border-top-color: rgba(218, 170, 87, .14);
+}
+
+.gg-summary-row strong {
+  color: #ece9e3;
+  font-size: .83rem;
+  font-weight: 590;
+}
+
+.gg-summary-row small {
+  color: #a6b2ba;
+  font-size: .66rem;
+}
+
+/* Premium depth without adding visual clutter. */
+.gg-action-card {
+  border-color: rgba(216, 160, 73, .72);
+  background:
+    radial-gradient(ellipse at 50% 5%, rgba(72, 119, 146, .17), transparent 38%),
+    linear-gradient(160deg, #082b46 0%, #041c2f 45%, #031522 100%);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, .25),
+    inset 0 1px 0 rgba(255, 255, 255, .025),
+    inset 0 -18px 30px rgba(0, 0, 0, .08);
+}
+
+.gg-action-card:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .018), transparent 38%, rgba(212, 158, 76, .025));
+}
+
+.gg-emergency {
+  border-color: rgba(219, 151, 65, .84);
+  background:
+    radial-gradient(circle at 15% 48%, rgba(255, 196, 91, .12), transparent 25%),
+    linear-gradient(100deg, #7f1f10 0%, #64180d 48%, #3e1008 100%);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, .28),
+    inset 0 1px 0 rgba(255, 224, 160, .07);
+}
+
+.gg-budget-strip {
+  border-color: rgba(218, 161, 76, .64);
+  background:
+    radial-gradient(ellipse at 18% 10%, rgba(53, 103, 134, .14), transparent 32%),
+    linear-gradient(145deg, rgba(6, 39, 63, .96), rgba(2, 20, 34, .98));
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, .24),
+    inset 0 1px 0 rgba(255, 255, 255, .025);
+}
+
+@media (max-width: 560px) {
+  .gg-brand-hero {
+    min-height: 338px;
+  }
+
+  .gg-landscape {
+    background-position: 52% 50%;
+  }
+
+  .gg-brand-lockup {
+    inset: 18px 24px 22px;
+  }
+
+  .gg-journey-card {
+    grid-template-columns: 116px minmax(0, 1fr);
+    gap: 14px;
+    padding-left: 14px;
+    padding-right: 15px;
+  }
+
+  .gg-journey-picture {
+    width: 112px;
+  }
+
+  .gg-summary-row strong {
+    font-size: .8rem;
+  }
+
+  .gg-summary-row small {
+    font-size: .64rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .gg-brand-hero {
+    min-height: 326px;
+  }
+
+  .gg-landscape {
+    background-position: 50% 50%;
+  }
+
+  .gg-journey-card {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .gg-journey-picture {
+    width: 94px;
+    border-radius: 18px;
+  }
+}

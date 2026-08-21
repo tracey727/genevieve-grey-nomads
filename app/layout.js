@@ -2,6 +2,7 @@ import './globals.css';
 import './premium.css';
 import './delete-controls.css';
 import './approved-home.css';
+import './home-realistic.css';
 
 export const metadata = {
   title: 'GENEVIEVE Grey Nomads',
