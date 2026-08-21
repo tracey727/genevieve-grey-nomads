@@ -1,111 +1,126 @@
 import Link from 'next/link';
-import BottomNav from './BottomNav';
+import p00 from './homeFaceData/part00';
+import p01 from './homeFaceData/part01';
+import p02 from './homeFaceData/part02';
+import p03 from './homeFaceData/part03';
+import p04 from './homeFaceData/part04';
+import p05 from './homeFaceData/part05';
+import p06 from './homeFaceData/part06';
+import p07 from './homeFaceData/part07';
+import p08 from './homeFaceData/part08';
+import p09 from './homeFaceData/part09';
+import p10 from './homeFaceData/part10';
+import p11 from './homeFaceData/part11';
+import p12 from './homeFaceData/part12';
+import p13 from './homeFaceData/part13';
+import p14 from './homeFaceData/part14';
+import p15 from './homeFaceData/part15';
 
-function SummaryIcon({ name }) {
-  const common = {
-    width: 22,
-    height: 22,
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.8,
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round',
-    'aria-hidden': true
-  };
+const homeFace = `data:image/webp;base64,${[
+  p00, p01, p02, p03, p04, p05, p06, p07,
+  p08, p09, p10, p11, p12, p13, p14, p15
+].join('')}`;
 
-  if (name === 'pin') {
-    return <svg {...common}><path d="M12 21s6-5.6 6-11a6 6 0 1 0-12 0c0 5.4 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg>;
-  }
-  if (name === 'sun') {
-    return <svg {...common}><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>;
-  }
-  if (name === 'fuel') {
-    return <svg {...common}><path d="M5 21V4h9v17"/><path d="M5 8h9M3 21h13"/><path d="M14 7h2l3 3v7.5a1.5 1.5 0 0 0 3 0V9l-2-2"/></svg>;
-  }
-  return <svg {...common}><circle cx="12" cy="12" r="8.5"/><path d="M14.5 8.5c-.7-.7-1.5-1-2.5-1-1.7 0-3 1-3 2.4 0 3.5 6 1.5 6 4.8 0 1.4-1.3 2.5-3.1 2.5-1.1 0-2.2-.4-3-1.2M12 5.5v13"/></svg>;
-}
+const hotspot = {
+  position: 'absolute',
+  display: 'block',
+  background: 'transparent',
+  color: 'transparent',
+  overflow: 'hidden',
+  textIndent: '-9999px',
+  WebkitTapHighlightColor: 'transparent'
+};
 
-export default function GreyNomadsHomeScreen({ actions, routes, content }) {
+export default function GreyNomadsHomeScreen({ routes }) {
   return (
-    <main className="app-shell gg-home-shell">
-      <section className="screen-frame gg-home-screen" aria-label="GENEVIEVE Grey Nomads Home">
-        <div className="gg-home-scroll">
-          <header className="gg-brand-hero" aria-label="GENEVIEVE Grey Nomads Australian touring">
-            <div className="gg-landscape" aria-hidden="true" />
-            <div className="gg-hero-shade" aria-hidden="true" />
-            <div className="gg-eucalyptus gg-eucalyptus-left" aria-hidden="true"><i/><i/><i/><i/><i/></div>
-            <div className="gg-eucalyptus gg-eucalyptus-right" aria-hidden="true"><i/><i/><i/></div>
-            <div className="gg-brand-lockup">
-              <div className="gg-brand-artwork gg-brand-artwork-user">
-                <img
-                  className="gg-brand-user-logo"
-                  src="/genevieve-tree-logo.png"
-                  alt="GENEVIEVE tree, infinity and roots logo"
-                />
-              </div>
-              <div className="gg-brand-name">GENEVIEVE</div>
-              <div className="gg-brand-tagline">Safety from roots to every journey.</div>
-            </div>
-          </header>
+    <main
+      style={{
+        minHeight: '100dvh',
+        margin: 0,
+        background: '#020a12',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+      }}
+    >
+      <section
+        aria-label="GENEVIEVE Grey Nomads Home"
+        style={{
+          position: 'relative',
+          width: 'min(100%, 941px)',
+          margin: '0 auto',
+          lineHeight: 0,
+          background: '#020a12'
+        }}
+      >
+        <img
+          src={homeFace}
+          alt="GENEVIEVE Grey Nomads luxury Australian travel home screen"
+          draggable="false"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: 'auto',
+            margin: 0,
+            padding: 0,
+            border: 0,
+            maxWidth: 'none',
+            userSelect: 'none'
+          }}
+        />
 
-          <section className="gg-journey-card" aria-label="Current journey">
-            <Link href={routes.around} className="gg-journey-picture" aria-label="Open Explore" />
-
-            <div className="gg-journey-copy">
-              <h1>G’day, {content.travellerName}</h1>
-
-              <Link href={routes.trip} className="gg-summary-row">
-                <SummaryIcon name="pin" />
-                <span><strong>Next stop: <b>{content.nextStop}</b></strong></span>
-              </Link>
-
-              <Link href={routes.around} className="gg-summary-row">
-                <SummaryIcon name="sun" />
-                <span><strong>Weather: <b>{content.weather}</b></strong></span>
-              </Link>
-
-              <Link href={routes.plan} className="gg-summary-row">
-                <SummaryIcon name="fuel" />
-                <span><strong>Fuel range: <b>{content.fuelRange}</b></strong></span>
-              </Link>
-
-              <Link href={routes.budget} className="gg-summary-row">
-                <SummaryIcon name="money" />
-                <span><strong>Budget status: <em className="gg-status on-budget">{content.budgetStatus}</em></strong></span>
-              </Link>
-            </div>
-          </section>
-
-          <Link href={routes.safety} className="gg-emergency" aria-label="Open emergency and safety controls">
-            <span className="gg-emergency-shield" aria-hidden="true"><b>+</b></span>
-            <span className="gg-emergency-copy"><strong>Emergency / Safety</strong><small>Tap for immediate assistance</small></span>
-            <span className="gg-chevron" aria-hidden="true">›</span>
+        <nav
+          aria-label="Grey Nomads home shortcuts"
+          style={{ position: 'absolute', inset: 0, zIndex: 2, lineHeight: 'normal' }}
+        >
+          <Link
+            href={routes.safety}
+            aria-label="Route safety"
+            style={{ ...hotspot, left: '5.4%', top: '40.2%', width: '43.8%', height: '17.1%' }}
+          >
+            Route safety
           </Link>
 
-          <section className="gg-action-grid" aria-label="Travel tools">
-            {actions.map((action) => {
-              const Icon = action.Icon;
-              return (
-                <Link href={action.href} className={`gg-action-card gg-art-${action.art || 'plain'}`} key={action.title}>
-                  <span className="gg-action-art" aria-hidden="true" />
-                  <span className="gg-action-icon">{Icon ? <Icon /> : null}</span>
-                  <strong>{action.number}. {action.title}</strong>
-                  <span className="gg-tile-chevron" aria-hidden="true">›</span>
-                </Link>
-              );
-            })}
-          </section>
+          <Link
+            href={routes.budget}
+            aria-label="Fuel watch and budget"
+            style={{ ...hotspot, left: '50.8%', top: '40.2%', width: '43.8%', height: '17.1%' }}
+          >
+            Fuel watch and budget
+          </Link>
 
-          <section className="gg-budget-strip gg-budget-strip-four" aria-label="Trip budget summary">
-            <Link href={routes.budget}><small>Trip budget</small><strong>{content.tripBudget}</strong></Link>
-            <Link href={routes.budget}><small>Spent</small><strong>{content.spent}</strong></Link>
-            <Link href={routes.budget}><small>Available</small><strong className="gg-available">{content.available}</strong></Link>
-            <Link href={routes.budget}><small>Emergency reserve</small><strong className="gg-reserve">{content.emergencyReserve}</strong></Link>
-          </section>
+          <Link
+            href={routes.trip}
+            aria-label="Camp mode and current trip"
+            style={{ ...hotspot, left: '5.4%', top: '58.4%', width: '43.8%', height: '16.9%' }}
+          >
+            Camp mode and current trip
+          </Link>
 
-          <BottomNav current="HOME" />
-        </div>
+          <Link
+            href={routes.around}
+            aria-label="Weather alerts"
+            style={{ ...hotspot, left: '50.8%', top: '58.4%', width: '43.8%', height: '16.9%' }}
+          >
+            Weather alerts
+          </Link>
+
+          <Link
+            href={routes.around}
+            aria-label="Nearby stops"
+            style={{ ...hotspot, left: '5.4%', top: '76.5%', width: '43.8%', height: '15.6%' }}
+          >
+            Nearby stops
+          </Link>
+
+          <Link
+            href={routes.safety}
+            aria-label="SOS check-in and emergency safety"
+            style={{ ...hotspot, left: '50.8%', top: '76.5%', width: '43.8%', height: '15.6%' }}
+          >
+            SOS check-in and emergency safety
+          </Link>
+        </nav>
       </section>
     </main>
   );
