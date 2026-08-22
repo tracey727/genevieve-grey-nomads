@@ -5,10 +5,10 @@
   z-index: 1;
   width: clamp(185px, 32vw, 245px);
   height: auto;
-  aspect-ratio: 260 / 474;
+  aspect-ratio: 190 / 346;
   opacity: 1;
   transform: none;
-  background: url('/gum-leaves-reference.svg') top left / contain no-repeat;
+  background: url('/gum-leaves-reference.png') top left / contain no-repeat;
   filter: none;
 }
 
