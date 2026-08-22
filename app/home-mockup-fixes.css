@@ -332,7 +332,7 @@
   width: min(40vw, 166px);
   height: clamp(176px, 33vw, 214px);
   margin: auto auto 10px;
-  transform: translateY(-14px);
+  transform: translateY(-72px);
 }
 
 .gg-brand-user-logo {
@@ -348,6 +348,6 @@
   .gg-brand-artwork.gg-brand-artwork-user {
     width: min(44vw, 154px);
     height: clamp(166px, 42vw, 198px);
-    transform: translateY(-10px);
+    transform: translateY(-80px);
   }
 }
