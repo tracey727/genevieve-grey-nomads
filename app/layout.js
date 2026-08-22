@@ -5,6 +5,7 @@ import './approved-home.css';
 import './home-realistic.css';
 import './home-mockup-fixes.css';
 import './gday-traveller-image.css';
+import './left-gum-sprig.css';
 
 export const metadata = {
   title: 'GENEVIEVE Grey Nomads',
