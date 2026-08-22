@@ -327,3 +327,27 @@
   .gg-budget-strip-four small { font-size: .41rem; }
   .gg-budget-strip-four strong { font-size: .64rem; }
 }
+/* Tree clarity + position refinement only */
+.gg-brand-artwork.gg-brand-artwork-user {
+  width: min(40vw, 166px);
+  height: clamp(176px, 33vw, 214px);
+  margin: auto auto 10px;
+  transform: translateY(-14px);
+}
+
+.gg-brand-user-logo {
+  filter:
+    brightness(1.18)
+    contrast(1.12)
+    saturate(1.04)
+    drop-shadow(0 10px 16px rgba(0, 0, 0, .64))
+    drop-shadow(0 0 10px rgba(245, 198, 112, .28));
+}
+
+@media (max-width: 560px) {
+  .gg-brand-artwork.gg-brand-artwork-user {
+    width: min(44vw, 154px);
+    height: clamp(166px, 42vw, 198px);
+    transform: translateY(-10px);
+  }
+}
