@@ -1,0 +1,27 @@
+/* Exact gum-leaf artwork overlay only. No layout or app logic changes. */
+.gg-brand-hero .gg-eucalyptus-left {
+  left: 18px;
+  top: 14px;
+  z-index: 1;
+  width: clamp(185px, 32vw, 245px);
+  height: auto;
+  aspect-ratio: 260 / 474;
+  opacity: 1;
+  transform: none;
+  background: url('/gum-leaves-reference.svg') top left / contain no-repeat;
+  filter: none;
+}
+
+.gg-brand-hero .gg-eucalyptus-left::before,
+.gg-brand-hero .gg-eucalyptus-left::after,
+.gg-brand-hero .gg-eucalyptus-left i {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .gg-brand-hero .gg-eucalyptus-left {
+    left: 12px;
+    top: 12px;
+    width: min(44vw, 205px);
+  }
+}
