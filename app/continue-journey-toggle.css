@@ -1,0 +1,30 @@
+/* Isolated Continue Journey visual override only. The existing Link, href and route remain unchanged. */
+.gg-home-screen .gg-action-card.gg-art-road {
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: url('/continue-journey-toggle.jpg') center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: none;
+}
+
+.gg-home-screen .gg-action-card.gg-art-road::before,
+.gg-home-screen .gg-action-card.gg-art-road::after {
+  display: none;
+  content: none;
+}
+
+.gg-home-screen .gg-action-card.gg-art-road > * {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gg-home-screen .gg-action-card.gg-art-road:hover,
+.gg-home-screen .gg-action-card.gg-art-road:focus-visible,
+.gg-home-screen .gg-action-card.gg-art-road:active {
+  transform: none;
+  border: 0;
+  background: url('/continue-journey-toggle.jpg') center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: none;
+}
