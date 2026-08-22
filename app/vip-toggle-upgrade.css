@@ -1,31 +1,35 @@
 /*
- * VIP toggle presentation layer — HOME travel tools only.
- * No routes, text, data, layout outside the six toggle cards, APIs or database logic are changed.
+ * GENEVIEVE Grey Nomads — executive VIP toggle finish.
+ * Presentation-only. This file styles only the six Home travel-tool toggles.
+ * Routes, text, screen structure, trip logic, safety logic, APIs and Neon data are untouched.
  */
 
 .gg-home-screen .gg-action-grid .gg-action-card {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 1px solid rgba(239, 194, 108, .94);
+  border: 1px solid rgba(242, 199, 116, .96);
   border-radius: 18px;
   background:
-    radial-gradient(ellipse at 50% -12%, rgba(255, 236, 190, .13), transparent 37%),
-    radial-gradient(circle at 22% 18%, rgba(50, 111, 149, .22), transparent 42%),
-    linear-gradient(155deg, #0a3454 0%, #06243b 48%, #02121e 100%);
+    radial-gradient(ellipse at 50% -16%, rgba(255, 238, 199, .16), transparent 34%),
+    radial-gradient(circle at 18% 14%, rgba(54, 112, 148, .22), transparent 44%),
+    linear-gradient(156deg, #0a3453 0%, #06253d 46%, #031725 73%, #020e18 100%);
   box-shadow:
-    0 16px 34px rgba(0, 0, 0, .38),
-    0 0 0 1px rgba(255, 222, 153, .05),
-    inset 0 1px 0 rgba(255, 250, 237, .12),
-    inset 0 -24px 38px rgba(0, 5, 10, .22);
+    0 18px 36px rgba(0, 0, 0, .40),
+    0 4px 10px rgba(0, 0, 0, .24),
+    0 0 0 1px rgba(255, 225, 157, .055),
+    inset 0 1px 0 rgba(255, 251, 240, .13),
+    inset 0 -28px 42px rgba(0, 5, 10, .24);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05);
+  backdrop-filter: blur(10px) saturate(1.05);
   transition:
-    transform .18s ease,
+    transform .18s cubic-bezier(.2,.8,.2,1),
     border-color .18s ease,
     box-shadow .18s ease,
     filter .18s ease;
 }
 
-/* Fine jewellery-style inner gold keyline. */
+/* Fine double-gold keyline: closer to jewellery/watch detailing than a standard app card. */
 .gg-home-screen .gg-action-grid .gg-action-card::before {
   content: "";
   position: absolute;
@@ -33,127 +37,145 @@
   z-index: 3;
   display: block;
   pointer-events: none;
-  border: 1px solid rgba(247, 210, 141, .24);
+  border: 1px solid rgba(250, 217, 151, .27);
   border-radius: 13px;
-  background: transparent;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.022), transparent 30%, transparent 70%, rgba(255,220,145,.018));
   box-shadow:
-    inset 0 0 0 1px rgba(255, 240, 206, .025),
-    inset 0 1px 0 rgba(255, 250, 238, .045);
+    inset 0 0 0 1px rgba(255, 240, 207, .025),
+    inset 0 1px 0 rgba(255, 252, 243, .06),
+    inset 0 -1px 0 rgba(160, 108, 40, .08);
 }
 
-/* Restrained champagne highlight across the upper edge. */
+/* Champagne glint kept subtle so the finish feels expensive rather than flashy. */
 .gg-home-screen .gg-action-grid .gg-action-card::after {
   content: "";
   position: absolute;
-  left: 12%;
-  right: 12%;
+  left: 11%;
+  right: 11%;
   top: 1px;
   z-index: 4;
   display: block;
   height: 1px;
   pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(255, 224, 158, .82), transparent);
+  opacity: .92;
+  background: linear-gradient(90deg, transparent, rgba(255, 231, 178, .88), rgba(255, 245, 220, .96), rgba(255, 221, 150, .74), transparent);
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card .gg-action-art {
-  opacity: .11;
-  filter: saturate(.8) contrast(1.05);
+  opacity: .095;
+  filter: saturate(.72) contrast(1.08) brightness(.92);
 }
 
+/* Medallion icon treatment — dark enamel with a warm-metal rim. */
 .gg-home-screen .gg-action-grid .gg-action-card .gg-action-icon {
   position: relative;
   z-index: 2;
-  border: 1px solid rgba(240, 190, 96, .56);
+  border: 1px solid rgba(244, 198, 108, .64);
   border-radius: 50%;
-  color: #f3c66f;
+  color: #f5ca75;
   background:
-    radial-gradient(circle at 38% 28%, rgba(255, 232, 179, .18), transparent 30%),
-    linear-gradient(145deg, rgba(15, 62, 94, .92), rgba(2, 24, 39, .92));
+    radial-gradient(circle at 37% 27%, rgba(255, 237, 194, .20), transparent 29%),
+    radial-gradient(circle at 52% 58%, rgba(19, 72, 105, .22), transparent 63%),
+    linear-gradient(145deg, rgba(14, 61, 93, .96), rgba(3, 26, 42, .97));
   box-shadow:
-    0 10px 21px rgba(0, 0, 0, .34),
-    0 0 0 3px rgba(214, 162, 74, .045),
-    inset 0 1px 0 rgba(255, 248, 229, .08),
-    inset 0 -9px 18px rgba(0, 5, 10, .16);
+    0 11px 22px rgba(0, 0, 0, .36),
+    0 0 0 3px rgba(215, 162, 73, .045),
+    0 0 0 4px rgba(255, 221, 150, .015),
+    inset 0 1px 0 rgba(255, 251, 240, .10),
+    inset 0 -10px 19px rgba(0, 4, 9, .18);
   filter:
-    drop-shadow(0 4px 8px rgba(0, 0, 0, .28))
-    drop-shadow(0 0 6px rgba(236, 184, 91, .12));
+    drop-shadow(0 4px 8px rgba(0, 0, 0, .30))
+    drop-shadow(0 0 6px rgba(236, 184, 91, .11));
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card .gg-action-icon::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 226, 164, .12);
+  border-radius: 50%;
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card .gg-action-icon svg {
-  stroke-width: 1.65;
+  stroke-width: 1.55;
 }
 
+/* Serif labels give the controls a private-club / grand-touring feel. */
 .gg-home-screen .gg-action-grid .gg-action-card strong {
   position: relative;
   z-index: 2;
-  max-width: 112px;
+  max-width: 114px;
   color: #fffaf1;
   font-family: Georgia, 'Times New Roman', serif;
   font-weight: 600;
-  letter-spacing: .075em;
+  letter-spacing: .082em;
   line-height: 1.22;
   text-shadow:
-    0 2px 8px rgba(0, 0, 0, .54),
-    0 0 10px rgba(240, 191, 99, .05);
+    0 2px 9px rgba(0, 0, 0, .58),
+    0 0 12px rgba(240, 191, 99, .045);
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card .gg-tile-chevron {
   z-index: 5;
-  width: 19px;
-  height: 19px;
+  width: 20px;
+  height: 20px;
   right: 8px;
   bottom: 7px;
-  border: 1px solid rgba(240, 190, 96, .48);
-  color: #f4c66e;
+  border: 1px solid rgba(242, 194, 104, .54);
+  color: #f5c971;
   background:
-    radial-gradient(circle at 38% 28%, rgba(255, 229, 173, .12), transparent 40%),
-    rgba(2, 18, 30, .82);
+    radial-gradient(circle at 36% 26%, rgba(255, 232, 183, .13), transparent 38%),
+    linear-gradient(145deg, rgba(9, 42, 65, .93), rgba(2, 18, 30, .94));
   box-shadow:
-    0 4px 10px rgba(0, 0, 0, .28),
-    inset 0 1px 0 rgba(255, 246, 225, .06);
+    0 5px 11px rgba(0, 0, 0, .30),
+    inset 0 1px 0 rgba(255, 247, 229, .08),
+    0 0 0 2px rgba(218, 165, 77, .025);
 }
 
-/* Slight individual depth, while retaining one coherent premium suite. */
+/* Quiet tonal variation: each toggle is distinct without looking like a different product. */
 .gg-home-screen .gg-action-grid .gg-action-card:nth-child(2) {
   background:
-    radial-gradient(ellipse at 50% -12%, rgba(255, 236, 190, .13), transparent 37%),
-    radial-gradient(circle at 78% 20%, rgba(66, 111, 139, .19), transparent 43%),
-    linear-gradient(155deg, #092f4c 0%, #052137 50%, #02121e 100%);
+    radial-gradient(ellipse at 50% -16%, rgba(255, 238, 199, .16), transparent 34%),
+    radial-gradient(circle at 78% 18%, rgba(64, 114, 145, .20), transparent 43%),
+    linear-gradient(156deg, #09314f 0%, #05243a 48%, #031522 74%, #020e18 100%);
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card:nth-child(3) {
   background:
-    radial-gradient(ellipse at 50% -12%, rgba(255, 236, 190, .13), transparent 37%),
-    radial-gradient(circle at 20% 20%, rgba(132, 94, 54, .11), transparent 42%),
-    linear-gradient(155deg, #0a304d 0%, #052138 50%, #02121e 100%);
+    radial-gradient(ellipse at 50% -16%, rgba(255, 238, 199, .16), transparent 34%),
+    radial-gradient(circle at 18% 18%, rgba(142, 96, 51, .12), transparent 43%),
+    linear-gradient(156deg, #0a314e 0%, #05233a 48%, #031522 74%, #020e18 100%);
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) {
   background:
-    radial-gradient(ellipse at 50% -12%, rgba(255, 236, 190, .14), transparent 37%),
-    radial-gradient(circle at 76% 18%, rgba(119, 61, 37, .10), transparent 43%),
-    linear-gradient(155deg, #0a2e49 0%, #051f34 50%, #02111c 100%);
+    radial-gradient(ellipse at 50% -16%, rgba(255, 238, 199, .17), transparent 34%),
+    radial-gradient(circle at 78% 18%, rgba(127, 65, 38, .10), transparent 43%),
+    linear-gradient(156deg, #0a304b 0%, #052137 48%, #031421 74%, #020d17 100%);
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card:nth-child(5),
 .gg-home-screen .gg-action-grid .gg-action-card:nth-child(6) {
   background:
-    radial-gradient(ellipse at 50% -12%, rgba(255, 236, 190, .13), transparent 37%),
-    radial-gradient(circle at 22% 18%, rgba(47, 99, 132, .19), transparent 42%),
-    linear-gradient(155deg, #092f4c 0%, #052138 50%, #02121e 100%);
+    radial-gradient(ellipse at 50% -16%, rgba(255, 238, 199, .16), transparent 34%),
+    radial-gradient(circle at 20% 17%, rgba(48, 101, 135, .19), transparent 43%),
+    linear-gradient(156deg, #09314f 0%, #052239 48%, #031522 74%, #020e18 100%);
 }
 
-/* User's supplied Continue Journey artwork remains the face of toggle 1. */
+/* Keep the user's supplied winding-road artwork exactly as the face of Continue Journey. */
 .gg-home-screen .gg-action-grid .gg-action-card.gg-art-road {
   padding: 0;
-  border: 1px solid rgba(239, 194, 108, .96);
+  border: 1px solid rgba(242, 199, 116, .97);
   background:
-    linear-gradient(180deg, rgba(255, 244, 220, .035), rgba(0, 8, 15, .04)),
+    linear-gradient(180deg, rgba(255, 246, 226, .035), rgba(0, 8, 15, .035)),
     url('/continue-journey-toggle.jpg') center / 100% 100% no-repeat;
   box-shadow:
-    0 16px 34px rgba(0, 0, 0, .40),
-    0 0 0 1px rgba(255, 222, 153, .06),
-    inset 0 1px 0 rgba(255, 250, 237, .11),
+    0 18px 36px rgba(0, 0, 0, .42),
+    0 4px 10px rgba(0, 0, 0, .22),
+    0 0 0 1px rgba(255, 226, 157, .065),
+    inset 0 1px 0 rgba(255, 251, 240, .12),
     inset 0 -18px 28px rgba(0, 5, 10, .10);
   filter: none;
 }
@@ -165,46 +187,85 @@
 
 .gg-home-screen .gg-action-grid .gg-action-card.gg-art-road::before {
   inset: 5px;
-  border-color: rgba(248, 210, 137, .30);
-  background: linear-gradient(145deg, rgba(255,255,255,.018), transparent 38%);
+  border-color: rgba(250, 217, 151, .34);
+  background: linear-gradient(145deg, rgba(255,255,255,.02), transparent 38%, rgba(255,217,144,.018));
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card.gg-art-road::after {
-  left: 13%;
-  right: 13%;
+  left: 12%;
+  right: 12%;
   top: 1px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 225, 161, .86), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 229, 174, .88), rgba(255, 246, 220, .96), rgba(255, 221, 150, .74), transparent);
 }
 
+/* Touch/hover response: a controlled lift, like a premium physical switch. */
 .gg-home-screen .gg-action-grid .gg-action-card:hover,
 .gg-home-screen .gg-action-grid .gg-action-card:focus-visible {
   transform: translateY(-2px);
-  border-color: #f6cf83;
-  filter: brightness(1.035);
+  border-color: #f7d38b;
+  filter: brightness(1.04) saturate(1.015);
   box-shadow:
-    0 18px 38px rgba(0, 0, 0, .42),
-    0 0 0 1px rgba(255, 224, 153, .09),
-    0 0 20px rgba(221, 168, 76, .08),
-    inset 0 1px 0 rgba(255, 250, 235, .13),
-    inset 0 -22px 34px rgba(0, 5, 10, .18);
+    0 21px 42px rgba(0, 0, 0, .44),
+    0 5px 12px rgba(0, 0, 0, .25),
+    0 0 0 1px rgba(255, 225, 158, .10),
+    0 0 22px rgba(222, 170, 79, .085),
+    inset 0 1px 0 rgba(255, 252, 243, .15),
+    inset 0 -24px 38px rgba(0, 5, 10, .19);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:hover .gg-action-icon,
+.gg-home-screen .gg-action-grid .gg-action-card:focus-visible .gg-action-icon {
+  border-color: rgba(249, 211, 137, .75);
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, .38),
+    0 0 0 3px rgba(215, 162, 73, .055),
+    0 0 13px rgba(236, 184, 91, .07),
+    inset 0 1px 0 rgba(255, 252, 242, .12),
+    inset 0 -10px 19px rgba(0, 4, 9, .17);
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card.gg-art-road:hover,
 .gg-home-screen .gg-action-grid .gg-action-card.gg-art-road:focus-visible {
   background:
-    linear-gradient(180deg, rgba(255, 244, 220, .045), rgba(0, 8, 15, .025)),
+    linear-gradient(180deg, rgba(255, 246, 226, .045), rgba(0, 8, 15, .02)),
     url('/continue-journey-toggle.jpg') center / 100% 100% no-repeat;
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card:focus-visible {
-  outline: 2px solid rgba(248, 210, 135, .82);
+  outline: 2px solid rgba(249, 214, 143, .88);
   outline-offset: 3px;
 }
 
 .gg-home-screen .gg-action-grid .gg-action-card:active {
-  transform: translateY(0) scale(.992);
+  transform: translateY(0) scale(.99);
   filter: brightness(.985);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, .34),
+    0 0 0 1px rgba(255, 223, 153, .06),
+    inset 0 2px 8px rgba(0, 4, 8, .20),
+    inset 0 1px 0 rgba(255, 247, 228, .07);
+}
+
+/* Preserve clarity on narrow phones without altering the existing grid dimensions. */
+@media (max-width: 420px) {
+  .gg-home-screen .gg-action-grid .gg-action-card {
+    border-radius: 16px;
+  }
+
+  .gg-home-screen .gg-action-grid .gg-action-card::before {
+    inset: 4px;
+    border-radius: 12px;
+  }
+
+  .gg-home-screen .gg-action-grid .gg-action-card strong {
+    letter-spacing: .065em;
+  }
+
+  .gg-home-screen .gg-action-grid .gg-action-card .gg-tile-chevron {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
