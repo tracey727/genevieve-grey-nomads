@@ -1,0 +1,118 @@
+/*
+ * Presentation-only left gum sprig enhancement.
+ * Targets the existing decorative eucalyptus on the Home hero only.
+ * No layout, navigation, trip, safety, budget, API or database behaviour is changed.
+ */
+
+.gg-brand-hero .gg-eucalyptus-left {
+  left: calc(50% - clamp(150px, 24vw, 188px));
+  top: 27px;
+  z-index: 2;
+  width: 122px;
+  height: 186px;
+  opacity: .86;
+  transform: rotate(-10deg) scale(.94);
+  transform-origin: 58% 86%;
+  filter: drop-shadow(0 7px 9px rgba(0, 0, 0, .28));
+}
+
+.gg-brand-hero .gg-eucalyptus-left::before {
+  left: 57%;
+  top: 7px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(203, 185, 133, .82), rgba(120, 103, 72, .68) 48%, rgba(78, 72, 55, .24));
+  transform: rotate(14deg);
+  box-shadow: 0 0 1px rgba(248, 225, 169, .16);
+}
+
+.gg-brand-hero .gg-eucalyptus-left i {
+  width: 58px;
+  height: 20px;
+  border-radius: 92% 8% 92% 8%;
+  background:
+    linear-gradient(150deg, rgba(221, 226, 201, .27) 0 18%, transparent 42%),
+    linear-gradient(145deg, rgba(137, 159, 139, .96) 0%, rgba(94, 127, 112, .94) 44%, rgba(51, 84, 78, .9) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(228, 218, 171, .08),
+    0 3px 6px rgba(0, 0, 0, .16);
+}
+
+.gg-brand-hero .gg-eucalyptus-left i::after {
+  content: "";
+  position: absolute;
+  left: 9%;
+  right: 8%;
+  top: 49%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(212, 211, 169, .08), rgba(216, 214, 173, .52), rgba(205, 207, 169, .08));
+  transform: rotate(-2deg);
+  transform-origin: center;
+}
+
+.gg-brand-hero .gg-eucalyptus-left i:nth-child(1) {
+  left: 4px;
+  top: 15px;
+  transform: rotate(-30deg);
+}
+
+.gg-brand-hero .gg-eucalyptus-left i:nth-child(2) {
+  left: 52px;
+  top: 43px;
+  transform: rotate(27deg);
+}
+
+.gg-brand-hero .gg-eucalyptus-left i:nth-child(3) {
+  left: 2px;
+  top: 72px;
+  transform: rotate(-23deg);
+}
+
+.gg-brand-hero .gg-eucalyptus-left i:nth-child(4) {
+  left: 49px;
+  top: 105px;
+  transform: rotate(30deg);
+}
+
+.gg-brand-hero .gg-eucalyptus-left i:nth-child(5) {
+  left: 13px;
+  top: 141px;
+  transform: rotate(-16deg);
+}
+
+/* Three muted Australian gumnuts clustered naturally beside the middle leaves. */
+.gg-brand-hero .gg-eucalyptus-left::after {
+  content: "";
+  position: absolute;
+  left: 55px;
+  top: 77px;
+  width: 47px;
+  height: 52px;
+  background:
+    radial-gradient(ellipse at 13px 14px, #d4c49f 0 3px, #a78b65 4px 7px, #6f5b45 8px 10px, transparent 11px),
+    radial-gradient(ellipse at 29px 20px, #d8c8a1 0 3px, #9d815e 4px 7px, #67533f 8px 10px, transparent 11px),
+    radial-gradient(ellipse at 20px 36px, #cdbb94 0 3px, #927658 4px 7px, #604d3b 8px 10px, transparent 11px),
+    linear-gradient(117deg, transparent 0 37%, rgba(126, 107, 76, .72) 38% 40%, transparent 41% 100%);
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .24));
+  transform: rotate(7deg);
+}
+
+@media (max-width: 560px) {
+  .gg-brand-hero .gg-eucalyptus-left {
+    left: calc(50% - 151px);
+    top: 24px;
+    width: 116px;
+    height: 178px;
+    opacity: .88;
+    transform: rotate(-11deg) scale(.88);
+  }
+}
+
+@media (max-width: 370px) {
+  .gg-brand-hero .gg-eucalyptus-left {
+    left: calc(50% - 145px);
+    top: 22px;
+    transform: rotate(-11deg) scale(.82);
+  }
+}
