@@ -1,0 +1,91 @@
+/*
+ * GENEVIEVE Grey Nomads — isolated Safety toggle upgrade.
+ * Presentation-only. Targets only Home travel-tool tile 4 (Safety).
+ * No layout, routes, text, trip logic, safety logic, APIs, data, or other Home elements are changed.
+ */
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) {
+  border-color: rgba(248, 204, 121, .99);
+  background:
+    radial-gradient(circle at 50% 26%, rgba(255, 225, 158, .18), transparent 32%),
+    radial-gradient(circle at 82% 14%, rgba(128, 51, 31, .16), transparent 42%),
+    radial-gradient(circle at 18% 82%, rgba(29, 91, 126, .18), transparent 48%),
+    linear-gradient(156deg, #0b3451 0%, #08283f 43%, #041926 72%, #020d16 100%);
+  box-shadow:
+    0 19px 38px rgba(0, 0, 0, .44),
+    0 4px 11px rgba(0, 0, 0, .27),
+    0 0 0 1px rgba(255, 226, 163, .09),
+    0 0 19px rgba(222, 166, 73, .07),
+    inset 0 1px 0 rgba(255, 251, 239, .17),
+    inset 0 -28px 44px rgba(0, 4, 9, .27);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4)::before {
+  border-color: rgba(255, 224, 157, .39);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .035), transparent 29%, transparent 69%, rgba(171, 78, 45, .035));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 242, 214, .035),
+    inset 0 1px 0 rgba(255, 252, 243, .09),
+    inset 0 -1px 0 rgba(160, 89, 42, .12);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4)::after {
+  opacity: 1;
+  background: linear-gradient(90deg, transparent, rgba(255, 220, 147, .88), #fff2cf, rgba(245, 189, 91, .92), transparent);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) .gg-action-icon {
+  color: #ffd37e;
+  border-color: rgba(255, 210, 120, .82);
+  background:
+    radial-gradient(circle at 36% 25%, rgba(255, 239, 204, .26), transparent 28%),
+    radial-gradient(circle at 50% 56%, rgba(126, 48, 30, .16), transparent 58%),
+    linear-gradient(145deg, #123e59 0%, #08283e 50%, #031724 100%);
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, .41),
+    0 0 0 3px rgba(224, 169, 76, .065),
+    0 0 16px rgba(241, 188, 88, .11),
+    inset 0 1px 0 rgba(255, 251, 239, .16),
+    inset 0 -11px 20px rgba(0, 4, 9, .22);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) .gg-action-icon::after {
+  border-color: rgba(255, 228, 173, .22);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) .gg-action-icon svg {
+  stroke-width: 1.7px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .3));
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) strong {
+  color: #fffaf0;
+  text-shadow:
+    0 2px 9px rgba(0, 0, 0, .66),
+    0 0 13px rgba(245, 190, 90, .08);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4) .gg-tile-chevron {
+  color: #ffd078;
+  border-color: rgba(248, 200, 106, .74);
+  background:
+    radial-gradient(circle at 36% 26%, rgba(255, 234, 193, .17), transparent 38%),
+    linear-gradient(145deg, #0c3049, #031621);
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, .34),
+    0 0 10px rgba(231, 177, 73, .08),
+    inset 0 1px 0 rgba(255, 247, 229, .11);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4):hover,
+.gg-home-screen .gg-action-grid .gg-action-card:nth-child(4):focus-visible {
+  border-color: #f8d78f;
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, .47),
+    0 5px 13px rgba(0, 0, 0, .28),
+    0 0 0 1px rgba(255, 225, 158, .14),
+    0 0 25px rgba(222, 170, 79, .12),
+    inset 0 1px 0 rgba(255, 252, 243, .19),
+    inset 0 -25px 40px rgba(0, 5, 10, .22);
+}
