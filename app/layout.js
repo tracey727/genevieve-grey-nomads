@@ -8,6 +8,7 @@ import './gday-traveller-image.css';
 import './gum-leaves-reference.css';
 import './continue-journey-toggle.css';
 import './vip-toggle-upgrade.css';
+import './safety-toggle-upgrade.css';
 
 export const metadata = {
   title: 'GENEVIEVE Grey Nomads',
