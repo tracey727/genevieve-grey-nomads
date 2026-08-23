@@ -16,16 +16,24 @@ export default function PlanTripPage() {
   const [form, setForm] = useState(initial);
   const result = useMemo(() => calculateTripBudget(form), [form]);
   const [saved, setSaved] = useState('');
-  const [routeStatus, setRouteStatus] = useState('Planning estimate shown.');
+  const [routeStatus, setRouteStatus] = useState('Planning estimate shown. You can enter any Australian town, suburb or address.');
   const update = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
+
   const estimateDistance = async () => {
-    const fallback = estimateBetweenPlaces(form.origin, form.destination);
-    setRouteStatus('Checking the road route…');
+    const origin = String(form.origin || '').trim();
+    const destination = String(form.destination || '').trim();
+    if (!origin || !destination) {
+      setRouteStatus('Enter both a start and destination anywhere in Australia.');
+      return;
+    }
+
+    const fallback = estimateBetweenPlaces(origin, destination);
+    setRouteStatus('Checking the Australian road route…');
     try {
       const response = await fetch('/api/route-distance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ origin: form.origin, destination: form.destination })
+        body: JSON.stringify({ origin, destination })
       });
       const payload = await response.json().catch(() => null);
       if (response.ok && payload?.ok && Number.isFinite(Number(payload.roadDistanceKm))) {
@@ -33,17 +41,27 @@ export default function PlanTripPage() {
         setRouteStatus(`Road distance checked: ${Number(payload.roadDistanceKm).toLocaleString('en-AU')} km. ${payload.attribution || ''}`.trim());
         return;
       }
-      if (fallback) update('routeDistanceKm', fallback);
-      setRouteStatus('Live road distance is unavailable, so GENEVIEVE kept the conservative planning estimate. Confirm the route in Maps before departure.');
+      if (fallback) {
+        update('routeDistanceKm', fallback);
+        setRouteStatus('Live road distance is unavailable, so GENEVIEVE used its Australia-wide planning anchor estimate. Confirm the route in Maps before departure.');
+      } else {
+        setRouteStatus('Live road distance is unavailable for this town pair. Enter the route distance shown by your maps service, or use “Confirm route in Maps”.');
+      }
     } catch {
-      if (fallback) update('routeDistanceKm', fallback);
-      setRouteStatus('Live road distance is unavailable, so GENEVIEVE kept the conservative planning estimate. Confirm the route in Maps before departure.');
+      if (fallback) {
+        update('routeDistanceKm', fallback);
+        setRouteStatus('Live road distance is unavailable, so GENEVIEVE used its Australia-wide planning anchor estimate. Confirm the route in Maps before departure.');
+      } else {
+        setRouteStatus('Live road distance could not be reached. Enter the route distance shown by your maps service, or use “Confirm route in Maps”.');
+      }
     }
   };
+
   const saveLocal = () => {
     try { localStorage.setItem('genevieve:last-plan', JSON.stringify({ ...form, result })); setSaved('Saved on this device. Open My Trip to save it to your private trip store.'); }
     catch { setSaved('This browser could not save locally. Your calculation is still visible on this screen.'); }
   };
+
   const clearPlan = () => {
     if (!window.confirm('Clear this journey and start again? Any device-saved copy of this plan will be removed.')) return;
     try { localStorage.removeItem('genevieve:last-plan'); } catch {}
@@ -52,19 +70,21 @@ export default function PlanTripPage() {
     setSaved('This device plan has been cleared. Saved journeys in My Trip can be deleted there.');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
   const mapsHref = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(form.origin)}&destination=${encodeURIComponent(form.destination)}`;
 
   return (
     <Shell current="Plan">
-      <section className="page-heading"><p className="eyebrow">Budget-safe journey</p><h2>Plan the trip around your money</h2><p>Start with what you can afford. Safety reserves are protected rather than treated as spending money.</p></section>
+      <section className="page-heading"><p className="eyebrow">Budget-safe journey</p><h2>Plan the trip around your money</h2><p>Plan between any Australian town, suburb or address. Safety reserves are protected rather than treated as spending money.</p></section>
+      <datalist id="australian-planning-places">{cityNames.map((c) => <option key={c} value={c} />)}</datalist>
       <form className="planner-grid" onSubmit={(e) => e.preventDefault()}>
         <section className="panel form-panel">
           <h3>1. Journey</h3>
-          <label>Start<select value={form.origin} onChange={(e) => update('origin', e.target.value)}>{cityNames.map((c) => <option key={c}>{c}</option>)}</select></label>
-          <label>Destination<select value={form.destination} onChange={(e) => update('destination', e.target.value)}>{cityNames.map((c) => <option key={c}>{c}</option>)}</select></label>
+          <label>Start<input list="australian-planning-places" value={form.origin} onChange={(e) => update('origin', e.target.value)} placeholder="Town, suburb or address, Australia" /></label>
+          <label>Destination<input list="australian-planning-places" value={form.destination} onChange={(e) => update('destination', e.target.value)} placeholder="Town, suburb or address, Australia" /></label>
           <div className="inline-actions"><button type="button" className="secondary-button" onClick={estimateDistance}>Check road distance</button><a className="text-link" href={mapsHref} target="_blank" rel="noreferrer">Confirm route in Maps ↗</a></div>
           <p className="form-message" role="status">{routeStatus}</p>
-          <label>Route distance (km)<input inputMode="decimal" type="number" min="0" value={form.routeDistanceKm} onChange={(e) => update('routeDistanceKm', e.target.value)} /><small>Planning value. GENEVIEVE uses a verified road calculation when available and keeps the existing estimate if the provider cannot be reached.</small></label>
+          <label>Route distance (km)<input inputMode="decimal" type="number" min="0" value={form.routeDistanceKm} onChange={(e) => update('routeDistanceKm', e.target.value)} /><small>Planning value. GENEVIEVE uses a verified Australia-only road calculation when available and otherwise keeps a conservative fallback or lets you enter the map distance.</small></label>
           <label className="check-row"><input type="checkbox" checked={form.returnTrip} onChange={(e) => update('returnTrip', e.target.checked)} /> Return trip</label>
           <label>Travel days<input type="number" min="1" value={form.days} onChange={(e) => update('days', e.target.value)} /></label>
           <label>Maximum driving per day (km)<input type="number" min="1" value={form.maxDailyKm} onChange={(e) => update('maxDailyKm', e.target.value)} /></label>
