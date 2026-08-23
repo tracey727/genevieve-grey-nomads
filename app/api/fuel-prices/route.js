@@ -1,4 +1,5 @@
 import { fetchConfiguredProvider, readCoordinate } from '../../../lib/liveProvider';
+import { inferAustralianJurisdiction } from '../../../lib/australia-coverage.mjs';
 import { getWaFuelWatchPrices } from '../../../lib/providers/fuelwatchWa';
 import { getNswTasFuelCheckPrices } from '../../../lib/providers/fuelcheckNswTas';
 import { getQueenslandFuelPrices } from '../../../lib/providers/fuelPricesQld';
@@ -10,19 +11,23 @@ export async function GET(request) {
   const lat = readCoordinate(searchParams.get('lat'), -55, -8);
   const lon = readCoordinate(searchParams.get('lon'), 95, 169);
   const fuelType = String(searchParams.get('fuelType') || 'diesel').slice(0, 24);
-  const provider = String(searchParams.get('provider') || '').toLowerCase();
+  const requestedProvider = String(searchParams.get('provider') || '').toLowerCase();
   const suburb = String(searchParams.get('suburb') || '').trim().slice(0, 80);
-
-  if (provider === 'wa' || provider === 'fuelwatch') {
-    const result = await getWaFuelWatchPrices({ suburb, fuelType });
-    return Response.json({ ...result, locationStored: false, coverage: 'Western Australia', fallback: result.live ? undefined : 'Open FuelWatch or search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
-  }
 
   if (lat === null || lon === null) return Response.json({ ok: false, message: 'A valid Australian location is required.' }, { status: 400 });
 
+  const inferredJurisdiction = inferAustralianJurisdiction(lat, lon);
+  const provider = requestedProvider || inferredJurisdiction?.fuelProvider || '';
+  const providerSelection = requestedProvider ? 'manual' : inferredJurisdiction ? 'location-inferred' : 'generic-fallback';
+
+  if (provider === 'wa' || provider === 'fuelwatch') {
+    const result = await getWaFuelWatchPrices({ suburb, fuelType });
+    return Response.json({ ...result, locationStored: false, coverage: 'Western Australia', providerSelection, jurisdiction: 'WA', fallback: result.live ? undefined : 'Open FuelWatch or search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
+  }
+
   if (provider === 'nsw' || provider === 'tas' || provider === 'fuelcheck') {
     const result = await getNswTasFuelCheckPrices({ lat, lon, fuelType });
-    return Response.json({ ...result, locationStored: false, coverage: 'New South Wales and Tasmania', fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
+    return Response.json({ ...result, locationStored: false, coverage: provider === 'tas' ? 'Tasmania' : 'New South Wales', providerSelection, jurisdiction: provider === 'tas' ? 'TAS' : 'NSW', fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
   }
 
   if (provider === 'act' || provider === 'canberra') {
@@ -32,6 +37,8 @@ export async function GET(request) {
       live: false,
       provider: 'FuelCheck ACT',
       coverage: 'Australian Capital Territory',
+      jurisdiction: 'ACT',
+      providerSelection,
       locationStored: false,
       scrapingUsed: false,
       message: 'FuelCheck provides real-time consumer prices in the ACT, but the currently published API.NSW Fuel API developer documentation only documents NSW and Tasmania support. GENEVIEVE will not assume ACT API support or scrape the consumer service.',
@@ -41,21 +48,21 @@ export async function GET(request) {
 
   if (provider === 'qld' || provider === 'queensland') {
     const result = await getQueenslandFuelPrices({ lat, lon, fuelType });
-    return Response.json({ ...result, locationStored: false, coverage: 'Queensland', fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
+    return Response.json({ ...result, locationStored: false, coverage: 'Queensland', providerSelection, jurisdiction: 'QLD', fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
   }
 
   if (provider === 'sa' || provider === 'south-australia') {
     const result = await getSouthAustraliaFuelPrices({ lat, lon, fuelType });
-    return Response.json({ ...result, locationStored: false, coverage: 'South Australia', fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
+    return Response.json({ ...result, locationStored: false, coverage: 'South Australia', providerSelection, jurisdiction: 'SA', fallback: result.live ? undefined : 'Search nearby fuel stations in Maps and confirm the pump price.' }, { status: result.configured ? 200 : 503 });
   }
 
   if (provider === 'nt' || provider === 'northern-territory' || provider === 'myfuel-nt') {
-    return Response.json({ ok: false, configured: false, live: false, provider: 'MyFuel NT', coverage: 'Northern Territory', locationStored: false, scrapingUsed: false, message: 'MyFuel NT publishes real-time consumer prices, but GENEVIEVE has not verified an approved third-party real-time API contract. No website scraping or historical dataset is presented as live.', fallback: 'Use the official MyFuel NT service or search nearby fuel stations in Maps and confirm the pump price.' }, { status: 200 });
+    return Response.json({ ok: false, configured: false, live: false, provider: 'MyFuel NT', coverage: 'Northern Territory', jurisdiction: 'NT', providerSelection, locationStored: false, scrapingUsed: false, message: 'MyFuel NT publishes real-time consumer prices, but GENEVIEVE has not verified an approved third-party real-time API contract. No website scraping or historical dataset is presented as live.', fallback: 'Use the official MyFuel NT service or search nearby fuel stations in Maps and confirm the pump price.' }, { status: 200 });
   }
 
   if (provider === 'vic' || provider === 'victoria' || provider === 'melbourne' || provider === 'servo-saver') {
     const result = await getVictoriaServoSaverPrices({ lat, lon, fuelType });
-    return Response.json({ ...result, locationStored: false, coverage: 'Victoria including Melbourne', freshnessLabel: '24-hour delayed government open-data feed', fallback: result.available ? undefined : 'Use Service Victoria Servo Saver for current prices or confirm the pump price before relying on it.' }, { status: result.configured ? 200 : 503 });
+    return Response.json({ ...result, locationStored: false, coverage: 'Victoria including Melbourne', providerSelection, jurisdiction: 'VIC', freshnessLabel: '24-hour delayed government open-data feed', fallback: result.available ? undefined : 'Use Service Victoria Servo Saver for current prices or confirm the pump price before relying on it.' }, { status: result.configured ? 200 : 503 });
   }
 
   const result = await fetchConfiguredProvider({ url: process.env.FUEL_PRICE_API_URL, apiKey: process.env.FUEL_PRICE_API_KEY, providerName: 'Verified fuel-price provider', params: { lat, lon, fuelType } });
@@ -64,7 +71,9 @@ export async function GET(request) {
     return Response.json({
       ...result,
       live: false,
-      coverage: 'Provider-dependent',
+      coverage: 'Australia-wide provider fallback',
+      providerSelection,
+      jurisdiction: inferredJurisdiction?.code || null,
       providerStatus: {
         wa: 'official-adapter-verified',
         nswTas: process.env.NSW_FUELCHECK_CLIENT_ID && process.env.NSW_FUELCHECK_CLIENT_SECRET && process.env.NSW_FUELCHECK_TOKEN_URL && process.env.NSW_FUELCHECK_NEARBY_URL ? 'credentials-and-endpoints-present' : 'official-account-or-endpoints-required',
@@ -78,5 +87,5 @@ export async function GET(request) {
     }, { status: result.configured ? 503 : 200 });
   }
 
-  return Response.json({ ok: true, live: true, provider: result.provider, locationStored: false, fetchedAt: new Date().toISOString(), data: result.data });
+  return Response.json({ ok: true, live: true, provider: result.provider, locationStored: false, providerSelection, jurisdiction: inferredJurisdiction?.code || null, fetchedAt: new Date().toISOString(), data: result.data });
 }
