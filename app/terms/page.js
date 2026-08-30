@@ -2,18 +2,18 @@ import Link from 'next/link';
 import Shell from '../../components/Shell';
 import styles from '../legal/legal.module.css';
 
-export const metadata = { title: 'Terms of Use | GENEVIEVE Grey Nomads' };
+export const metadata = { title: 'Terms of Use | GENEVIEVE — The Budget Travels' };
 
 export default function TermsPage() {
   return (
     <Shell current="My Trip">
       <article className={`panel ${styles.card}`}>
-        <p className="eyebrow">GENEVIEVE Grey Nomads</p><h2>Terms of Use</h2>
+        <p className="eyebrow">GENEVIEVE — The Budget Travels</p><h2>Terms of Use</h2>
         <p className={styles.meta}>Last updated: 19 August 2026</p>
-        <p>These Terms apply to the GENEVIEVE Grey Nomads web application operated by Tracey Ann Kennedy trading as GENEVIEVE App™, ABN 36 530 564 761, PO Box 475, Labrador QLD 4215, Australia (“GENEVIEVE”, “we”, “us” or “our”).</p>
+        <p>These Terms apply to the GENEVIEVE — The Budget Travels web application operated by Tracey Ann Kennedy trading as GENEVIEVE App™, ABN 36 530 564 761, PO Box 475, Labrador QLD 4215, Australia (“GENEVIEVE”, “we”, “us” or “our”).</p>
 
         <h3>1. What the app does</h3>
-        <p>GENEVIEVE Grey Nomads provides travel-planning, budgeting, nearby-search and safety-support tools. Route distances, budgets, fuel estimates, rest-stop suggestions and similar outputs are decision-support information. They are not guarantees of road conditions, fuel availability, prices, weather, campground access, legal permissions or personal safety.</p>
+        <p>GENEVIEVE — The Budget Travels provides travel-planning, budgeting, nearby-search and safety-support tools. Route distances, budgets, fuel estimates, rest-stop suggestions and similar outputs are decision-support information. They are not guarantees of road conditions, fuel availability, prices, weather, campground access, legal permissions or personal safety.</p>
         <p>Where a live official provider has not been connected and verified, the app must not describe that information as live. Current signs, road authorities, emergency services, park operators, councils and other official instructions take priority over app information.</p>
 
         <h3>2. Your responsibilities</h3>
@@ -23,7 +23,7 @@ export default function TermsPage() {
         <p>Emergency and core Safety access are designed to remain separate from paid membership. Payment failure, cancellation or subscription status must not block access to the app’s emergency entry points. In an emergency, contact the appropriate emergency service and follow official directions.</p>
 
         <h3>4. Third-party services</h3>
-        <p>The app may open or rely on third-party services such as Stripe, Google Maps, Vercel and Neon. Those services operate under their own terms and privacy practices. A link or search result does not mean GENEVIEVE guarantees or endorses the availability, safety, price or suitability of a third-party business or location.</p>
+        <p>The app may open or rely on third-party services such as Stripe, Google Maps, Cloudflare and Neon. Those services operate under their own terms and privacy practices. A link or search result does not mean GENEVIEVE guarantees or endorses the availability, safety, price or suitability of a third-party business or location.</p>
 
         <h3>5. Subscriptions and payments</h3>
         <p>If you buy a subscription, the recurring price, billing period and renewal nature of the subscription must be displayed before you pay. Stripe processes subscription payments. Your subscription is also governed by our <Link href="/subscriptions">Subscription & Refund Policy</Link>.</p>

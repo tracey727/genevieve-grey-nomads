@@ -2,13 +2,13 @@ import Link from 'next/link';
 import Shell from '../../components/Shell';
 import styles from '../legal/legal.module.css';
 
-export const metadata = { title: 'Subscription & Refund Policy | GENEVIEVE Grey Nomads' };
+export const metadata = { title: 'Subscription & Refund Policy | GENEVIEVE — The Budget Travels' };
 
 export default function SubscriptionPolicyPage() {
   return (
     <Shell current="My Trip">
       <article className={`panel ${styles.card}`}>
-        <p className="eyebrow">GENEVIEVE Grey Nomads</p><h2>Subscription & Refund Policy</h2>
+        <p className="eyebrow">GENEVIEVE — The Budget Travels</p><h2>Subscription & Refund Policy</h2>
         <p className={styles.meta}>Last updated: 19 August 2026</p>
 
         <h3>1. Clear recurring price before purchase</h3>

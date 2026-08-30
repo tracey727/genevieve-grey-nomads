@@ -1,4 +1,4 @@
-# GENEVIEVE Grey Nomads — Chronological Build Audit
+# GENEVIEVE — The Budget Travels — Chronological Build Audit
 
 ## Stage 0 — Separation baseline
 - New standalone repository created. No Dog Park repository files imported or modified.

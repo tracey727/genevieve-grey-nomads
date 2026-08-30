@@ -9,12 +9,14 @@ const required = [
   'app/api/health/route.js','app/api/trips/route.js','app/api/billing/config/route.js',
   'app/api/billing/status/route.js','app/api/billing/checkout/route.js','app/api/billing/portal/route.js',
   'app/api/stripe/webhook/route.js','app/api/app-icon/route.js','app/api/fuel-prices/route.js','app/api/weather/route.js',
-  'lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js','lib/liveProvider.js',
+  'app/api/auth/signup/route.js','app/api/auth/login/route.js','app/api/auth/session/route.js',
+  'lib/budget-engine.mjs','lib/billing.mjs','lib/db.js','lib/stripe.js','lib/liveProvider.js','lib/auth.js',
   'lib/providers/fuelwatchWa.js','lib/providers/fuelcheckNswTas.js','lib/providers/fuelPricesQld.js',
   'lib/providers/fuelPricesSa.js','lib/providers/servoSaverVic.js',
   'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js',
-  'components/EmergencyCallControl.module.css','migrations/V001_init.sql','migrations/V002_billing.sql',
-  'public/manifest.webmanifest','docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
+  'components/EmergencyCallControl.module.css','components/ServiceWorkerRegister.js','migrations/V001_init.sql','migrations/V002_billing.sql',
+  'public/manifest.webmanifest','public/sw.js','public/offline.html','migrations/V003_accounts.sql',
+  'docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
 ];
 
 let failed = false;
@@ -43,6 +45,8 @@ const iconRoute = read('app/api/app-icon/route.js');
 const manifest = read('public/manifest.webmanifest');
 const layout = read('app/layout.js');
 const releaseGate = read('docs/LEGAL_RELEASE_GATE.md');
+const serviceWorker = read('public/sw.js');
+const swRegister = read('components/ServiceWorkerRegister.js');
 const around = read('app/around/page.js');
 const fuelPrices = read('app/api/fuel-prices/route.js');
 const weather = read('app/api/weather/route.js');
@@ -52,7 +56,7 @@ const providerSources = [
 ].map(read);
 
 if (!envExample.includes('DATABASE_URL=')) fail('DATABASE_URL example missing');
-for (const name of ['STRIPE_SECRET_KEY','STRIPE_PRICE_ID','STRIPE_WEBHOOK_SECRET','SUBSCRIPTION_DISPLAY_PRICE','SUBSCRIPTION_BILLING_PERIOD','APP_BASE_URL']) {
+for (const name of ['STRIPE_SECRET_KEY','STRIPE_PRICE_ID','STRIPE_WEBHOOK_SECRET','SUBSCRIPTION_DISPLAY_PRICE','SUBSCRIPTION_BILLING_PERIOD','APP_BASE_URL','SESSION_SECRET']) {
   if (!envExample.includes(`${name}=`)) fail(`${name} example missing`);
 }
 if (!gitignore.includes('.env.local')) fail('.env.local not ignored');
@@ -76,7 +80,7 @@ for (const source of [terms, subscriptions]) {
   if (!source.includes('Australian Consumer Law')) fail('Australian Consumer Law preservation wording missing');
 }
 if (!subscriptions.includes('no refunds') && !subscriptions.includes('no blanket')) fail('refund policy must reject blanket no-refund wording');
-if (!privacy.includes('Stripe') || !privacy.includes('Vercel') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
+if (!privacy.includes('Stripe') || !privacy.includes('Cloudflare') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
 if (!privacy.includes('Access and correction') || !privacy.includes('Privacy complaints')) fail('Privacy access/correction/complaint process missing');
 
 if (!safety.includes('EmergencyCallControl')) fail('Safety must render guarded emergency control');
@@ -102,12 +106,28 @@ if (/live:\s*true/.test(providerSources[4])) fail('Victoria delayed provider mus
 if (!iconRoute.includes("'content-type': 'image/png'")) fail('phone icon endpoint must return PNG');
 if (!iconRoute.includes("Buffer.from(ICON_BASE64, 'base64')")) fail('phone icon asset is missing');
 if (!manifest.includes('"src": "/api/app-icon"') || !manifest.includes('"display": "standalone"')) fail('PWA manifest must use branded home-screen icon and standalone mode');
-if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Grey Nomads'")) fail('iPhone install metadata missing branded icon/title');
+if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Budget Travels'")) fail('iPhone install metadata missing branded icon/title');
 
 if (!releaseGate.includes('account recovery') || !releaseGate.includes('Live charging is not approved')) fail('paid-launch account recovery/release blocker missing');
 
+const authLib = read('lib/auth.js');
+const signup = read('app/api/auth/signup/route.js');
+const login = read('app/api/auth/login/route.js');
+const sessionRoute = read('app/api/auth/session/route.js');
+if (!authLib.includes("PBKDF2") || !authLib.includes('crypto.getRandomValues')) fail('password hashing must be salted PBKDF2');
+if (!authLib.includes('createSessionToken') || !authLib.includes('verifySessionToken')) fail('signed session token helpers missing');
+if (!signup.includes('hashPassword') || !signup.includes('SESSION_SECRET')) fail('signup must hash passwords and require a session secret');
+if (!login.includes('verifyPassword') || !login.includes('Incorrect email or password.')) fail('login must verify passwords and use a non-enumerating error message');
+if (!sessionRoute.includes('requireSession')) fail('session endpoint must verify the bearer token');
+if (/NEXT_PUBLIC_SESSION_SECRET/.test(authLib + signup + login + sessionRoute)) fail('session secret must remain server-only');
+
+if (!layout.includes('ServiceWorkerRegister')) fail('offline service worker must be registered in the app shell');
+if (!swRegister.includes("navigator.serviceWorker.register('/sw.js')")) fail('service worker registration call missing');
+if (serviceWorker.includes("if (isApiRequest(url)) return;") === false) fail('service worker must skip API routes so live data is never served stale from cache');
+if (!serviceWorker.includes('OFFLINE_URL')) fail('service worker must provide an offline fallback for remote/no-signal areas');
+
 const combined = required.filter((r) => r.endsWith('.js') || r.endsWith('.mjs')).map(read).join('\n');
-if (/NEXT_PUBLIC_(STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET|DATABASE_URL)/.test(combined)) fail('server secret exposed through NEXT_PUBLIC_ variable');
+if (/NEXT_PUBLIC_(STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET|DATABASE_URL|SESSION_SECRET)/.test(combined)) fail('server secret exposed through NEXT_PUBLIC_ variable');
 if (/sk_live_[A-Za-z0-9]/.test(combined) || /whsec_[A-Za-z0-9]{8,}/.test(combined)) fail('live Stripe secret appears in source');
 
 if (failed) process.exit(1);

@@ -1,6 +1,6 @@
-# GENEVIEVE Grey Nomads — Native Expo App
+# GENEVIEVE — The Budget Travels — Native Expo App
 
-This is the separate native iPhone/Android build. It lives under `native/` on the `native/expo-grey-nomads` branch so the production Next.js/Vercel app remains untouched.
+This is the separate native iPhone/Android build. It lives under `native/` on the `native/expo-grey-nomads` branch so the production Next.js/Cloudflare app remains untouched.
 
 ## Run on a phone with Expo Go
 
