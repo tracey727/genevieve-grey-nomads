@@ -12,10 +12,53 @@ function getDeviceId() {
   return id;
 }
 
+const SESSION_KEY = 'genevieve:session-token';
+const SESSION_EMAIL_KEY = 'genevieve:session-email';
+
 export default function BillingPage() {
   const [config, setConfig] = useState({ enabled: false, displayPrice: '', billingPeriod: '', currency: 'AUD' });
   const [status, setStatus] = useState(null);
   const [message, setMessage] = useState('');
+  const [account, setAccount] = useState({ email: '', password: '' });
+  const [session, setSession] = useState(null);
+  const [accountMessage, setAccountMessage] = useState('');
+  const [accountBusy, setAccountBusy] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem(SESSION_KEY);
+    const email = localStorage.getItem(SESSION_EMAIL_KEY);
+    if (token && email) setSession({ token, email });
+  }, []);
+
+  const signOut = () => {
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(SESSION_EMAIL_KEY);
+    setSession(null);
+    setAccountMessage('Signed out on this device.');
+  };
+
+  const submitAccount = async (mode) => {
+    setAccountBusy(true);
+    setAccountMessage('');
+    try {
+      const res = await fetch(`/api/auth/${mode}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: account.email, password: account.password })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.token) throw new Error(data.error || 'Could not complete that request.');
+      localStorage.setItem(SESSION_KEY, data.token);
+      localStorage.setItem(SESSION_EMAIL_KEY, data.user.email);
+      setSession({ token: data.token, email: data.user.email });
+      setAccount({ email: '', password: '' });
+      setAccountMessage(mode === 'signup' ? 'Account created. You are signed in on this device.' : 'Signed in on this device.');
+    } catch (error) {
+      setAccountMessage(error.message || 'Could not complete that request.');
+    } finally {
+      setAccountBusy(false);
+    }
+  };
 
   const refresh = async () => {
     const deviceId = getDeviceId();
@@ -62,6 +105,30 @@ export default function BillingPage() {
       <section className="page-heading">
         <p className="eyebrow">Membership</p><h2>Simple, transparent subscription</h2>
         <p>Payment is handled on Stripe’s secure hosted checkout. Emergency and Safety access are never blocked because a payment fails.</p>
+      </section>
+      <section className={`panel ${styles.card}`}>
+        <div>
+          <p className="eyebrow">Account</p>
+          <h3>{session ? 'Signed in' : 'Sign in or create an account'}</h3>
+          <p className={styles.notice}>An account keeps your membership with you if you change devices. Safety, Plan Trip and Around Me all keep working without one.</p>
+        </div>
+        {session ? (
+          <div className={styles.status}>
+            <small>Signed in as</small>
+            <strong>{session.email}</strong>
+            <button className="secondary-button" onClick={signOut}>Sign out</button>
+          </div>
+        ) : (
+          <>
+            <label>Email<input type="email" autoComplete="email" value={account.email} onChange={(e) => setAccount((a) => ({ ...a, email: e.target.value }))} /></label>
+            <label>Password<input type="password" autoComplete="current-password" value={account.password} onChange={(e) => setAccount((a) => ({ ...a, password: e.target.value }))} /><small>At least 10 characters.</small></label>
+            <div className="inline-actions">
+              <button className="primary-button" disabled={accountBusy} onClick={() => submitAccount('login')}>Sign in</button>
+              <button className="secondary-button" disabled={accountBusy} onClick={() => submitAccount('signup')}>Create account</button>
+            </div>
+          </>
+        )}
+        {accountMessage && <p role="status" className="form-message">{accountMessage}</p>}
       </section>
       <section className={`panel ${styles.card}`}>
         <div>

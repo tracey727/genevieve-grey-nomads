@@ -73,6 +73,19 @@
 - A branded `public/offline.html` fallback is served for any screen that has not been cached yet, with a plain (non-JS-gated) `tel:000` link as a last resort when the app itself cannot load at all.
 - CI now fails if the service worker is not registered from the root layout, if it starts intercepting `/api/` routes, or if the offline fallback is removed.
 
+### Stage 15 — Account authentication
+- Real email/password accounts (`migrations/V003_accounts.sql`) with salted PBKDF2 password hashing and signed, stateless bearer session tokens (`lib/auth.js`, `app/api/auth/*`).
+- Sessions are stateless (no server-side session store), so verifying a signed-in request is a single HMAC check with no shared state to contend — this is what lets sign-in/sign-out scale to many thousands of concurrent users across Cloudflare's distributed edge without a session-store bottleneck.
+- Sign-up/sign-in is additive: Safety, Plan Trip and Around Me remain fully usable without an account, and the existing anonymous device-ID trip/billing flow is unchanged. `billing_accounts` and `trips` gained a nullable `user_id` column for future cross-device portability.
+- A minimal Account panel was added to Membership only (not the protected Home screen) for sign-up, sign-in and sign-out.
+- Login always returns the same "Incorrect email or password" message for a missing account or a wrong password, so it cannot be used to enumerate registered emails.
+- CI requires salted password hashing, signed/verified session tokens and a server-only session secret to remain present.
+
+## Still open from Stage 15
+- Checkout/webhook do not yet attach `user_id` to `billing_accounts`; membership is still keyed by device ID only. Wiring that through the already-audited Stripe webhook is left as dedicated follow-up work rather than combined with this stage.
+- `SESSION_SECRET` must be generated and set as a Cloudflare Worker secret before account sign-up/sign-in activates in production (accounts stay disabled, matching the fail-closed pattern used for billing/live-data, until it is set).
+- No password-reset flow yet.
+
 ## Pricing recommendation — not activated
 - Keep Emergency/core Safety free for everyone.
 - Recommended concession/pensioner launch price: $3.99 AUD per month or $39.99 AUD per year.
@@ -82,7 +95,7 @@
 ## Still required before live charging
 - Owner approval of actual recurring price and billing cadence.
 - Confirm GST registration/tax display requirements.
-- Add account authentication/recovery for paid membership portability.
+- Account authentication now exists (Stage 15); still need password reset/recovery and to attach signed-in `user_id` to `billing_accounts` through checkout/webhook for paid membership portability across devices.
 - Configure Stripe Product/Price, Customer Portal, public Terms/Privacy URLs and production webhook.
 - Configure Stripe/Cloudflare production secrets.
 - Complete test-mode subscription, cancellation, failed-payment and webhook replay tests.
