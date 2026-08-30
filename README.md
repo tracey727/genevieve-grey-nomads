@@ -27,14 +27,11 @@ Standalone Australia-wide journey, budget and safety application built for GitHu
 5. `npm run dev`
 
 ## Deployment
-The app deploys to Cloudflare Workers via OpenNext (`open-next.config.ts` + `wrangler.jsonc`). Pushes to `main` run the `deploy` GitHub Actions workflow, which builds with `opennextjs-cloudflare` and publishes with `wrangler deploy`.
+`main` is the single deployable source of truth. GitHub Actions (`.github/workflows/ci.yml`) runs tests, the source/legal audit and a production build on every push and pull request. Cloudflare Workers Builds is connected directly to this GitHub repository and builds/deploys `main` with the repo's own `open-next.config.ts` + `wrangler.jsonc` (OpenNext for Cloudflare) whenever CI's checks are green — no separate deploy step lives in this repo.
 
-Required repository secrets (Settings → Secrets and variables → Actions):
-- `CLOUDFLARE_API_TOKEN` — Workers deploy permission.
-- `CLOUDFLARE_ACCOUNT_ID`.
-- Every server-only variable in `.env.example` (`DATABASE_URL`, Stripe keys, provider keys) set as a Cloudflare Worker secret with `wrangler secret put <NAME>` — Worker secrets are not read from `.env.local` at deploy time.
+Every server-only variable in `.env.example` (`DATABASE_URL`, Stripe keys, provider keys) must be set as a Cloudflare Worker secret/variable in the Cloudflare dashboard (or via `wrangler secret put <NAME>`) — they are never read from `.env.local` in production and must never be prefixed `NEXT_PUBLIC_`.
 
-A manual deploy from a workstation with the Cloudflare credentials configured: `npm run deploy`.
+A manual deploy from a workstation with Cloudflare credentials configured: `npm run deploy` (runs `opennextjs-cloudflare build && opennextjs-cloudflare deploy`).
 
 ## Current provider status
 The app does not invent or scrape live safety/travel data. Routing, fuel and weather features degrade safely when approved provider access is missing. Road closures, tides, campground availability and council rules remain unlabelled as live until approved integrations are added and audited.
