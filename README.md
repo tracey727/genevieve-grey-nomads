@@ -1,6 +1,6 @@
-# GENEVIEVE Grey Nomads
+# GENEVIEVE — The Budget Travels
 
-Standalone Australia-wide journey, budget and safety application built for Vercel + GitHub + Neon Postgres.
+Standalone Australia-wide journey, budget and safety application built for GitHub + Neon Postgres + Cloudflare Workers.
 
 ## Principles
 - Traveller-facing UI stays calm and simple.
@@ -27,7 +27,14 @@ Standalone Australia-wide journey, budget and safety application built for Verce
 5. `npm run dev`
 
 ## Deployment
-Import `tracey727/genevieve-grey-nomads` into a new Vercel project, add `DATABASE_URL` as a server-only environment variable, and deploy `main`.
+The app deploys to Cloudflare Workers via OpenNext (`open-next.config.ts` + `wrangler.jsonc`). Pushes to `main` run the `deploy` GitHub Actions workflow, which builds with `opennextjs-cloudflare` and publishes with `wrangler deploy`.
+
+Required repository secrets (Settings → Secrets and variables → Actions):
+- `CLOUDFLARE_API_TOKEN` — Workers deploy permission.
+- `CLOUDFLARE_ACCOUNT_ID`.
+- Every server-only variable in `.env.example` (`DATABASE_URL`, Stripe keys, provider keys) set as a Cloudflare Worker secret with `wrangler secret put <NAME>` — Worker secrets are not read from `.env.local` at deploy time.
+
+A manual deploy from a workstation with the Cloudflare credentials configured: `npm run deploy`.
 
 ## Current provider status
 The app does not invent or scrape live safety/travel data. Routing, fuel and weather features degrade safely when approved provider access is missing. Road closures, tides, campground availability and council rules remain unlabelled as live until approved integrations are added and audited.

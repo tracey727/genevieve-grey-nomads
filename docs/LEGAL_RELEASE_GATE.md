@@ -1,4 +1,4 @@
-# Legal and Billing Release Gate — GENEVIEVE Grey Nomads
+# Legal and Billing Release Gate — GENEVIEVE — The Budget Travels
 
 Do not enable paid Checkout until every required item below is complete and evidenced.
 
@@ -26,10 +26,10 @@ Do not enable paid Checkout until every required item below is complete and evid
 
 ## Stripe
 - [ ] Create the production Stripe Product and recurring Price after pricing is approved.
-- [ ] Set STRIPE_SECRET_KEY in Vercel as a sensitive server-only variable.
-- [ ] Set STRIPE_PRICE_ID in Vercel.
-- [ ] Set STRIPE_WEBHOOK_SECRET in Vercel.
-- [ ] Set SUBSCRIPTION_DISPLAY_PRICE and SUBSCRIPTION_BILLING_PERIOD in Vercel.
+- [ ] Set STRIPE_SECRET_KEY in Cloudflare as a sensitive server-only variable.
+- [ ] Set STRIPE_PRICE_ID in Cloudflare.
+- [ ] Set STRIPE_WEBHOOK_SECRET in Cloudflare.
+- [ ] Set SUBSCRIPTION_DISPLAY_PRICE and SUBSCRIPTION_BILLING_PERIOD in Cloudflare.
 - [ ] Set APP_BASE_URL to the production domain.
 - [ ] Configure Stripe Public details with the live Terms URL and Privacy URL before requiring terms acceptance.
 - [ ] Configure Customer Portal to allow payment-method updates and cancellation.
@@ -53,7 +53,7 @@ Do not enable paid Checkout until every required item below is complete and evid
 - [x] Privacy contact and complaint route are published.
 - [x] Data-breach response plan exists.
 - [ ] If marketing email/SMS is introduced, implement consent, sender identification and functional unsubscribe handling before sending campaigns.
-- [ ] Re-audit overseas data processing and provider list whenever Stripe, Vercel, Neon, mapping or analytics providers change.
+- [ ] Re-audit overseas data processing and provider list whenever Stripe, Cloudflare, Neon, mapping or analytics providers change.
 
 ## Operational release test
 - [x] Production build/CI passes after billing code is merged.

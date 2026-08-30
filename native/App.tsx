@@ -62,7 +62,7 @@ function NativeHome() {
       await openLiveRoute(route);
     } catch {
       Alert.alert(
-        'Live Grey Nomads unavailable',
+        'Live The Budget Travels unavailable',
         'The live service could not be opened. Please check your internet connection and try again.'
       );
     }

@@ -11,7 +11,7 @@ import './vip-toggle-upgrade.css';
 import './safety-toggle-upgrade.css';
 
 export const metadata = {
-  title: 'GENEVIEVE Grey Nomads',
+  title: 'GENEVIEVE — The Budget Travels',
   description: 'Australian journey, budget and safety planning for travellers.',
   manifest: '/manifest.webmanifest',
   icons: {
@@ -20,7 +20,7 @@ export const metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: 'Grey Nomads',
+    title: 'Budget Travels',
     statusBarStyle: 'black-translucent'
   }
 };

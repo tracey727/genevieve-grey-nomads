@@ -65,7 +65,7 @@ export default function BillingPage() {
       </section>
       <section className={`panel ${styles.card}`}>
         <div>
-          <p className="eyebrow">GENEVIEVE Grey Nomads</p>
+          <p className="eyebrow">GENEVIEVE — The Budget Travels</p>
           <h3>{config.enabled ? config.displayPrice : 'Subscriptions not activated yet'}</h3>
           {config.enabled && <p className={styles.renewal}>Renews every {config.billingPeriod} until cancelled.</p>}
         </div>

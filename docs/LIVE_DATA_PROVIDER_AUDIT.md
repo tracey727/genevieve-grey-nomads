@@ -1,7 +1,7 @@
-# GENEVIEVE Grey Nomads — official live-data provider audit
+# GENEVIEVE — The Budget Travels — official live-data provider audit
 
 ## Provider activation rule
-A provider may be shown as live only after: official source/terms verified; commercial-use rights confirmed; credentials stored server-side where required; response contract normalised; timeout/failure path tested; no precise device location persisted; CI and Vercel build pass; production endpoint is verified after deployment.
+A provider may be shown as live only after: official source/terms verified; commercial-use rights confirmed; credentials stored server-side where required; response contract normalised; timeout/failure path tested; no precise device location persisted; CI and Cloudflare build pass; production endpoint is verified after deployment.
 
 ## Fuel providers
 
@@ -12,7 +12,7 @@ A provider may be shown as live only after: official source/terms verified; comm
 - Adapter added at `lib/providers/fuelwatchWa.js`.
 - Adapter requires a town/suburb query and fails closed when no result is returned.
 - User-facing automatic switch remains off until the app has a reliable locality resolver or a simple locality input.
-- Repository CI passed on the provider-adapter branch before merge; provider-specific Vercel response verification remains the final gate.
+- Repository CI passed on the provider-adapter branch before merge; provider-specific Cloudflare response verification remains the final gate.
 
 ### NSW + Tasmania — FuelCheck v2
 - Official API.NSW Fuel API.
@@ -35,7 +35,7 @@ A provider may be shown as live only after: official source/terms verified; comm
 ## Weather — Bureau of Meteorology
 - BOM anonymous automated forecast/observation feeds are free but explicitly not for commercial use.
 - GENEVIEVE subscriptions are commercial use, so production must use BOM Registered User Services / licensed real-time data with appropriate rights.
-- The Grey Nomads weather endpoint remains fail-closed until licensed BOM service credentials and response contract are verified.
+- The The Budget Travels weather endpoint remains fail-closed until licensed BOM service credentials and response contract are verified.
 
 ## Safety/privacy
 - Provider credentials are server-only.

@@ -76,7 +76,7 @@ for (const source of [terms, subscriptions]) {
   if (!source.includes('Australian Consumer Law')) fail('Australian Consumer Law preservation wording missing');
 }
 if (!subscriptions.includes('no refunds') && !subscriptions.includes('no blanket')) fail('refund policy must reject blanket no-refund wording');
-if (!privacy.includes('Stripe') || !privacy.includes('Vercel') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
+if (!privacy.includes('Stripe') || !privacy.includes('Cloudflare') || !privacy.includes('Neon')) fail('Privacy Policy provider disclosure incomplete');
 if (!privacy.includes('Access and correction') || !privacy.includes('Privacy complaints')) fail('Privacy access/correction/complaint process missing');
 
 if (!safety.includes('EmergencyCallControl')) fail('Safety must render guarded emergency control');
@@ -102,7 +102,7 @@ if (/live:\s*true/.test(providerSources[4])) fail('Victoria delayed provider mus
 if (!iconRoute.includes("'content-type': 'image/png'")) fail('phone icon endpoint must return PNG');
 if (!iconRoute.includes("Buffer.from(ICON_BASE64, 'base64')")) fail('phone icon asset is missing');
 if (!manifest.includes('"src": "/api/app-icon"') || !manifest.includes('"display": "standalone"')) fail('PWA manifest must use branded home-screen icon and standalone mode');
-if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Grey Nomads'")) fail('iPhone install metadata missing branded icon/title');
+if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Budget Travels'")) fail('iPhone install metadata missing branded icon/title');
 
 if (!releaseGate.includes('account recovery') || !releaseGate.includes('Live charging is not approved')) fail('paid-launch account recovery/release blocker missing');
 

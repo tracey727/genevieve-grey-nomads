@@ -1,6 +1,6 @@
 # Architecture
 
-Browser / PWA -> Next.js App Router on Vercel -> bounded API routes -> Neon Postgres.
+Browser / PWA -> Next.js App Router on Cloudflare Workers (via OpenNext) -> bounded API routes -> Neon Postgres.
 
 The budget engine is deterministic and client-safe. The home screen reads the latest local calculation first, which keeps the application useful during database outages. Persisted trip history is optional and isolated behind `/api/trips`.
 
