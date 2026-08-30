@@ -68,7 +68,14 @@ if (!checkout.includes("price: process.env.STRIPE_PRICE_ID")) fail('Checkout pri
 if (!checkout.includes("mode: 'subscription'")) fail('Checkout must use subscription mode');
 if (!checkout.includes("terms_of_service: 'required'")) fail('Checkout must require terms acceptance');
 if (!checkout.includes('client_reference_id: deviceId')) fail('Checkout must correlate to a validated device ID');
+if (!checkout.includes('requireSession')) fail('Checkout must recognise a signed-in session for membership portability');
 if (!billing.includes('STRIPE_WEBHOOK_SECRET') || !billing.includes('SUBSCRIPTION_DISPLAY_PRICE')) fail('billing release gate configuration is incomplete');
+
+const billingStatusRoute = read('app/api/billing/status/route.js');
+const billingPortalRoute = read('app/api/billing/portal/route.js');
+if (!billingStatusRoute.includes('requireSession') || !billingStatusRoute.includes('user_id = (SELECT id FROM users')) fail('Billing status must also resolve a signed-in account across devices');
+if (!billingPortalRoute.includes('requireSession') || !billingPortalRoute.includes('user_id = (SELECT id FROM users')) fail('Subscription management must also resolve a signed-in account across devices');
+if (!webhook.includes('resolveUserId') || !webhook.includes('user_id = COALESCE(EXCLUDED.user_id, billing_accounts.user_id)')) fail('Webhook must attach a resolved account to billing_accounts without discarding an existing link');
 
 if (!webhook.includes('request.text()')) fail('Stripe webhook must use raw request body');
 if (!webhook.includes('constructEvent')) fail('Stripe webhook signature verification missing');

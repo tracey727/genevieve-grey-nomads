@@ -4,7 +4,23 @@ import { getStripe } from '../../../../lib/stripe';
 
 export const dynamic = 'force-dynamic';
 
-async function upsertSubscription(sql, deviceId, subscription, fallbackCustomerId = null, email = null) {
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+// Resolves an optional signed-in account's public (UUID) ID to the internal
+// billing_accounts.user_id foreign key. Never throws: an unresolvable or
+// absent account ID just leaves the subscription on its existing device-only
+// association rather than failing the whole webhook.
+async function resolveUserId(sql, userPublicId) {
+  if (typeof userPublicId !== 'string' || !uuidPattern.test(userPublicId)) return null;
+  try {
+    const rows = await sql`SELECT id FROM users WHERE public_id = ${userPublicId}::uuid LIMIT 1`;
+    return rows[0]?.id || null;
+  } catch {
+    return null;
+  }
+}
+
+async function upsertSubscription(sql, deviceId, subscription, fallbackCustomerId = null, email = null, userId = null) {
   if (!isValidDeviceId(deviceId) || !subscription) return;
   const customerId = typeof subscription.customer === 'string' ? subscription.customer : fallbackCustomerId;
   const status = String(subscription.status || 'active');
@@ -13,10 +29,10 @@ async function upsertSubscription(sql, deviceId, subscription, fallbackCustomerI
   await sql`
     INSERT INTO billing_accounts (
       device_id, email, stripe_customer_id, stripe_subscription_id, stripe_price_id,
-      subscription_status, entitlement_active, current_period_end, cancel_at_period_end, updated_at
+      subscription_status, entitlement_active, current_period_end, cancel_at_period_end, user_id, updated_at
     ) VALUES (
       ${deviceId}, ${email}, ${customerId}, ${subscription.id}, ${priceId},
-      ${status}, ${entitlementActiveForStatus(status)}, ${periodEnd}, ${Boolean(subscription.cancel_at_period_end)}, now()
+      ${status}, ${entitlementActiveForStatus(status)}, ${periodEnd}, ${Boolean(subscription.cancel_at_period_end)}, ${userId}, now()
     )
     ON CONFLICT (device_id) DO UPDATE SET
       email = COALESCE(EXCLUDED.email, billing_accounts.email),
@@ -27,6 +43,7 @@ async function upsertSubscription(sql, deviceId, subscription, fallbackCustomerI
       entitlement_active = EXCLUDED.entitlement_active,
       current_period_end = COALESCE(EXCLUDED.current_period_end, billing_accounts.current_period_end),
       cancel_at_period_end = EXCLUDED.cancel_at_period_end,
+      user_id = COALESCE(EXCLUDED.user_id, billing_accounts.user_id),
       updated_at = now()
   `;
 }
@@ -74,13 +91,17 @@ export async function POST(request) {
       if (isValidDeviceId(deviceId) && subscriptionId) {
         const subscription = await stripe.subscriptions.retrieve(subscriptionId);
         const customerId = typeof object.customer === 'string' ? object.customer : object.customer?.id;
-        await upsertSubscription(sql, deviceId, subscription, customerId, object.customer_details?.email || null);
+        const userId = await resolveUserId(sql, object.metadata?.user_id);
+        await upsertSubscription(sql, deviceId, subscription, customerId, object.customer_details?.email || null, userId);
       }
     }
 
     if (['customer.subscription.created', 'customer.subscription.updated', 'customer.subscription.deleted'].includes(event.type)) {
       const deviceId = await deviceForSubscription(sql, object);
-      if (deviceId) await upsertSubscription(sql, deviceId, object);
+      if (deviceId) {
+        const userId = await resolveUserId(sql, object.metadata?.user_id);
+        await upsertSubscription(sql, deviceId, object, null, null, userId);
+      }
     }
 
     if (event.type === 'invoice.payment_failed') {

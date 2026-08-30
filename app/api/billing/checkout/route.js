@@ -1,6 +1,7 @@
 import { getSql } from '../../../../lib/db';
 import { billingConfig, isValidDeviceId } from '../../../../lib/billing.mjs';
 import { getStripe } from '../../../../lib/stripe';
+import { requireSession } from '../../../../lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,23 +25,40 @@ export async function POST(request) {
   const deviceId = body?.deviceId;
   if (!isValidDeviceId(deviceId)) return bad('A valid device ID is required.');
 
+  // Signing in is optional. When present, a valid session lets checkout reuse
+  // an existing Stripe customer and tag the subscription with the account so
+  // membership is portable to a future device — the anonymous device-only
+  // flow below is unchanged when no session is presented.
+  const authSession = await requireSession(request, process.env.SESSION_SECRET);
+  const userPublicId = authSession?.sub || null;
+
   try {
-    const existing = await sql`
-      SELECT stripe_customer_id
-      FROM billing_accounts
-      WHERE device_id = ${deviceId}
-      LIMIT 1
-    `;
+    const existing = userPublicId
+      ? await sql`
+          SELECT stripe_customer_id
+          FROM billing_accounts
+          WHERE device_id = ${deviceId}
+             OR user_id = (SELECT id FROM users WHERE public_id = ${userPublicId}::uuid)
+          ORDER BY (device_id = ${deviceId}) DESC
+          LIMIT 1
+        `
+      : await sql`
+          SELECT stripe_customer_id
+          FROM billing_accounts
+          WHERE device_id = ${deviceId}
+          LIMIT 1
+        `;
     const customerId = existing[0]?.stripe_customer_id || undefined;
     const baseUrl = (process.env.APP_BASE_URL || new URL(request.url).origin).replace(/\/$/, '');
+    const metadata = userPublicId ? { device_id: deviceId, user_id: userPublicId } : { device_id: deviceId };
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
       customer: customerId,
       client_reference_id: deviceId,
-      metadata: { device_id: deviceId },
-      subscription_data: { metadata: { device_id: deviceId } },
+      metadata,
+      subscription_data: { metadata },
       consent_collection: { terms_of_service: 'required' },
       custom_text: {
         submit: {
