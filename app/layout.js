@@ -1,3 +1,4 @@
+import ServiceWorkerRegister from '../components/ServiceWorkerRegister';
 import './globals.css';
 import './premium.css';
 import './delete-controls.css';
@@ -32,7 +33,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en-AU">
-      <body>{children}</body>
+      <body>
+        <ServiceWorkerRegister />
+        {children}
+      </body>
     </html>
   );
 }

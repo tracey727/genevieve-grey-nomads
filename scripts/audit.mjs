@@ -13,8 +13,9 @@ const required = [
   'lib/providers/fuelwatchWa.js','lib/providers/fuelcheckNswTas.js','lib/providers/fuelPricesQld.js',
   'lib/providers/fuelPricesSa.js','lib/providers/servoSaverVic.js',
   'components/BrandHeader.js','components/LegalFooter.js','components/EmergencyCallControl.js',
-  'components/EmergencyCallControl.module.css','migrations/V001_init.sql','migrations/V002_billing.sql',
-  'public/manifest.webmanifest','docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
+  'components/EmergencyCallControl.module.css','components/ServiceWorkerRegister.js','migrations/V001_init.sql','migrations/V002_billing.sql',
+  'public/manifest.webmanifest','public/sw.js','public/offline.html',
+  'docs/LEGAL_RELEASE_GATE.md','docs/DATA_BREACH_RESPONSE.md','docs/STRIPE_SETUP.md','.env.example','.gitignore'
 ];
 
 let failed = false;
@@ -43,6 +44,8 @@ const iconRoute = read('app/api/app-icon/route.js');
 const manifest = read('public/manifest.webmanifest');
 const layout = read('app/layout.js');
 const releaseGate = read('docs/LEGAL_RELEASE_GATE.md');
+const serviceWorker = read('public/sw.js');
+const swRegister = read('components/ServiceWorkerRegister.js');
 const around = read('app/around/page.js');
 const fuelPrices = read('app/api/fuel-prices/route.js');
 const weather = read('app/api/weather/route.js');
@@ -105,6 +108,11 @@ if (!manifest.includes('"src": "/api/app-icon"') || !manifest.includes('"display
 if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Budget Travels'")) fail('iPhone install metadata missing branded icon/title');
 
 if (!releaseGate.includes('account recovery') || !releaseGate.includes('Live charging is not approved')) fail('paid-launch account recovery/release blocker missing');
+
+if (!layout.includes('ServiceWorkerRegister')) fail('offline service worker must be registered in the app shell');
+if (!swRegister.includes("navigator.serviceWorker.register('/sw.js')")) fail('service worker registration call missing');
+if (serviceWorker.includes("if (isApiRequest(url)) return;") === false) fail('service worker must skip API routes so live data is never served stale from cache');
+if (!serviceWorker.includes('OFFLINE_URL')) fail('service worker must provide an offline fallback for remote/no-signal areas');
 
 const combined = required.filter((r) => r.endsWith('.js') || r.endsWith('.mjs')).map(read).join('\n');
 if (/NEXT_PUBLIC_(STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET|DATABASE_URL)/.test(combined)) fail('server secret exposed through NEXT_PUBLIC_ variable');
