@@ -86,6 +86,11 @@
 - The Stripe webhook resolves a `metadata.user_id` (a signed, server-verified account ID, not a raw client value) to the internal `users.id` and attaches it with `COALESCE`, so an existing device-only link is never overwritten or discarded — this is the most audited/fragile part of the codebase, so the change was scoped narrowly and re-verified against the full test/audit/build suite rather than combined with Stage 15.
 - CI now requires the session check and the non-destructive `COALESCE` update to remain present in checkout, status, portal and the webhook.
 
+### Stage 17 — Cloudflare-only hosting confirmed
+- The Vercel GitHub integration has been disconnected by the owner; Vercel no longer builds or deploys on push.
+- The stray/misconfigured duplicate Cloudflare Worker project (`genevieve-grey-nomad`, missing the trailing "s") that had been failing every build independently of any code change has been removed.
+- Cloudflare Workers Builds (`genevieve-grey-nomads`) and Cloudflare Pages remain connected; both build successfully from `main` on every push, matching the GitHub + Neon + Cloudflare hosting requirement.
+
 ## Still open from Stage 15 / 16
 - `SESSION_SECRET` must be generated and set as a Cloudflare Worker secret before account sign-up/sign-in (and therefore membership portability) activates in production (accounts stay disabled, matching the fail-closed pattern used for billing/live-data, until it is set).
 - No password-reset flow yet.
