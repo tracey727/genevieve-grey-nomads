@@ -1,4 +1,4 @@
-# Build status — 19 August 2026
+# Build status — 19 August 2026 (verified 31 August 2026)
 
 ## Live V1 already verified
 - Standalone repository: `tracey727/genevieve-grey-nomads`.
