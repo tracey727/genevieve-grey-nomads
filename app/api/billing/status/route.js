@@ -19,7 +19,7 @@ export async function GET(request) {
     const authSession = await requireSession(request, process.env.SESSION_SECRET);
     const rows = authSession?.sub
       ? await sql`
-          SELECT stripe_subscription_id, subscription_status, entitlement_active,
+          SELECT stripe_subscription_id, stripe_price_id, subscription_status, entitlement_active,
                  current_period_end, cancel_at_period_end
           FROM billing_accounts
           WHERE device_id = ${deviceId}
@@ -28,7 +28,7 @@ export async function GET(request) {
           LIMIT 1
         `
       : await sql`
-          SELECT stripe_subscription_id, subscription_status, entitlement_active,
+          SELECT stripe_subscription_id, stripe_price_id, subscription_status, entitlement_active,
                  current_period_end, cancel_at_period_end
           FROM billing_accounts
           WHERE device_id = ${deviceId}

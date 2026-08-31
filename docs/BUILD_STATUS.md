@@ -95,19 +95,21 @@
 - `SESSION_SECRET` must be generated and set as a Cloudflare Worker secret before account sign-up/sign-in (and therefore membership portability) activates in production (accounts stay disabled, matching the fail-closed pattern used for billing/live-data, until it is set).
 - No password-reset flow yet.
 
-## Pricing recommendation — not activated
-- Keep Emergency/core Safety free for everyone.
-- Recommended concession/pensioner launch price: $3.99 AUD per month or $39.99 AUD per year.
-- Recommended standard launch price: $6.99 AUD per month or $59.99 AUD per year.
-- Pricing is a recommendation only; Stripe remains disabled until the owner approves final price/cadence and the remaining paid-launch gates are complete.
+### Stage 18 — Multi-plan pricing (Free + four paid plans)
+- Owner-approved launch pricing, implemented as `lib/billing.mjs`'s `PLANS` catalog: **Free ($0, core safety/travel tools, no card)**, **Premium Monthly ($12.99 AUD/month)**, **Premium Annual ($119.00 AUD/year)**, **Pensioner Annual ($83.00 AUD/year)**, **Founding Member Annual ($79.00 AUD/year, early-launch offer)**.
+- Checkout now accepts a plan id from the client and resolves it server-side to that plan's Stripe Price ID; the client never sends a price or amount, so the amount actually charged always comes from Stripe's own Price object.
+- Billing config/status/checkout now report and act on a plan-by-plan basis: a plan with no Price ID configured for the current environment simply does not appear at checkout, without disabling the others.
+- Membership shows the signed-in customer's actual plan (mapped from the Stripe Price ID stored on their `billing_accounts` row) rather than one generic price.
+- The Founding Member offer is designed to be retired later by archiving its Stripe Price and removing `STRIPE_PRICE_FOUNDING_ANNUAL` — existing Founding Members keep their price, new signups just stop seeing the option.
+- CI now requires the plan catalog to list all four launch plans and requires checkout to resolve price server-side from a plan id (never read a price/amount from the client request body).
 
 ## Still required before live charging
-- Owner approval of actual recurring price and billing cadence.
+- Create the four Stripe Prices in the live Stripe account and set their IDs as Cloudflare Worker secrets (`docs/STRIPE_SETUP.md` has the exact table).
 - Confirm GST registration/tax display requirements.
-- Account authentication and cross-device membership portability now exist (Stages 15–16); still need password reset/recovery before broad paid launch.
-- Configure Stripe Product/Price, Customer Portal, public Terms/Privacy URLs and production webhook.
-- Configure Stripe/Cloudflare production secrets.
-- Complete test-mode subscription, cancellation, failed-payment and webhook replay tests.
+- No password-reset flow yet.
+- Configure Stripe Customer Portal, public Terms/Privacy URLs and production webhook.
+- Configure Stripe/Cloudflare production secrets (`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `SESSION_SECRET`, the four plan Price IDs).
+- Complete test-mode subscription, cancellation, failed-payment and webhook replay tests for every plan.
 - Obtain Australian legal review of the final commercial terms before broad paid launch.
 
 ## Not claimed live

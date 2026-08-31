@@ -25,11 +25,10 @@ Do not enable paid Checkout until every required item below is complete and evid
 - [ ] Confirm cancellation is available through the Customer Portal without requiring a phone call.
 
 ## Stripe
-- [ ] Create the production Stripe Product and recurring Price after pricing is approved.
+- [ ] Create the production Stripe Product and recurring Prices for each launch plan (Premium Monthly, Premium Annual, Pensioner Annual, Founding Member Annual) after pricing is approved — see docs/STRIPE_SETUP.md for the exact amounts.
 - [ ] Set STRIPE_SECRET_KEY in Cloudflare as a sensitive server-only variable.
-- [ ] Set STRIPE_PRICE_ID in Cloudflare.
+- [ ] Set STRIPE_PRICE_PREMIUM_MONTHLY, STRIPE_PRICE_PREMIUM_ANNUAL, STRIPE_PRICE_PENSIONER_ANNUAL and STRIPE_PRICE_FOUNDING_ANNUAL in Cloudflare.
 - [ ] Set STRIPE_WEBHOOK_SECRET in Cloudflare.
-- [ ] Set SUBSCRIPTION_DISPLAY_PRICE and SUBSCRIPTION_BILLING_PERIOD in Cloudflare.
 - [ ] Set APP_BASE_URL to the production domain.
 - [ ] Configure Stripe Public details with the live Terms URL and Privacy URL before requiring terms acceptance.
 - [ ] Configure Customer Portal to allow payment-method updates and cancellation.

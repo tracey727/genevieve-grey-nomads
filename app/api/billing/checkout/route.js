@@ -1,5 +1,5 @@
 import { getSql } from '../../../../lib/db';
-import { billingConfig, isValidDeviceId } from '../../../../lib/billing.mjs';
+import { billingConfig, isValidDeviceId, isValidPlan, priceIdForPlan, PLANS } from '../../../../lib/billing.mjs';
 import { getStripe } from '../../../../lib/stripe';
 import { requireSession } from '../../../../lib/auth';
 
@@ -24,6 +24,14 @@ export async function POST(request) {
 
   const deviceId = body?.deviceId;
   if (!isValidDeviceId(deviceId)) return bad('A valid device ID is required.');
+
+  // The client only ever selects which plan it wants; Stripe's Price object,
+  // never a client-submitted amount, decides what is actually charged.
+  const planId = body?.plan;
+  if (!isValidPlan(planId)) return bad('Choose a valid membership plan.');
+  const priceId = priceIdForPlan(config, planId);
+  if (!priceId) return bad('That plan is not available yet.', 503);
+  const plan = PLANS[planId];
 
   // Signing in is optional. When present, a valid session lets checkout reuse
   // an existing Stripe customer and tag the subscription with the account so
@@ -54,7 +62,7 @@ export async function POST(request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       customer: customerId,
       client_reference_id: deviceId,
       metadata,
@@ -62,7 +70,7 @@ export async function POST(request) {
       consent_collection: { terms_of_service: 'required' },
       custom_text: {
         submit: {
-          message: `This subscription renews every ${config.billingPeriod} until cancelled. You can manage or cancel it from Membership.`
+          message: `This subscription renews every ${plan.billingPeriod} until cancelled. You can manage or cancel it from Membership.`
         }
       },
       success_url: `${baseUrl}/billing?success=1&session_id={CHECKOUT_SESSION_ID}`,
