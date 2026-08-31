@@ -4,10 +4,10 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const config = billingConfig();
-  return Response.json({
-    enabled: config.enabled,
-    displayPrice: config.enabled ? config.displayPrice : '',
-    billingPeriod: config.enabled ? config.billingPeriod : '',
-    currency: 'AUD'
-  });
+  const plans = Object.fromEntries(
+    Object.entries(config.plans)
+      .filter(([, plan]) => plan.available)
+      .map(([planId, plan]) => [planId, { label: plan.label, displayPrice: plan.displayPrice, billingPeriod: plan.billingPeriod }])
+  );
+  return Response.json({ enabled: config.enabled, plans, currency: 'AUD' });
 }

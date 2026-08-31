@@ -21,13 +21,14 @@ function getAuthHeaders() {
 }
 
 export default function BillingPage() {
-  const [config, setConfig] = useState({ enabled: false, displayPrice: '', billingPeriod: '', currency: 'AUD' });
+  const [config, setConfig] = useState({ enabled: false, plans: {}, currency: 'AUD' });
   const [status, setStatus] = useState(null);
   const [message, setMessage] = useState('');
   const [account, setAccount] = useState({ email: '', password: '' });
   const [session, setSession] = useState(null);
   const [accountMessage, setAccountMessage] = useState('');
   const [accountBusy, setAccountBusy] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem(SESSION_KEY);
@@ -77,16 +78,18 @@ export default function BillingPage() {
     const nextStatus = await statusRes.json();
     setConfig(nextConfig);
     setStatus(nextStatus);
+    setSelectedPlan((current) => (current && nextConfig.plans[current] ? current : Object.keys(nextConfig.plans)[0] || null));
   };
 
   useEffect(() => { refresh().catch(() => setMessage('Membership information is temporarily unavailable.')); }, []);
 
   const startCheckout = async () => {
+    if (!selectedPlan) { setMessage('Choose a plan first.'); return; }
     setMessage('Opening secure checkout…');
     try {
       const res = await fetch('/api/billing/checkout', {
         method: 'POST', headers: { 'content-type': 'application/json', ...getAuthHeaders() },
-        body: JSON.stringify({ deviceId: getDeviceId() })
+        body: JSON.stringify({ deviceId: getDeviceId(), plan: selectedPlan })
       });
       const data = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error || 'Unable to open checkout');
@@ -140,16 +143,29 @@ export default function BillingPage() {
       <section className={`panel ${styles.card}`}>
         <div>
           <p className="eyebrow">GENEVIEVE — The Budget Travels</p>
-          <h3>{config.enabled ? config.displayPrice : 'Subscriptions not activated yet'}</h3>
-          {config.enabled && <p className={styles.renewal}>Renews every {config.billingPeriod} until cancelled.</p>}
+          <h3>Free</h3>
+          <p className={styles.renewal}>$0. Core safety and travel-planning tools, always. No card required.</p>
         </div>
         <div className={styles.status}>
           <small>Status</small>
-          <strong>{status?.status || (config.enabled ? 'not subscribed' : 'coming soon')}</strong>
+          <strong>{status?.subscribed && status?.plan ? `on ${config.plans[status.plan]?.label || status.plan}` : status?.status || (config.enabled ? 'not subscribed' : 'coming soon')}</strong>
         </div>
-        {config.enabled && !status?.subscribed && <button className="primary-button" onClick={startCheckout}>Subscribe securely</button>}
+        {config.enabled && !status?.subscribed && (
+          <>
+            <div className={styles.planGrid}>
+              {Object.entries(config.plans).map(([planId, plan]) => (
+                <label key={planId} className={`${styles.planOption} ${selectedPlan === planId ? styles.planOptionSelected : ''}`}>
+                  <input type="radio" name="plan" value={planId} checked={selectedPlan === planId} onChange={() => setSelectedPlan(planId)} />
+                  <span className={styles.planLabel}>{plan.label}</span>
+                  <span className={styles.planPrice}>{plan.displayPrice} / {plan.billingPeriod}</span>
+                </label>
+              ))}
+            </div>
+            <button className="primary-button" onClick={startCheckout}>Subscribe securely</button>
+          </>
+        )}
         {config.enabled && status?.subscribed && <button className="primary-button" onClick={openPortal}>Manage or cancel subscription</button>}
-        {!config.enabled && <p className={styles.notice}>Checkout remains disabled until the final recurring price, billing period, Stripe webhook and public legal URLs are configured.</p>}
+        {!config.enabled && <p className={styles.notice}>Checkout remains disabled until Stripe secrets and at least one plan Price ID are configured.</p>}
         {message && <p role="status" className="form-message">{message}</p>}
       </section>
       <section className={`panel ${styles.legalNotice}`}>

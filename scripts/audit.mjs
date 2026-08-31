@@ -56,7 +56,7 @@ const providerSources = [
 ].map(read);
 
 if (!envExample.includes('DATABASE_URL=')) fail('DATABASE_URL example missing');
-for (const name of ['STRIPE_SECRET_KEY','STRIPE_PRICE_ID','STRIPE_WEBHOOK_SECRET','SUBSCRIPTION_DISPLAY_PRICE','SUBSCRIPTION_BILLING_PERIOD','APP_BASE_URL','SESSION_SECRET']) {
+for (const name of ['STRIPE_SECRET_KEY','STRIPE_PRICE_PREMIUM_MONTHLY','STRIPE_PRICE_PREMIUM_ANNUAL','STRIPE_PRICE_PENSIONER_ANNUAL','STRIPE_PRICE_FOUNDING_ANNUAL','STRIPE_WEBHOOK_SECRET','APP_BASE_URL','SESSION_SECRET']) {
   if (!envExample.includes(`${name}=`)) fail(`${name} example missing`);
 }
 if (!gitignore.includes('.env.local')) fail('.env.local not ignored');
@@ -64,12 +64,14 @@ if (!tripApi.includes('LIMIT 30')) fail('trip query must be bounded');
 if (!tripApi.includes('100_000')) fail('trip request size guard missing');
 if (!brand.includes('data:image/webp;base64,') || !brand.includes('Safety from roots to every journey.')) fail('official brand asset/tagline not embedded');
 
-if (!checkout.includes("price: process.env.STRIPE_PRICE_ID")) fail('Checkout price must be server-controlled');
+if (!checkout.includes('price: priceId') || !checkout.includes('priceIdForPlan(config, planId)')) fail('Checkout price must be resolved server-side from a plan id, never a client-submitted price/amount');
+if (/body\??\.(price|amount)\b/.test(checkout)) fail('Checkout must never read a price or amount from the client request body');
 if (!checkout.includes("mode: 'subscription'")) fail('Checkout must use subscription mode');
 if (!checkout.includes("terms_of_service: 'required'")) fail('Checkout must require terms acceptance');
 if (!checkout.includes('client_reference_id: deviceId')) fail('Checkout must correlate to a validated device ID');
 if (!checkout.includes('requireSession')) fail('Checkout must recognise a signed-in session for membership portability');
-if (!billing.includes('STRIPE_WEBHOOK_SECRET') || !billing.includes('SUBSCRIPTION_DISPLAY_PRICE')) fail('billing release gate configuration is incomplete');
+if (!billing.includes('STRIPE_WEBHOOK_SECRET') || !billing.includes('export const PLANS')) fail('billing release gate configuration is incomplete');
+if (!billing.includes('premium_monthly') || !billing.includes('premium_annual') || !billing.includes('pensioner_annual') || !billing.includes('founding_annual')) fail('billing plan catalog must include all four launch plans');
 
 const billingStatusRoute = read('app/api/billing/status/route.js');
 const billingPortalRoute = read('app/api/billing/portal/route.js');
