@@ -81,9 +81,13 @@
 - Login always returns the same "Incorrect email or password" message for a missing account or a wrong password, so it cannot be used to enumerate registered emails.
 - CI requires salted password hashing, signed/verified session tokens and a server-only session secret to remain present.
 
-## Still open from Stage 15
-- Checkout/webhook do not yet attach `user_id` to `billing_accounts`; membership is still keyed by device ID only. Wiring that through the already-audited Stripe webhook is left as dedicated follow-up work rather than combined with this stage.
-- `SESSION_SECRET` must be generated and set as a Cloudflare Worker secret before account sign-up/sign-in activates in production (accounts stay disabled, matching the fail-closed pattern used for billing/live-data, until it is set).
+### Stage 16 — Cross-device membership portability
+- Checkout, Billing status and Manage/cancel (`app/api/billing/checkout`, `/status`, `/portal`) now recognise an optional signed-in session and additionally match `billing_accounts` on `user_id`, not just `device_id` — so a traveller's membership shows up on a fresh device once they sign back in, without changing the existing anonymous device-only flow when no session is presented.
+- The Stripe webhook resolves a `metadata.user_id` (a signed, server-verified account ID, not a raw client value) to the internal `users.id` and attaches it with `COALESCE`, so an existing device-only link is never overwritten or discarded — this is the most audited/fragile part of the codebase, so the change was scoped narrowly and re-verified against the full test/audit/build suite rather than combined with Stage 15.
+- CI now requires the session check and the non-destructive `COALESCE` update to remain present in checkout, status, portal and the webhook.
+
+## Still open from Stage 15 / 16
+- `SESSION_SECRET` must be generated and set as a Cloudflare Worker secret before account sign-up/sign-in (and therefore membership portability) activates in production (accounts stay disabled, matching the fail-closed pattern used for billing/live-data, until it is set).
 - No password-reset flow yet.
 
 ## Pricing recommendation — not activated
@@ -95,7 +99,7 @@
 ## Still required before live charging
 - Owner approval of actual recurring price and billing cadence.
 - Confirm GST registration/tax display requirements.
-- Account authentication now exists (Stage 15); still need password reset/recovery and to attach signed-in `user_id` to `billing_accounts` through checkout/webhook for paid membership portability across devices.
+- Account authentication and cross-device membership portability now exist (Stages 15–16); still need password reset/recovery before broad paid launch.
 - Configure Stripe Product/Price, Customer Portal, public Terms/Privacy URLs and production webhook.
 - Configure Stripe/Cloudflare production secrets.
 - Complete test-mode subscription, cancellation, failed-payment and webhook replay tests.

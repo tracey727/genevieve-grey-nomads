@@ -15,6 +15,11 @@ function getDeviceId() {
 const SESSION_KEY = 'genevieve:session-token';
 const SESSION_EMAIL_KEY = 'genevieve:session-email';
 
+function getAuthHeaders() {
+  const token = localStorage.getItem(SESSION_KEY);
+  return token ? { authorization: `Bearer ${token}` } : {};
+}
+
 export default function BillingPage() {
   const [config, setConfig] = useState({ enabled: false, displayPrice: '', billingPeriod: '', currency: 'AUD' });
   const [status, setStatus] = useState(null);
@@ -35,6 +40,7 @@ export default function BillingPage() {
     localStorage.removeItem(SESSION_EMAIL_KEY);
     setSession(null);
     setAccountMessage('Signed out on this device.');
+    refresh().catch(() => undefined);
   };
 
   const submitAccount = async (mode) => {
@@ -53,6 +59,7 @@ export default function BillingPage() {
       setSession({ token: data.token, email: data.user.email });
       setAccount({ email: '', password: '' });
       setAccountMessage(mode === 'signup' ? 'Account created. You are signed in on this device.' : 'Signed in on this device.');
+      refresh().catch(() => undefined);
     } catch (error) {
       setAccountMessage(error.message || 'Could not complete that request.');
     } finally {
@@ -64,7 +71,7 @@ export default function BillingPage() {
     const deviceId = getDeviceId();
     const [configRes, statusRes] = await Promise.all([
       fetch('/api/billing/config', { cache: 'no-store' }),
-      fetch(`/api/billing/status?deviceId=${encodeURIComponent(deviceId)}`, { cache: 'no-store' })
+      fetch(`/api/billing/status?deviceId=${encodeURIComponent(deviceId)}`, { cache: 'no-store', headers: getAuthHeaders() })
     ]);
     const nextConfig = await configRes.json();
     const nextStatus = await statusRes.json();
@@ -78,7 +85,7 @@ export default function BillingPage() {
     setMessage('Opening secure checkout…');
     try {
       const res = await fetch('/api/billing/checkout', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
+        method: 'POST', headers: { 'content-type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify({ deviceId: getDeviceId() })
       });
       const data = await res.json();
@@ -91,7 +98,7 @@ export default function BillingPage() {
     setMessage('Opening subscription management…');
     try {
       const res = await fetch('/api/billing/portal', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
+        method: 'POST', headers: { 'content-type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify({ deviceId: getDeviceId() })
       });
       const data = await res.json();
