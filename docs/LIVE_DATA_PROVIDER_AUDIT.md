@@ -1,4 +1,4 @@
-# GENEVIEVE — The Budget Travels — official live-data provider audit
+# GENEVIEVE — Budget Traveller — official live-data provider audit
 
 ## Provider activation rule
 A provider may be shown as live only after: official source/terms verified; commercial-use rights confirmed; credentials stored server-side where required; response contract normalised; timeout/failure path tested; no precise device location persisted; CI and Cloudflare build pass; production endpoint is verified after deployment.
@@ -35,7 +35,7 @@ A provider may be shown as live only after: official source/terms verified; comm
 ## Weather — Bureau of Meteorology
 - BOM anonymous automated forecast/observation feeds are free but explicitly not for commercial use.
 - GENEVIEVE subscriptions are commercial use, so production must use BOM Registered User Services / licensed real-time data with appropriate rights.
-- The The Budget Travels weather endpoint remains fail-closed until licensed BOM service credentials and response contract are verified.
+- The Budget Traveller weather endpoint remains fail-closed until licensed BOM service credentials and response contract are verified.
 
 ## Safety/privacy
 - Provider credentials are server-only.

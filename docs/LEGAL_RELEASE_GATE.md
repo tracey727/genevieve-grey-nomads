@@ -1,4 +1,4 @@
-# Legal and Billing Release Gate — GENEVIEVE — The Budget Travels
+# Legal and Billing Release Gate — GENEVIEVE — Budget Traveller
 
 Do not enable paid Checkout until every required item below is complete and evidenced.
 

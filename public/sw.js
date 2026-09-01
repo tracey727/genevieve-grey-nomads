@@ -1,4 +1,4 @@
-// The Budget Travels service worker.
+// Budget Traveller service worker.
 // Keeps the app shell usable with no signal in remote parts of Australia and
 // lets the browser wake it in the background to sync queued offline saves.
 // API routes are never cached: fuel, weather and route data must only ever be

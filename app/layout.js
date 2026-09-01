@@ -12,7 +12,7 @@ import './vip-toggle-upgrade.css';
 import './safety-toggle-upgrade.css';
 
 export const metadata = {
-  title: 'GENEVIEVE — The Budget Travels',
+  title: 'GENEVIEVE — Budget Traveller',
   description: 'Australian journey, budget and safety planning for travellers.',
   manifest: '/manifest.webmanifest',
   icons: {

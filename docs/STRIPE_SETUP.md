@@ -1,4 +1,4 @@
-# Stripe Subscription Setup — GENEVIEVE — The Budget Travels
+# Stripe Subscription Setup — GENEVIEVE — Budget Traveller
 
 Architecture: Stripe-hosted Checkout -> signed webhook -> Neon entitlement record -> Stripe Customer Portal.
 
