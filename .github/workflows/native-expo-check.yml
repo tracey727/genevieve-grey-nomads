@@ -1,6 +1,7 @@
 name: Native Expo Check
 
 on:
+  pull_request:
   push:
     branches:
       - main

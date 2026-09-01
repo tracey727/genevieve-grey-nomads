@@ -1,0 +1,254 @@
+/*
+ * BUDGET TRAVELLER — APPROVED HOME VISUAL LOCK
+ * Final presentation layer for the approved premium GENEVIEVE home screen.
+ * Presentation only: routes, APIs, trip state, safety logic, billing and Neon data are untouched.
+ */
+
+.gg-home-shell {
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(39, 84, 116, .23), transparent 34%),
+    linear-gradient(180deg, #01060b 0%, #020b13 52%, #010509 100%);
+}
+
+.gg-home-screen.screen-frame {
+  --home-gutter: 10px;
+  width: min(100%, 440px);
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 auto;
+  border-left: 1px solid rgba(225, 177, 89, .58);
+  border-right: 1px solid rgba(225, 177, 89, .58);
+  background:
+    radial-gradient(ellipse at 14% 24%, rgba(47, 96, 126, .18), transparent 25%),
+    radial-gradient(ellipse at 88% 53%, rgba(137, 83, 44, .10), transparent 23%),
+    linear-gradient(180deg, #061d31 0%, #031522 48%, #020d16 100%);
+  box-shadow: 0 0 85px rgba(0, 0, 0, .66), inset 0 0 72px rgba(26, 74, 106, .06);
+}
+
+.gg-home-screen.screen-frame::before {
+  inset: max(7px, env(safe-area-inset-top)) 7px max(7px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(232, 184, 94, .62);
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 3px rgba(207, 157, 69, .035), 0 0 18px rgba(0, 0, 0, .12);
+}
+
+.gg-home-scroll {
+  padding: max(0px, env(safe-area-inset-top)) var(--home-gutter) calc(8px + env(safe-area-inset-bottom));
+}
+
+.gg-brand-hero {
+  min-height: 278px;
+  margin: 0 calc(var(--home-gutter) * -1);
+  border-bottom: 1px solid rgba(232, 183, 91, .64);
+  background: #071c2d;
+  box-shadow: inset 0 -42px 52px rgba(2, 13, 23, .48);
+}
+
+.gg-landscape {
+  background-image: url('/approved-home-hero.webp');
+  background-size: cover;
+  background-position: center 46%;
+  filter: saturate(1.02) contrast(1.08) brightness(.72);
+  transform: scale(1.01);
+}
+
+.gg-hero-shade {
+  background:
+    radial-gradient(ellipse at 70% 64%, rgba(218, 132, 48, .22), transparent 29%),
+    linear-gradient(180deg, rgba(1, 12, 24, .05) 0%, rgba(2, 18, 31, .17) 46%, rgba(2, 17, 30, .74) 100%),
+    linear-gradient(90deg, rgba(1, 12, 24, .45), transparent 30%, transparent 72%, rgba(1, 12, 24, .38));
+}
+
+.gg-brand-lockup { inset: 6px 26px 12px; }
+
+.gg-brand-artwork.gg-brand-artwork-user {
+  width: 126px;
+  height: 144px;
+  margin: auto auto -2px;
+  background: radial-gradient(ellipse at 50% 47%, rgba(255, 243, 215, .20), transparent 68%);
+}
+
+.gg-brand-user-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.08) contrast(1.04) drop-shadow(0 7px 12px rgba(0, 0, 0, .58)) drop-shadow(0 0 7px rgba(246, 195, 101, .18));
+}
+
+.gg-brand-name {
+  margin-top: -3px;
+  color: #efc06b;
+  font: 500 2.15rem/.98 Georgia, 'Times New Roman', serif;
+  letter-spacing: .14em;
+  text-indent: .14em;
+  text-shadow: 0 2px 10px rgba(0,0,0,.84), 0 0 18px rgba(226,171,76,.14);
+}
+
+.gg-brand-tagline {
+  margin-top: 4px;
+  color: #f0c87c;
+  font: italic 600 .79rem/1.15 Georgia, 'Times New Roman', serif;
+}
+
+.gg-eucalyptus { opacity: .46; }
+
+.gg-journey-card {
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 11px;
+  margin: -1px 9px 8px;
+  padding: 11px 12px;
+  border: 1px solid #e7ac4f;
+  border-radius: 17px;
+  background: radial-gradient(circle at 9% 22%, rgba(42, 100, 133, .22), transparent 31%), linear-gradient(145deg, rgba(7, 42, 68, .995), rgba(2, 23, 39, .998));
+  box-shadow: 0 11px 24px rgba(0, 0, 0, .31), inset 0 0 0 1px rgba(255, 220, 148, .045);
+}
+
+.gg-journey-picture {
+  width: 78px;
+  aspect-ratio: .84;
+  border: 1px solid #edb95a;
+  border-radius: 46% 46% 41% 41%;
+  background: linear-gradient(180deg, rgba(3,16,28,.02), rgba(1,11,20,.08)), url('/approved-home-hero.webp') center 62% / cover no-repeat;
+}
+
+.gg-journey-copy h1 {
+  margin: 0 0 4px;
+  color: #fff8ee;
+  font: 500 1.16rem/1.02 Georgia, 'Times New Roman', serif;
+}
+
+.gg-summary-row {
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 6px;
+  min-height: 28px;
+  border-top: 1px solid rgba(222, 171, 79, .17);
+}
+.gg-summary-row svg { width: 15px; height: 15px; }
+.gg-summary-row strong { font-size: .66rem; line-height: 1.18; }
+.gg-summary-row strong b { color: #efbd63; }
+.gg-summary-row .gg-status.on-budget { color: #acd94d; }
+
+.gg-emergency {
+  grid-template-columns: 43px minmax(0,1fr) 18px;
+  gap: 9px;
+  min-height: 57px;
+  margin: 0 9px 8px;
+  padding: 6px 11px;
+  border: 1px solid #d9913c;
+  border-radius: 14px;
+  background: radial-gradient(circle at 14% 48%, rgba(255,193,82,.16), transparent 25%), linear-gradient(100deg, #861f0d 0%, #68170b 48%, #421006 100%);
+}
+.gg-emergency-shield { width: 38px; height: 41px; border-radius: 13px 13px 18px 18px; }
+.gg-emergency-shield b { font-size: 1.35rem; }
+.gg-emergency-copy strong { font-size: .66rem; letter-spacing: .15em; }
+.gg-emergency-copy small { font-size: .59rem; }
+.gg-chevron { font-size: 1.55rem; }
+
+.gg-action-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0 9px 8px;
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card {
+  min-height: 112px;
+  padding: 9px 5px 9px;
+  border: 1px solid rgba(239, 189, 97, .96);
+  border-radius: 13px;
+  background: radial-gradient(circle at 50% 12%, rgba(40, 96, 132, .25), transparent 43%), linear-gradient(156deg, #0a3453 0%, #052239 50%, #02131f 100%);
+  box-shadow: 0 11px 23px rgba(0, 0, 0, .33), inset 0 1px 0 rgba(255, 248, 231, .08), inset 0 -16px 24px rgba(0, 5, 10, .17);
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card::before {
+  inset: 4px;
+  border-color: rgba(249, 211, 137, .18);
+  border-radius: 9px;
+}
+
+.gg-home-screen .gg-action-grid .gg-action-card .gg-action-icon {
+  width: 47px;
+  height: 47px;
+  border: 1px solid rgba(244, 198, 108, .62);
+  background: radial-gradient(circle at 37% 27%, rgba(255,237,194,.16), transparent 31%), linear-gradient(145deg, rgba(14,61,93,.96), rgba(3,26,42,.97));
+}
+.gg-home-screen .gg-action-grid .gg-action-card .gg-action-icon svg { width: 36px; height: 36px; stroke-width: 1.6; }
+.gg-home-screen .gg-action-grid .gg-action-card strong {
+  max-width: 90px;
+  color: #fff9ee;
+  font: 600 .54rem/1.18 Georgia, 'Times New Roman', serif;
+  letter-spacing: .035em;
+}
+.gg-home-screen .gg-action-grid .gg-action-card .gg-tile-chevron {
+  width: 16px;
+  height: 16px;
+  right: 5px;
+  bottom: 5px;
+  font-size: .78rem;
+}
+
+/* Continue Journey must never render as an empty tile. */
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road,
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road:hover,
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road:focus-visible,
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road:active {
+  padding: 9px 5px 9px;
+  border: 1px solid rgba(242, 199, 116, .98);
+  background: linear-gradient(180deg, rgba(2, 11, 19, .10), rgba(1, 8, 14, .54)), url('/approved-home-hero.webp') center 62% / cover no-repeat;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, .36), inset 0 1px 0 rgba(255, 248, 229, .10);
+  filter: none;
+}
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road > * { opacity: 1; pointer-events: auto; }
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road .gg-action-art { opacity: 0; pointer-events: none; }
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road::before {
+  display: block;
+  content: "";
+  inset: 4px;
+  border: 1px solid rgba(250, 217, 151, .22);
+}
+.gg-home-screen .gg-action-grid .gg-action-card.gg-art-road::after { display: block; content: ""; }
+
+.gg-budget-strip.gg-budget-strip-four {
+  margin: 0 9px 8px;
+  border: 1px solid rgba(232, 178, 84, .90);
+  border-radius: 14px;
+  background: linear-gradient(150deg, rgba(8,38,62,.995), rgba(2,20,34,.998));
+}
+.gg-budget-strip-four > a {
+  min-height: 56px;
+  padding: 7px 2px;
+  border-right: 1px solid rgba(230,177,84,.25);
+}
+.gg-budget-strip-four small { min-height: 21px; color: #dcb66f; font-size: .47rem; }
+.gg-budget-strip-four strong { margin-top: 2px; font-size: .72rem; }
+.gg-budget-strip-four .gg-available { color: #b8df4c; }
+.gg-budget-strip-four .gg-reserve { color: #efb858; }
+
+.gg-home-screen .bottom-nav {
+  min-height: 62px;
+  margin: 0 9px;
+  padding: 6px 2px calc(6px + env(safe-area-inset-bottom));
+  border: 1px solid rgba(232, 178, 84, .88);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(5,29,47,.97), rgba(1,13,23,.99));
+}
+.gg-home-screen .bottom-nav a { min-height: 47px; gap: 2px; }
+.gg-home-screen .bottom-nav svg { width: 20px; height: 20px; }
+.gg-home-screen .bottom-nav small { font-size: .43rem; letter-spacing: .04em; }
+.gg-home-screen .bottom-nav a.active { color: #f2c36c; }
+
+@media (max-width: 440px) {
+  .gg-home-screen.screen-frame { width: 100%; }
+}
+@media (max-width: 360px) {
+  .gg-home-screen.screen-frame { --home-gutter: 7px; }
+  .gg-brand-hero { min-height: 254px; }
+  .gg-brand-artwork.gg-brand-artwork-user { width: 112px; height: 130px; }
+  .gg-brand-name { font-size: 1.86rem; }
+  .gg-brand-tagline { font-size: .71rem; }
+  .gg-journey-card { grid-template-columns: 74px minmax(0,1fr); margin-left: 6px; margin-right: 6px; }
+  .gg-journey-picture { width: 67px; }
+  .gg-action-grid, .gg-budget-strip.gg-budget-strip-four, .gg-emergency, .gg-home-screen .bottom-nav { margin-left: 6px; margin-right: 6px; }
+  .gg-home-screen .gg-action-grid .gg-action-card { min-height: 104px; }
+}

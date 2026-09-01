@@ -10,6 +10,7 @@ import './gum-leaves-reference.css';
 import './continue-journey-toggle.css';
 import './vip-toggle-upgrade.css';
 import './safety-toggle-upgrade.css';
+import './budget-traveller-home-lock.css';
 
 export const metadata = {
   title: 'GENEVIEVE — Budget Traveller',
