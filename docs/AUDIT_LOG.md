@@ -1,4 +1,4 @@
-# GENEVIEVE — The Budget Travels — Chronological Build Audit
+# GENEVIEVE — Budget Traveller — Chronological Build Audit
 
 ## Stage 0 — Separation baseline
 - New standalone repository created. No Dog Park repository files imported or modified.

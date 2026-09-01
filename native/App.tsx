@@ -62,7 +62,7 @@ function NativeHome() {
       await openLiveRoute(route);
     } catch {
       Alert.alert(
-        'Live The Budget Travels unavailable',
+        'Live Budget Traveller unavailable',
         'The live service could not be opened. Please check your internet connection and try again.'
       );
     }

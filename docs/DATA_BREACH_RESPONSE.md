@@ -1,4 +1,4 @@
-# Data Breach Response Plan — GENEVIEVE — The Budget Travels
+# Data Breach Response Plan — GENEVIEVE — Budget Traveller
 
 ## Purpose
 Use this plan when personal information may have been lost, accessed without authority, disclosed to the wrong person, or exposed through a compromised account, secret, database, deployment or third-party provider.

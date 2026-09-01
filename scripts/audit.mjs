@@ -113,7 +113,8 @@ if (/live:\s*true/.test(providerSources[4])) fail('Victoria delayed provider mus
 if (!iconRoute.includes("'content-type': 'image/png'")) fail('phone icon endpoint must return PNG');
 if (!iconRoute.includes("Buffer.from(ICON_BASE64, 'base64')")) fail('phone icon asset is missing');
 if (!manifest.includes('"src": "/api/app-icon"') || !manifest.includes('"display": "standalone"')) fail('PWA manifest must use branded home-screen icon and standalone mode');
-if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Budget Travels'")) fail('iPhone install metadata missing branded icon/title');
+if (!manifest.includes('"short_name": "Budget Traveller"')) fail('PWA short name must use Budget Traveller branding');
+if (!layout.includes("apple: '/api/app-icon'") || !layout.includes("title: 'Budget Traveller'")) fail('iPhone install metadata missing branded icon/title');
 
 if (!releaseGate.includes('account recovery') || !releaseGate.includes('Live charging is not approved')) fail('paid-launch account recovery/release blocker missing');
 

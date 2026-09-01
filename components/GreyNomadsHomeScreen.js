@@ -29,9 +29,9 @@ function SummaryIcon({ name }) {
 export default function GreyNomadsHomeScreen({ actions, routes, content }) {
   return (
     <main className="app-shell gg-home-shell">
-      <section className="screen-frame gg-home-screen" aria-label="GENEVIEVE — The Budget Travels Home">
+      <section className="screen-frame gg-home-screen" aria-label="GENEVIEVE — Budget Traveller Home">
         <div className="gg-home-scroll">
-          <header className="gg-brand-hero" aria-label="GENEVIEVE — The Budget Travels Australian touring">
+          <header className="gg-brand-hero" aria-label="GENEVIEVE — Budget Traveller Australian touring">
             <div className="gg-landscape" aria-hidden="true" />
             <div className="gg-hero-shade" aria-hidden="true" />
             <div className="gg-eucalyptus gg-eucalyptus-left" aria-hidden="true"><i/><i/><i/><i/><i/></div>

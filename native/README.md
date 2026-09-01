@@ -1,4 +1,4 @@
-# GENEVIEVE — The Budget Travels — Native Expo App
+# GENEVIEVE — Budget Traveller — Native Expo App
 
 This is the separate native iPhone/Android build. It lives under `native/` on the `native/expo-grey-nomads` branch so the production Next.js/Cloudflare app remains untouched.
 

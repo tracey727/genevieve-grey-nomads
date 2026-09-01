@@ -10,14 +10,14 @@ const logo = 'data:image/webp;base64,' +
 export default function BrandHeader({ compact = false }) {
   return (
     <header className={`brand-header ${compact ? 'brand-header--compact' : ''}`}>
-      <Link href="/" className="brand-mark" aria-label="GENEVIEVE — The Budget Travels home">
+      <Link href="/" className="brand-mark" aria-label="GENEVIEVE — Budget Traveller home">
         <img src={logo} width="90" height="192" alt="GENEVIEVE tree, infinity and roots logo" className="brand-logo" />
       </Link>
       <div className="brand-copy">
         <p className="eyebrow">Australian journey companion</p>
         <h1>GENEVIEVE</h1>
         <p className="tagline">Safety from roots to every journey.</p>
-        {!compact && <p className="subbrand">The Budget Travels</p>}
+        {!compact && <p className="subbrand">Budget Traveller</p>}
       </div>
     </header>
   );

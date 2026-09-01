@@ -2,18 +2,18 @@ import Link from 'next/link';
 import Shell from '../../components/Shell';
 import styles from '../legal/legal.module.css';
 
-export const metadata = { title: 'Terms of Use | GENEVIEVE — The Budget Travels' };
+export const metadata = { title: 'Terms of Use | GENEVIEVE — Budget Traveller' };
 
 export default function TermsPage() {
   return (
     <Shell current="My Trip">
       <article className={`panel ${styles.card}`}>
-        <p className="eyebrow">GENEVIEVE — The Budget Travels</p><h2>Terms of Use</h2>
+        <p className="eyebrow">GENEVIEVE — Budget Traveller</p><h2>Terms of Use</h2>
         <p className={styles.meta}>Last updated: 19 August 2026</p>
-        <p>These Terms apply to the GENEVIEVE — The Budget Travels web application operated by Tracey Ann Kennedy trading as GENEVIEVE App™, ABN 36 530 564 761, PO Box 475, Labrador QLD 4215, Australia (“GENEVIEVE”, “we”, “us” or “our”).</p>
+        <p>These Terms apply to the GENEVIEVE — Budget Traveller web application operated by Tracey Ann Kennedy trading as GENEVIEVE App™, ABN 36 530 564 761, PO Box 475, Labrador QLD 4215, Australia (“GENEVIEVE”, “we”, “us” or “our”).</p>
 
         <h3>1. What the app does</h3>
-        <p>GENEVIEVE — The Budget Travels provides travel-planning, budgeting, nearby-search and safety-support tools. Route distances, budgets, fuel estimates, rest-stop suggestions and similar outputs are decision-support information. They are not guarantees of road conditions, fuel availability, prices, weather, campground access, legal permissions or personal safety.</p>
+        <p>GENEVIEVE — Budget Traveller provides travel-planning, budgeting, nearby-search and safety-support tools. Route distances, budgets, fuel estimates, rest-stop suggestions and similar outputs are decision-support information. They are not guarantees of road conditions, fuel availability, prices, weather, campground access, legal permissions or personal safety.</p>
         <p>Where a live official provider has not been connected and verified, the app must not describe that information as live. Current signs, road authorities, emergency services, park operators, councils and other official instructions take priority over app information.</p>
 
         <h3>2. Your responsibilities</h3>

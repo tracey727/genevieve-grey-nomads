@@ -1,4 +1,4 @@
-# GENEVIEVE — The Budget Travels
+# GENEVIEVE — Budget Traveller
 
 Standalone Australia-wide journey, budget and safety application built for GitHub + Neon Postgres + Cloudflare Workers.
 

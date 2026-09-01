@@ -53,16 +53,16 @@
 - Safety remains available without subscription or billing state.
 - CI now fails if an unguarded direct 000 link is reintroduced, if the hold period changes, or if the full-slide gate is removed.
 
-### Stage 12 — The Budget Travels phone home-screen identity
-- A dedicated GENEVIEVE — The Budget Travels home-screen icon was created from the supplied tree/infinity/roots brand artwork without redrawing the mark.
+### Stage 12 — Budget Traveller phone home-screen identity
+- A dedicated GENEVIEVE — Budget Traveller home-screen icon was created from the supplied tree/infinity/roots brand artwork without redrawing the mark.
 - The icon uses the app's deep navy and restrained gold-trimmed visual system.
-- The PWA manifest now includes The Budget Travels app identity and standalone launch mode.
-- Apple web-app metadata points to the same branded icon and labels the installed app `The Budget Travels`.
+- The PWA manifest now includes Budget Traveller app identity and standalone launch mode.
+- Apple web-app metadata points to the same branded icon and labels the installed app `Budget Traveller`.
 - CI requires the icon endpoint, manifest wiring and Apple install metadata to remain present.
 - GitHub install, tests, source audit and full production build passed before merge.
 
 ### Stage 13 — Product rename and Cloudflare hosting alignment
-- The traveller-facing product is now presented as The Budget Travels (manifest, iOS install metadata, brand header, legal pages); GENEVIEVE remains the parent/trading brand on the logo.
+- The traveller-facing product is now presented as Budget Traveller (manifest, iOS install metadata, brand header, legal pages); GENEVIEVE remains the parent/trading brand on the logo.
 - Terms of Use and Privacy Policy processor disclosures corrected from Vercel to Cloudflare; setup docs updated to reference Cloudflare Worker secrets instead of Vercel environment variables.
 - README deployment instructions now describe Cloudflare Workers Builds' native GitHub Git integration as the single deployment path, with GitHub Actions CI as the pre-deploy gate.
 - Tests, source/legal audit and production build passed after the rename.

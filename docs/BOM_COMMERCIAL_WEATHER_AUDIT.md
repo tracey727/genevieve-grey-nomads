@@ -1,6 +1,6 @@
 # BOM national weather commercial-use audit
 
-GENEVIEVE — The Budget Travels is intended to offer paid subscriptions, so its production weather integration is commercial use.
+GENEVIEVE — Budget Traveller is intended to offer paid subscriptions, so its production weather integration is commercial use.
 
 Bureau audit finding:
 - BOM anonymous automated web/FTP forecast, warning and observation feeds are free but not for commercial use.
