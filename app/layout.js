@@ -21,7 +21,7 @@ export const metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: 'Budget Travels',
+    title: 'Budget Traveller',
     statusBarStyle: 'black-translucent'
   }
 };
