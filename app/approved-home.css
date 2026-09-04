@@ -13,6 +13,7 @@
 
 .gg-home-shell{
   min-height:100vh;
+  min-height:100dvh;
   margin:0;
   padding:0;
   background:
@@ -24,6 +25,7 @@
   position:relative;
   width:min(100%,760px);
   min-height:100vh;
+  min-height:100dvh;
   margin:0 auto;
   padding:0 18px 108px;
   overflow:hidden;

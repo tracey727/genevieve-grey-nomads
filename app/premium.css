@@ -33,6 +33,7 @@ body{
 /* Premium application shell */
 .premium-app-shell{
   min-height:100vh;
+  min-height:100dvh;
   padding:14px 10px;
   background:
     repeating-linear-gradient(115deg,transparent 0 34px,rgba(255,255,255,.006) 35px,transparent 36px),
@@ -44,6 +45,7 @@ body{
 .premium-home-v3.screen-frame{
   width:min(100%,980px);
   min-height:calc(100vh - 28px);
+  min-height:calc(100dvh - 28px);
   margin:0 auto;
   position:relative;
   overflow:hidden;
@@ -447,7 +449,7 @@ body{
 @media(max-width:760px){
   .premium-app-shell{padding:0}
   .premium-screen-frame,
-  .premium-home-v3.screen-frame{min-height:100vh;border-radius:0;border-width:0 1px;outline-offset:-6px}
+  .premium-home-v3.screen-frame{min-height:100vh;min-height:100dvh;border-radius:0;border-width:0 1px;outline-offset:-6px}
   .premium-screen-frame{padding:15px 13px 104px}
   .shell-constellation{right:20px;top:27px;opacity:.28}
   .premium-screen-frame .brand-header--compact{min-height:82px;margin-bottom:20px;padding-bottom:16px}
