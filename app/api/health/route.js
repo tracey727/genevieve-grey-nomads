@@ -8,7 +8,7 @@ const identity = { service: 'genevieve-grey-nomads', mode: 'standalone-traveller
 
 export async function GET() {
   const sql = getSql();
-  if (!sql) return Response.json({ ...identity, ok: true, database: 'not-configured' });
+  if (!sql) return Response.json({ ...identity, ok: false, database: 'not-configured' }, { status: 503 });
   try {
     await sql`SELECT 1 AS ok`;
     return Response.json({ ...identity, ok: true, database: 'connected' });
