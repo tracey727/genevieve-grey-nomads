@@ -7,11 +7,11 @@ test('health returns exact public identity without a configured database or conf
   delete process.env.DATABASE_URL;
   try {
     const response=await GET();
-    assert.equal(response.status,200);
+    assert.equal(response.status,503);
     const data=await response.json();
     assert.equal(data.service,'genevieve-grey-nomads');
     assert.equal(data.mode,'standalone-traveller-app');
-    assert.equal(data.ok,true);
+    assert.equal(data.ok,false);
     assert.equal(data.database,'not-configured');
     assert.deepEqual(Object.keys(data).sort(),['service','mode','ok','database'].sort());
   } finally {
