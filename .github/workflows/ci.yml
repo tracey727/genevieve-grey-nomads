@@ -13,5 +13,7 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm test
+      - run: node scripts/verify-worker-auth.mjs
       - run: npm run audit
       - run: npm run build
+

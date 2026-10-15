@@ -28,6 +28,8 @@ test('session tokens verify, expire and reject tampering', async () => {
   assert.equal(await verifySessionToken(expired, secret), null);
 
   assert.equal(await verifySessionToken(token, 'wrong-secret'), null);
+  assert.equal(await verifySessionToken(token + '.ignored-part', secret), null);
+  assert.equal(await verifySessionToken(await createSessionToken({sub:'user-1'},secret,0),secret),null);
 
   const [payloadPart, signaturePart] = token.split('.');
   const tampered = `${payloadPart}x.${signaturePart}`;
@@ -41,3 +43,4 @@ test('email/password validators enforce basic account safety rules', () => {
   assert.ok(isValidPassword('a-reasonable-length-password'));
   assert.ok(!isValidPassword('short'));
 });
+

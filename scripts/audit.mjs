@@ -31,7 +31,7 @@ for (const rel of required) {
 
 const envExample = read('.env.example');
 const gitignore = read('.gitignore');
-const tripApi = read('app/api/trips/route.js');
+const tripApi = read('app/api/trips/route.js') + read('lib/trip-storage.mjs');
 const brand = read('components/BrandHeader.js');
 const checkout = read('app/api/billing/checkout/route.js');
 const webhook = read('app/api/stripe/webhook/route.js');
