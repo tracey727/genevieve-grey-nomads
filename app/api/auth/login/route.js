@@ -1,3 +1,4 @@
+import {readRequestJson} from '../../../../lib/request-json.mjs';
 import { getSql } from '../../../../lib/db';
 import { verifyPassword, isValidEmail, normalizeEmail, createSessionToken } from '../../../../lib/auth';
 
@@ -16,9 +17,9 @@ export async function POST(request) {
   try {
     const contentLength = Number(request.headers.get('content-length') || 0);
     if (contentLength > 5_000) return bad('Request is too large.', 413);
-    body = await request.json();
-  } catch {
-    return bad('Invalid request body.');
+    body = await readRequestJson(request,5_000);
+  } catch(error) {
+    return bad(error.status===413?'Request is too large.':'Invalid request body.',error.status===413?413:400);
   }
 
   const email = normalizeEmail(body?.email);
@@ -37,3 +38,4 @@ export async function POST(request) {
     return bad('Sign-in is temporarily unavailable.', 503);
   }
 }
+

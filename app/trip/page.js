@@ -11,6 +11,11 @@ function getDeviceId() {
   return id;
 }
 
+function getAuthHeaders() {
+  const token=localStorage.getItem('genevieve:session-token');
+  return token?{authorization:`Bearer ${token}`}:{ };
+}
+
 export default function TripPage() {
   const [localPlan, setLocalPlan] = useState(null);
   const [trips, setTrips] = useState([]);
@@ -18,11 +23,11 @@ export default function TripPage() {
   const loadTrips = async () => {
     try {
       const deviceId = getDeviceId();
-      const res = await fetch(`/api/trips?deviceId=${encodeURIComponent(deviceId)}`, { cache: 'no-store' });
+      const res = await fetch(`/api/trips?deviceId=${encodeURIComponent(deviceId)}`, { cache: 'no-store',headers:getAuthHeaders() });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Unable to load');
       setTrips(data.trips || []);
-    } catch { setStatus('Saved cloud journeys are unavailable right now. Your local plan remains on this device.'); }
+    } catch { setTrips([]); setStatus('Could not load journeys. Sign in again if your session has expired. Your local plan remains on this device.'); }
   };
   useEffect(() => {
     try { const raw = localStorage.getItem('genevieve:last-plan'); if (raw) setLocalPlan(JSON.parse(raw)); } catch {}
@@ -33,7 +38,7 @@ export default function TripPage() {
     setStatus('Saving…');
     try {
       const deviceId = getDeviceId();
-      const res = await fetch('/api/trips', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ deviceId, name: `${localPlan.origin} to ${localPlan.destination}`, plan: localPlan }) });
+      const res = await fetch('/api/trips', { method: 'POST', headers: { 'content-type': 'application/json',...getAuthHeaders() }, body: JSON.stringify({ deviceId, name: `${localPlan.origin} to ${localPlan.destination}`, plan: localPlan }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Unable to save');
       setStatus('Journey saved.');
@@ -56,7 +61,7 @@ export default function TripPage() {
     setStatus('Deleting journey…');
     try {
       const deviceId = getDeviceId();
-      const res = await fetch(`/api/trips?deviceId=${encodeURIComponent(deviceId)}&tripId=${encodeURIComponent(trip.public_id)}`, { method: 'DELETE' });
+      const res = await fetch(`/api/trips?deviceId=${encodeURIComponent(deviceId)}&tripId=${encodeURIComponent(trip.public_id)}`, { method: 'DELETE',headers:getAuthHeaders() });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || 'Unable to delete');
       setStatus('Journey deleted.');
@@ -74,3 +79,4 @@ export default function TripPage() {
     </Shell>
   );
 }
+

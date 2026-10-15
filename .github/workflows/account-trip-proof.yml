@@ -1,0 +1,16 @@
+name: Synthetic account and trip proof
+on:
+  push:
+    branches: [proof/grey-accounts-20261015]
+permissions:
+  contents: read
+jobs:
+  account-trip-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/verify-live-account-trips.mjs

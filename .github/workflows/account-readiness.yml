@@ -1,0 +1,21 @@
+name: Read-only account release evidence
+on:
+  push:
+    branches: [main, agent/cloudflare-workers-deploy]
+    paths:
+      - app/api/readiness/**
+      - lib/account-readiness.mjs
+      - scripts/verify-live-account-readiness.mjs
+      - .github/workflows/account-readiness.yml
+permissions:
+  contents: read
+jobs:
+  inspect-live-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/verify-live-account-readiness.mjs
